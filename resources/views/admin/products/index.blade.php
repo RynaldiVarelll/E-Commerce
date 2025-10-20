@@ -9,6 +9,7 @@
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
     @foreach($products as $p)
         <div class="bg-white border rounded-lg overflow-hidden shadow-sm">
             <img src="{{ asset($p->image_url) }}"

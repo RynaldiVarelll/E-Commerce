@@ -6,9 +6,9 @@
         <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
             <!-- Hero Text -->
             <div class="flex-1 text-center lg:text-left">
-                <h1 class="text-4xl lg:text-5xl font-bold mb-4">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-4">
                     Selamat Datang di TokoKu
-                </h1>
+                </h2>
                 
                 <p class="text-xl mb-6 text-blue-100">
                     Belanja mudah, cepat, dan terpercaya. Temukan produk berkualitas dengan harga terbaik!
@@ -27,8 +27,8 @@
             
             <!-- Hero Image -->
             <div class="flex-1 max-w-md">
-                <img src="https://via.placeholder.com/500x400" 
-                     alt="Shopping" 
+                <img src="https://img.freepik.com/premium-vector/shopping-cart-logo-design-vector-modern-shopping-cart-logo-template_472998-93.jpg?w=2000" 
+                     alt="Shopping" width="100" height="100"
                      class="w-full rounded-lg shadow-2xl">
             </div>
         </div>
@@ -114,74 +114,7 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-            @if(isset($products))
-                @foreach($products->take(10) as $product)
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
-                        <!-- Product Image -->
-                        <div class="relative aspect-[1/1] overflow-hidden bg-gray-100">
-                            <img src="{{ $product->image_url ?: 'https://via.placeholder.com/400' }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
-                            <div class="absolute top-2 right-2">
-                                @if ($product->quantity <= 0)
-                                    <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">HABIS</span>
-                                @else
-                                    <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">READY</span>
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <!-- Product Info -->
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem] leading-tight">
-                                {{ $product->name }}
-                            </h3>
-                            
-                            <p class="text-xl font-bold text-blue-700 mb-3">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </p>
-                            
-                            <a href="{{ route('login') }}"
-                               class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
-                                Beli Sekarang
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
-            @else
-                <!-- Sample Products -->
-                @for($i = 1; $i <= 5; $i++)
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
-                        <div class="relative aspect-[1/1] overflow-hidden bg-gray-100">
-                            <img src="https://via.placeholder.com/400" 
-                                 alt="Product {{ $i }}" 
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
-                            <div class="absolute top-2 right-2">
-                                <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">READY</span>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem] leading-tight">
-                                Produk Berkualitas {{ $i }}
-                            </h3>
-                            
-                            <p class="text-xl font-bold text-blue-700 mb-3">
-                                Rp {{ number_format(100000 * $i, 0, ',', '.') }}
-                            </p>
-                            
-                            <a href="{{ route('login') }}"
-                               class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
-                                Beli Sekarang
-                            </a>
-                        </div>
-                    </div>
-                @endfor
-            @endif
-        </div>
-    </div>
-</div>
+        
 
 <!-- Call to Action Section -->
 <div class="bg-blue-600 text-white py-16">

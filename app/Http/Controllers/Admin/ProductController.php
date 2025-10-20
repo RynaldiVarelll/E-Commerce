@@ -83,55 +83,62 @@ public function store(Request $request)
     }
 
     
-public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product)
 {
-    $request->validate([
-        'name' => 'required',
-        'category_id' => 'required|exists:categories,id',
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
-        'description' => 'required',
-        'whatsapp_link' => 'nullable|url',
         'quantity' => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id',
         'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        'images' => 'nullable|string',
+        'images' => 'nullable|array',
+        'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
-    // Handle upload gambar utama
+    // 🔹 Hapus & ganti gambar utama bila ada yang baru
     if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('products', 'public');
-        $product->image_url = '/storage/' . $imagePath;
+        if ($product->image_url) {
+            $oldPath = str_replace('/storage/', '', $product->image_url);
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+
+        $path = $request->file('image')->store('products', 'public');
+        $validated['image_url'] = Storage::url($path);
     }
 
-    $product->update([
-        'category_id' => $request->category_id,
-        'name' => $request->name,
-        'slug' => Str::slug($request->name),
-        'description' => $request->description,
-        'price' => $request->price,
-        'whatsapp_link' => $request->whatsapp_link,
-        'is_active' => $request->has('is_active'),
-        'quantity' => $request->quantity,
-    ]);
+    // 🔹 Update data produk utama
+    $product->update($validated);
 
-    // Hapus gambar lama dan tambahkan baru jika ada input
-    $product->images()->delete();
-
-    if ($request->filled('images')) {
-        $urls = array_filter(array_map('trim', explode("\n", $request->images)));
-
-        foreach ($urls as $i => $url) {
-            if (filter_var($url, FILTER_VALIDATE_URL)) {
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_url' => $url,
-                    'position' => $i,
-                ]);
+    // 🔹 Update galeri gambar (optional)
+    if ($request->hasFile('images')) {
+        // Hapus semua gambar lama
+        foreach ($product->images as $img) {
+            $oldImgPath = str_replace('/storage/', '', $img->image_url);
+            if (Storage::disk('public')->exists($oldImgPath)) {
+                Storage::disk('public')->delete($oldImgPath);
             }
+            $img->delete();
+        }
+
+        // Simpan gambar galeri baru
+        foreach ($request->file('images') as $i => $file) {
+            $path = $file->store('product_images', 'public');
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_url' => Storage::url($path),
+                'position' => $i,
+            ]);
         }
     }
 
-    return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
+    return redirect()
+        ->route('admin.products.index')
+        ->with('success', 'Produk berhasil diperbarui!');
 }
+
 
     public function destroy(Product $product)
     {

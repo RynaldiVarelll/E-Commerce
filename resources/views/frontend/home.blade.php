@@ -67,19 +67,27 @@
     @csrf
     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-    <div class="flex items-center justify-between gap-2">
-        <div class="flex items-center border rounded-lg">
-            <button type="button" class="px-3 py-2 text-gray-600 font-bold" onclick="changeQuantity(this, -1)">−</button>
-            <input type="number" name="quantity" value="1" min="1"
-                   class="w-16 text-center border-l border-r focus:outline-none">
-            <button type="button" class="px-3 py-2 text-gray-600 font-bold" onclick="changeQuantity(this, 1)">+</button>
-        </div>
-
-        <button type="submit"
-                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
-            <i class="fa-solid fa-cart-plus"></i>
+    @if ($product->quantity <= 0)
+        <button type="button"
+                onclick="alert('Produk ini sedang habis dan tidak dapat ditambahkan ke keranjang.')"
+                class="w-full bg-gray-400 text-white py-2.5 rounded-lg font-semibold cursor-not-allowed">
+            <i class="fa-solid fa-triangle-exclamation mr-2"></i> Stok Habis
         </button>
-    </div>
+    @else
+        <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center border rounded-lg">
+                <button type="button" class="px-3 py-2 text-gray-600 font-bold" onclick="changeQuantity(this, -1)">−</button>
+                <input type="number" name="quantity" value="1" min="1"
+                       class="w-16 text-center border-l border-r focus:outline-none">
+                <button type="button" class="px-3 py-2 text-gray-600 font-bold" onclick="changeQuantity(this, 1)">+</button>
+            </div>
+
+            <button type="submit"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
+                <i class="fa-solid fa-cart-plus"></i>
+            </button>
+        </div>
+    @endif
 </form>
 
 

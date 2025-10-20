@@ -8,7 +8,13 @@
        class="text-sm text-gray-600 hover:text-blue-600 mb-4 inline-block">
         ← Back to Cart
     </a>
-
+    @if (session('error'))
+    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+        <i class="fa-solid fa-circle-exclamation mr-2"></i>
+        {{ session('error') }}
+    </div>
+@endif
+        
     @if($cartItems->isEmpty())
         <div class="bg-white p-6 rounded-lg shadow text-center">
             <p class="text-gray-500">Your cart is empty.</p>

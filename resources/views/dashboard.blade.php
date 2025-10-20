@@ -18,7 +18,7 @@
                        class="px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
                         Daftar Sekarang
                     </a>
-                    <a href="{{ route('login') }}" 
+                    <a href="{{ route('products.index') }}" 
                        class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-200">
                         Masuk
                     </a>
@@ -27,8 +27,8 @@
             
             <!-- Hero Image -->
             <div class="flex-1 max-w-md">
-                <img src="https://via.placeholder.com/500x400" 
-                     alt="Shopping" 
+                <img src="https://img.freepik.com/premium-vector/shopping-cart-logo-design-vector-modern-shopping-cart-logo-template_472998-93.jpg?w=2000" 
+                     alt="Shopping" width="100" height="100"
                      class="w-full rounded-lg shadow-2xl">
             </div>
         </div>

@@ -34,8 +34,16 @@
         {{ session('error') }}
     </div>
 @endif
+<div class="flex items-center justify-between mb-3">
+    <h2 class="text-xl font-semibold text-gray-800">Recent Transactions</h2>
+    
+    <a href="{{ route('transactions.report') }}" 
+       class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
+        <i class="fa-solid fa-print mr-2"></i>
+        Generate Report
+    </a>
+</div>
 
-<h2 class="text-xl font-semibold mb-3">Recent Transactions</h2>
 <div class="bg-white shadow rounded-lg overflow-hidden">
     <table class="min-w-full table-auto">
         <thead class="bg-gray-100 text-gray-700">
@@ -81,7 +89,7 @@
 </td>
 
                     <td class="px-4 py-2">{{ $tx->created_at->format('d M Y') }}</td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 flex items-center space-x-2">
     <form method="POST" id="form-{{ $tx->id }}">
         @csrf
         <select onchange="updateStatus({{ $tx->id }}, this.value)" class="border rounded p-1">
@@ -90,6 +98,14 @@
                 <option value="{{ $status }}">{{ ucfirst($status) }}</option>
             @endforeach
         </select>
+    </form>
+
+    <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?')" class="inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-red-600 hover:text-red-800">
+            <i class="fa-solid fa-trash"></i>
+        </button>
     </form>
 </td>
 

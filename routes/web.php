@@ -14,8 +14,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('product.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,10 +28,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
     Route::post('/checkout',[TransactionController::class, 'checkout'])->name('checkout.process');
     Route::get('/checkout',[TransactionController::class,'checkoutPage'])->name('checkout.page');
-    
-    
+
+
+Route::patch('/cart/{cart}/update', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::delete('/cart/{cart}/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+
+
+    Route::get('/transactions/{transaction}/invoice', [TransactionController::class, 'generateInvoice'])
+    ->name('transactions.invoice')
+    ->middleware('auth');
+    // Route untuk cetak invoice user
+Route::get('/transactions/{transaction}/invoice', [TransactionController::class, 'printInvoice'])
+    ->middleware('auth')
+    ->name('transactions.print-invoice');
+
     Route::get('/checkout/success/{id}', function ($id) {
-    $transaction = App\Models\Transaction::findOrFail($id);
+    $transaction = \App\Models\Transaction::findOrFail($id);
     return view('frontend.checkout-success', compact('transaction'));})->name('checkout.success');
 
 });
@@ -45,6 +58,9 @@ Route::middleware(['auth', EnsureUserIsAdmin::class])
             }); 
         Route::post('/transactions/{transaction}/{status}', [DashboardController::class, 'updateStatus'])
              ->name('transactions.update-status');
-        
+        Route::get('/transactions/report', [TransactionController::class, 'generateReport'])
+    ->name('transactions.report');
+    Route::delete('/transactions/{transaction}/delete', [TransactionController::class, 'destroy'])
+    ->name('transactions.destroy');
 
 require __DIR__.'/auth.php';

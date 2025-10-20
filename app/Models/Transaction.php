@@ -15,7 +15,7 @@ class Transaction extends Model
     ];
     public function items()
 {
-    return $this->hasMany(TransactionItem::class);
+    return $this->hasMany(TransactionItems::class);
 }
     public static function boot()
     {
@@ -23,10 +23,10 @@ class Transaction extends Model
 
         static::creating(function ($transaction) {
             $datePart = now()->format('Ymd');
-            $countToday = self::whereDate('created_at', now()->toDateString())->count() + 1;
-            $invoiceNumber = str_pad($countToday, 4, '0', STR_PAD_LEFT);
-            $transaction->invoice_code = "INV-{$datePart}-{$invoiceNumber}";
+            $randomPart = strtoupper(substr(uniqid(), -4));
+            $transaction->invoice_code = "INV-{$datePart}-{$randomPart}";
         });
+
     }
      protected $casts = [
         'total_amount' => 'decimal:2',
@@ -46,6 +46,11 @@ class Transaction extends Model
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+    public function deleteRecords()
+    {
+        $this->items()->delete();
+        $this->delete();
     }
 
 }
