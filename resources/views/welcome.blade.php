@@ -7,7 +7,7 @@
             <!-- Hero Text -->
             <div class="flex-1 text-center lg:text-left">
                 <h2 class="text-4xl lg:text-5xl font-bold mb-4">
-                    Selamat Datang di TokoKu
+                    Selamat Datang di invoify
                 </h2>
                 
                 <p class="text-xl mb-6 text-blue-100">
@@ -27,7 +27,7 @@
             
             <!-- Hero Image -->
             <div class="flex-1 max-w-md">
-                <img src="https://img.freepik.com/premium-vector/shopping-cart-logo-design-vector-modern-shopping-cart-logo-template_472998-93.jpg?w=2000" 
+                <img src="{{ asset('storage/assets/images/app-logo.png') }}"   
                      alt="Shopping" width="100" height="100"
                      class="w-full rounded-lg shadow-2xl">
             </div>

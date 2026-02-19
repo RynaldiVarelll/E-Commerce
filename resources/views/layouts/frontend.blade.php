@@ -12,7 +12,7 @@
 <body class="bg-gray-50 text-gray-800">
     <nav class="bg-white shadow">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="{{ route('home') }}" class="text-xl font-bold text-blue-600">ShopKu</a>
+            <a href="{{ route('home') }}" class="text-xl font-bold text-blue-600">Invoify</a>
             <div>
                 @auth
     <div class="flex items-center space-x-4">

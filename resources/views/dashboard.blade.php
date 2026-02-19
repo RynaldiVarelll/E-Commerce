@@ -7,7 +7,7 @@
             <!-- Hero Text -->
             <div class="flex-1 text-center lg:text-left">
                 <h1 class="text-4xl lg:text-5xl font-bold mb-4">
-                    Selamat Datang di TokoKu
+                    Selamat Datang di invoify
                 </h1>
                 
                 <p class="text-xl mb-6 text-blue-100">
@@ -27,7 +27,7 @@
             
             <!-- Hero Image -->
             <div class="flex-1 max-w-md">
-                <img src="https://img.freepik.com/premium-vector/shopping-cart-logo-design-vector-modern-shopping-cart-logo-template_472998-93.jpg?w=2000" 
+                <img src="{{ asset('storage/assets/images/app-logo.png') }}"  
                      alt="Shopping" width="100" height="100"
                      class="w-full rounded-lg shadow-2xl">
             </div>
@@ -39,7 +39,7 @@
 <div class="bg-gray-50 py-12">
     <div class="container mx-auto px-4">
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-800 mb-3">Kenapa Belanja di TokoKu?</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-3">Kenapa Belanja di Invoify?</h2>
             <p class="text-gray-600">Kami berkomitmen memberikan pengalaman belanja terbaik untuk Anda</p>
         </div>
         
