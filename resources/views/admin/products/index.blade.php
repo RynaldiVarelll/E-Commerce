@@ -12,7 +12,7 @@
     
     @foreach($products as $p)
         <div class="bg-white border rounded-lg overflow-hidden shadow-sm">
-            <img src="{{ asset($p->image_url) }}"
+            <img src="{{ $p->image_url }}"
                  alt="{{ $p->name }}"
                  class="w-full h-48 object-cover">
             <div class="p-4">

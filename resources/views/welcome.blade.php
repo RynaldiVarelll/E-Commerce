@@ -27,7 +27,7 @@
             
             <!-- Hero Image -->
             <div class="flex-1 max-w-md">
-                <img src="{{ asset('storage/assets/images/app-logo.png') }}"   
+                <img src="{{ asset('images/app_logo.png') }}"   
                      alt="Shopping" width="100" height="100"
                      class="w-full rounded-lg shadow-2xl">
             </div>

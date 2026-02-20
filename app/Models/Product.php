@@ -18,6 +18,22 @@ class Product extends Model
         'quantity',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Accessor: image_url
+    |--------------------------------------------------------------------------
+    | Database cuma simpan nama file (contoh: sepatu.jpg)
+    | URL lengkap dibentuk di sini
+    */
+    public function getImageUrlAttribute($value)
+    {
+        if (!$value) {
+            return asset('images/no-image.png'); // optional fallback
+        }
+
+        return asset('storage/products/' . $value);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
