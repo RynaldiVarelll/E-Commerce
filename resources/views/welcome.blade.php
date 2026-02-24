@@ -10,42 +10,66 @@
 
     <div class="container relative z-10 mx-auto px-6 py-20 lg:py-32">
         <div class="flex flex-col lg:flex-row items-center gap-16">
+            {{-- Left Side: Text --}}
             <div class="flex-1 text-center lg:text-left space-y-8">
                 <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-100 text-sm backdrop-blur-md">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-200 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-100"></span>
                     </span>
-                    <span>New Season Collection 2026</span>
+                    <span class="font-bold tracking-wider uppercase text-[10px]">New Computer Collection 2026</span>
                 </div>
                 
-                <h1 class="text-5xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
+                <h1 class="text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter">
                     Smart Shopping <br/> 
-                    <span class="text-blue-300 underline decoration-blue-400/30">Starts at invoify.</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-indigo-100">Starts at Invoify.</span>
                 </h1>
                 
-                <p class="text-lg text-blue-100/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                    Belanja cerdas dengan kurasi produk terbaik. Temukan kualitas premium yang dirancang khusus untuk memenuhi gaya hidup modern Anda.
+                <p class="text-lg text-blue-100/70 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                    Belanja cerdas dengan kurasi produk terbaik. Temukan kualitas premium yang dirancang khusus untuk memenuhi kebutuhan IT modern Anda.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
                     <a href="{{ route('register') }}" 
-                       class="group px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]">
-                        Mulai Belanja 
-                        <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                       class="group px-10 py-5 bg-white text-blue-700 rounded-2xl font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex items-center justify-center gap-3">
+                        MULAI BELANJA 
+                        <i class="fa-solid fa-bolt-lightning group-hover:rotate-12 transition-transform"></i>
                     </a>
                     <a href="{{ route('login') }}" 
-                       class="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300">
-                        Masuk Akun
+                       class="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-lg hover:bg-white/20 transition-all duration-300">
+                        MASUK AKUN
                     </a>
                 </div>
             </div>
             
-            <div class="flex-1 relative group">
-                <div class="absolute inset-0 bg-blue-400 rounded-3xl blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                <img src="{{ asset('images/app_logo.png') }}"   
-                     alt="Shopping" 
-                     class="relative w-full max-w-md mx-auto rounded-3xl transform hover:-rotate-2 transition-transform duration-500">
+            {{-- Right Side: Integrated Image --}}
+            <div class="flex-1 relative">
+                {{-- Decorative Shapes Behind Image --}}
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/20 rounded-full blur-[80px]"></div>
+                
+                {{-- Main Image Container --}}
+                <div class="relative z-10 group">
+                    {{-- Glass Card Effect as Base --}}
+                    <div class="absolute -inset-4 bg-white/5 backdrop-blur-sm rounded-[3rem] border border-white/10 rotate-3 group-hover:rotate-0 transition-transform duration-700"></div>
+                    
+                    <div class="relative bg-gradient-to-br from-white/10 to-transparent p-4 rounded-[3rem] border border-white/20 shadow-2xl overflow-hidden transform -rotate-2 group-hover:rotate-0 transition-transform duration-700">
+                        {{-- Ganti asset('images/app_logo.png') dengan gambar produk toko Anda --}}
+                        <img src="{{ asset('images/app_logov2.jpg') }}" 
+                             alt="Premium Product" 
+                             class="w-full h-auto rounded-[2rem] shadow-2xl object-cover transform group-hover:scale-105 transition-transform duration-700">
+                        
+                        {{-- Small Floating Tag on Image --}}
+                        <div class="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
+                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Best Seller</p>
+                                <p class="text-sm font-black text-gray-900 tracking-tight leading-none mt-1">Premium Quality</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +110,7 @@
         
         <div class="flex flex-wrap gap-4">
             @php
-                $fallbackCats = ['Elektronik', 'Fashion', 'Gadget', 'Kecantikan', 'Lifestyle', 'Gaming'];
+                $fallbackCats = ['Personal Computer', 'Laptop', 'Server'];
             @endphp
             @forelse($categories ?? [] as $category)
                 <a href="#" class="px-8 py-3 bg-white rounded-full text-sm font-semibold text-gray-600 hover:bg-blue-600 hover:text-white border border-gray-200 hover:border-blue-600 transition-all duration-300 shadow-sm">

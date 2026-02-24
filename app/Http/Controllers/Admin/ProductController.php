@@ -90,9 +90,9 @@ class ProductController extends Controller
             'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
             'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
         ]);
 
         // 🔥 Ganti gambar utama

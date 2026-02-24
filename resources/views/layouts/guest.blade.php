@@ -9,6 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Instrument+Sans:400,500,600,700,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -17,11 +18,10 @@
             --blue-deep: #0a2463;
             --blue-mid: #1e5fb4;
             --blue-soft: #4a90d9;
-            --blue-pale: #c8dff8;
-            --glass-bg: rgba(255, 255, 255, 0.65);
+            --blue-pale: #daeafc;
+            --glass-bg: rgba(255, 255, 255, 0.75);
             --glass-border: rgba(255, 255, 255, 0.8);
-            --glass-shadow: 0 20px 50px rgba(10, 36, 99, 0.15);
-            --glass-blur: blur(20px);
+            --glass-shadow: 0 25px 50px -12px rgba(10, 36, 99, 0.1);
             --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
         }
 
@@ -34,148 +34,92 @@
             justify-content: center;
             padding: 1.5rem;
             background: #daeafc;
-            /* Latar belakang gradasi yang lebih hidup */
             background-image: 
-                radial-gradient(at 0% 0%, rgba(74, 144, 217, 0.4) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(30, 95, 180, 0.3) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(200, 223, 248, 0.5) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(125, 182, 243, 0.3) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(74, 144, 217, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(200, 223, 248, 0.5) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
-        /* Card Container */
         .auth-card {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
-            border-radius: 2rem;
-            padding: 3rem 2.25rem;
+            border-radius: 3rem;
+            padding: 3.5rem 2.5rem;
             box-shadow: var(--glass-shadow);
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .auth-logo-wrap {
-            width: 4rem;
-            height: 4rem;
-            border-radius: 1.25rem;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 1.5rem;
             background: linear-gradient(135deg, var(--blue-soft), var(--blue-deep));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.25rem;
-            box-shadow: 0 10px 20px rgba(30, 95, 180, 0.2);
-            transform: rotate(-5deg);
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 15px 30px rgba(30, 95, 180, 0.2);
+            transform: rotate(-6deg);
+            transition: transform 0.3s ease;
         }
 
-        .auth-logo-wrap svg {
-            width: 2rem;
-            height: 2rem;
-            color: white;
-        }
+        .auth-logo-wrap:hover { transform: rotate(0deg) scale(1.05); }
 
-        .auth-app-name {
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--blue-mid);
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-card-title {
+        .brand-name {
             font-size: 1.75rem;
-            font-weight: 800;
+            font-weight: 900;
             color: var(--blue-deep);
-            letter-spacing: -0.02em;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            font-style: italic;
         }
 
-        /* Otomatis Merapikan Form Breeze/Laravel di dalam Slot */
-        .auth-card label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--blue-deep);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .auth-card input[type="email"],
-        .auth-card input[type="password"],
-        .auth-card input[type="text"] {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(10, 36, 99, 0.1);
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s;
-        }
-
-        .auth-card input:focus {
-            outline: none;
-            border-color: var(--blue-soft);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(74, 144, 217, 0.15);
-        }
-
-        .auth-card button[type="submit"] {
-            width: 100%;
-            background: var(--blue-deep);
-            color: white;
-            padding: 1rem;
-            border-radius: 1rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-
-        .auth-card button[type="submit"]:hover {
-            background: var(--blue-mid);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(10, 36, 99, 0.2);
-        }
+        .brand-dot { color: var(--blue-soft); }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Merapikan Input Breeze agar konsisten dengan Glassmorphism */
+        input:not([type="checkbox"]) {
+            @apply block w-full bg-white/50 border-white/80 rounded-2xl px-5 py-4 text-sm font-bold text-blue-900 placeholder-blue-300 transition-all duration-300 shadow-sm !important;
+        }
+        
+        input:focus {
+            @apply ring-4 ring-blue-500/10 border-blue-400 bg-white outline-none !important;
+        }
+
+        button[type="submit"] {
+            @apply w-full bg-blue-900 hover:bg-blue-800 text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-blue-900/10 active:scale-[0.97] transition-all duration-200 tracking-widest uppercase text-xs !important;
         }
     </style>
 </head>
-
 <body>
 
     <main class="auth-card">
-        <div class="auth-header">
+        <div class="text-center mb-10">
+            {{-- Logo Petir Sentral --}}
             <div class="auth-logo-wrap">
-                {{-- Icon Bolt/Invoify --}}
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                <svg class="w-9 h-9 text-white fill-current" viewBox="0 0 24 24">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
             </div>
 
-            <div class="auth-app-name">
-                {{ config('app.name', 'Invoify') }}
+            <div class="brand-name">
+                Invoify<span class="brand-dot">.</span>
             </div>
 
-            <h1 class="auth-card-title">
-                {{ $pageTitle ?? 'Welcome Back' }}
+            <h1 class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-3">
+                {{ $pageTitle ?? 'Secure Login Portal' }}
             </h1>
-
-            <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">
-                {{ $pageSubtitle ?? 'Please enter your details' }}
-            </p>
         </div>
 
-        {{-- Konten Form (Login/Register) akan masuk ke sini --}}
+        {{-- Isi Form (Login.blade.php / Register.blade.php) --}}
         <div class="auth-content">
             {{ $slot }}
         </div>

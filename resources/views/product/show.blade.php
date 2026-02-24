@@ -112,7 +112,8 @@
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Fast Delivery</p>
                         </div>
                         <div class="text-center">
-                            <i class="fa-solid fa-shield-check text-blue-600 text-xl mb-2"></i>
+                            {{-- FIXED: Menggunakan ikon shield yang support versi free agar muncul --}}
+                            <i class="fa-solid fa-shield-halved text-blue-600 text-xl mb-2"></i>
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Secure Payment</p>
                         </div>
                         <div class="text-center">
