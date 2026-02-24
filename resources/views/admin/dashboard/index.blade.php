@@ -1,129 +1,164 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto px-6 py-6">
-    <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-gray-500 text-sm">Total Users</h2>
-            <p class="text-2xl font-bold">{{ $totalUsers }}</p>
+<div class="container mx-auto px-6 py-10">
+    {{-- Header Section --}}
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight">Admin Dashboard</h1>
+            <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali! Berikut ringkasan performa toko hari ini.</p>
         </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-gray-500 text-sm">Total Transactions</h2>
-            <p class="text-2xl font-bold">{{ $totalTransactions }}</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-gray-500 text-sm">Total Revenue</h2>
-            <p class="text-2xl font-bold text-green-600">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-gray-500 text-sm">Total Products</h2>
-            <p class="text-2xl font-bold">{{ $totalProducts }}</p>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('transactions.report') }}" 
+               class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-2xl font-bold shadow-xl shadow-gray-200 hover:bg-black transition-all transform active:scale-95">
+                <i class="fa-solid fa-file-export mr-2 text-green-400"></i>
+                Generate Report
+            </a>
         </div>
     </div>
 
-</div>
-@if (session('success'))
-    <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
-        {{ session('success') }}
+    {{-- Stats Grid --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        @php
+            $stats = [
+                ['label' => 'Total Users', 'value' => $totalUsers, 'icon' => 'fa-users', 'color' => 'blue'],
+                ['label' => 'Total Transactions', 'value' => $totalTransactions, 'icon' => 'fa-receipt', 'color' => 'indigo'],
+                ['label' => 'Total Revenue', 'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.'), 'icon' => 'fa-wallet', 'color' => 'green'],
+                ['label' => 'Total Products', 'value' => $totalProducts, 'icon' => 'fa-box-open', 'color' => 'orange'],
+            ];
+        @endphp
+
+        @foreach($stats as $stat)
+        <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-{{ $stat['color'] }}-100 text-{{ $stat['color'] }}-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i class="fa-solid {{ $stat['icon'] }} text-xl"></i>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Live Data</span>
+            </div>
+            <h2 class="text-gray-500 text-sm font-bold uppercase tracking-tight">{{ $stat['label'] }}</h2>
+            <p class="text-3xl font-black text-gray-900 mt-1 leading-none">{{ $stat['value'] }}</p>
+        </div>
+        @endforeach
     </div>
-@endif
-@if (session('error'))
-    <div class="bg-red-100 text-red-800 px-4 py-2 rounded mb-4">
-        {{ session('error') }}
+
+    {{-- Alerts --}}
+    @if (session('success'))
+        <div class="bg-green-50 border border-green-100 text-green-700 px-6 py-4 rounded-2xl mb-6 flex items-center animate-fade-in">
+            <i class="fa-solid fa-circle-check text-xl mr-3"></i>
+            <span class="font-bold">{{ session('success') }}</span>
+        </div>
+    @endif
+
+    {{-- Recent Transactions Table --}}
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-8 border-b border-gray-50 flex items-center justify-between">
+            <h2 class="text-2xl font-black text-gray-900 tracking-tight">Recent Transactions</h2>
+            <div class="flex gap-2">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr class="bg-gray-50/50 text-gray-400 text-[11px] font-black uppercase tracking-[0.2em]">
+                        <th class="px-8 py-5 text-left">User</th>
+                        <th class="px-8 py-5 text-left">Total Amount</th>
+                        <th class="px-8 py-5 text-left">Status</th>
+                        <th class="px-8 py-5 text-left">Tanggal</th>
+                        <th class="px-8 py-5 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach ($recentTransactions as $tx)
+                        <tr class="hover:bg-gray-50/80 transition-colors group">
+                            <td class="px-8 py-6">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3">
+                                        {{ strtoupper(substr($tx->user->name ?? 'U', 0, 1)) }}
+                                    </div>
+                                    <span class="font-bold text-gray-900">{{ $tx->user->name ?? 'Unknown User' }}</span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6 font-bold text-gray-700">
+                                Rp {{ number_format($tx->total_amount, 0, ',', '.') }}
+                            </td>
+                            <td class="px-8 py-6">
+                                @php
+                                    $statusClasses = [
+                                        'pending' => 'bg-amber-100 text-amber-700',
+                                        'confirmed' => 'bg-blue-100 text-blue-700',
+                                        'shipped' => 'bg-indigo-100 text-indigo-700',
+                                        'completed' => 'bg-green-100 text-green-700',
+                                        'cancelled' => 'bg-red-100 text-red-700',
+                                    ];
+                                    $colorClass = $statusClasses[$tx->status] ?? 'bg-gray-100 text-gray-700';
+                                @endphp
+                                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest {{ $colorClass }}">
+                                    {{ $tx->status }}
+                                </span>
+                            </td>
+                            <td class="px-8 py-6 text-sm text-gray-500 font-medium">
+                                {{ $tx->created_at->format('d M, Y') }}
+                            </td>
+                            <td class="px-8 py-6 text-center">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <form method="POST" id="form-{{ $tx->id }}">
+                                        @csrf
+                                        <select onchange="updateStatus({{ $tx->id }}, this.value)" 
+                                                class="bg-gray-50 border border-gray-200 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
+                                            <option disabled selected>Update</option>
+                                            @foreach(['pending', 'confirmed', 'shipped', 'completed', 'cancelled'] as $status)
+                                                <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+
+                                    <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+                                            <i class="fa-solid fa-trash-can text-sm"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-@endif
-<div class="flex items-center justify-between mb-3">
-    <h2 class="text-xl font-semibold text-gray-800">Recent Transactions</h2>
-    
-    <a href="{{ route('transactions.report') }}" 
-       class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
-        <i class="fa-solid fa-print mr-2"></i>
-        Generate Report
-    </a>
 </div>
 
-<div class="bg-white shadow rounded-lg overflow-hidden">
-    <table class="min-w-full table-auto">
-        <thead class="bg-gray-100 text-gray-700">
-            <tr>
-                <th class="px-4 py-2 text-left"><i class="fa-solid fa-user"></i> User</th>
-                <th class="px-4 py-2 text-left"><i class="fa-solid fa-file-invoice-dollar"></i> Total</th>
-                <th class="px-4 py-2 text-left"> <i class="fa-solid fa-circle-info"></i> Status</th>
-                <th class="px-4 py-2 text-left"><i class="fa-regular fa-calendar"></i> Tanggal</th>
-                <th class="px-4 py-2 text-left"><i class="fa-solid fa-circle-check"></i>  Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($recentTransactions as $tx)
-                <tr class="border-t">
-                    <td class="px-4 py-2">{{ $tx->user->name ?? 'Unknown' }}</td>
-                    <td class="px-4 py-2">Rp {{ number_format($tx->total_amount, 0, ',', '.') }}</td>
-                    <td class="px-4 py-2">
-    @php
-        $statusClasses = [
-            'pending' => 'bg-yellow-100 text-yellow-700',
-            'confirmed' => 'bg-blue-100 text-blue-700',
-            'shipped' => 'bg-indigo-100 text-indigo-700',
-            'completed' => 'bg-green-100 text-green-700',
-            'cancelled' => 'bg-red-100 text-red-700',
-        ];
-
-        $statusIcons = [
-            'pending' => 'fa-clock',
-            'confirmed' => 'fa-circle-check',
-            'shipped' => 'fa-truck',
-            'completed' => 'fa-check-circle',
-            'cancelled' => 'fa-times-circle',
-        ];
-
-        $colorClass = $statusClasses[$tx->status] ?? 'bg-gray-100 text-gray-700';
-        $icon = $statusIcons[$tx->status] ?? 'fa-question-circle';
-    @endphp
-
-    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $colorClass }}">
-        <i class="fas {{ $icon }} mr-2"></i>
-        {{ ucfirst($tx->status) }}
-    </span>
-</td>
-
-                    <td class="px-4 py-2">{{ $tx->created_at->format('d M Y') }}</td>
-                    <td class="px-4 py-2 flex items-center space-x-2">
-    <form method="POST" id="form-{{ $tx->id }}">
-        @csrf
-        <select onchange="updateStatus({{ $tx->id }}, this.value)" class="border rounded p-1">
-            <option disabled selected>Status</option>
-            @foreach(['pending', 'confirmed', 'shipped', 'completed', 'cancelled'] as $status)
-                <option value="{{ $status }}">{{ ucfirst($status) }}</option>
-            @endforeach
-        </select>
-    </form>
-
-    <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?')" class="inline">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="text-red-600 hover:text-red-800">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </form>
-</td>
-
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+{{-- SweetAlert2 for Better Confirmations --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 function updateStatus(transactionId, status) {
     if (!status) return;
-    if (confirm(`Ubah status transaksi menjadi "${status}"?`)) {
-        const form = document.getElementById(`form-${transactionId}`);
-        form.action = `/transactions/${transactionId}/${status}`;
-        form.submit();
-    }
+    
+    Swal.fire({
+        title: 'Ubah Status?',
+        text: `Apakah Anda yakin ingin mengubah status menjadi ${status}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2563eb',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Update!',
+        customClass: {
+            popup: 'rounded-[2rem]'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.getElementById(`form-${transactionId}`);
+            form.action = `/transactions/${transactionId}/${status}`;
+            form.submit();
+        }
+    });
 }
 </script>
-
 @endsection

@@ -13,7 +13,7 @@
                 <th class="py-2 px-4 text-left">Nama</th>
                 <th class="py-2 px-4 text-left">Slug</th>
                 <th class="py-2 px-4 text-right">Aksi</th>
-            </tr>
+            </tr> 
         </thead>
         <tbody>
             @foreach($categories as $cat)

@@ -1,219 +1,256 @@
-@extends('layouts.frontend')
+@extends('layouts.master')
+
+@section('title', 'Tulis Pengaduan')
+
 @section('content')
-<!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-    <div class="container mx-auto px-4 py-16">
-        <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <!-- Hero Text -->
-            <div class="flex-1 text-center lg:text-left">
-                <h1 class="text-4xl lg:text-5xl font-bold mb-4">
-                    Selamat Datang di invoify
-                </h1>
-                
-                <p class="text-xl mb-6 text-blue-100">
-                    Belanja mudah, cepat, dan terpercaya. Temukan produk berkualitas dengan harga terbaik!
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{{ route('register') }}" 
-                       class="px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
-                        Daftar Sekarang
-                    </a>
-                    <a href="{{ route('products.index') }}" 
-                       class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-200">
-                        Masuk
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Hero Image -->
-            <div class="flex-1 max-w-md">
-                <img src="{{ asset('storage/assets/images/app-logo.png') }}"  
-                     alt="Shopping" width="100" height="100"
-                     class="w-full rounded-lg shadow-2xl">
-            </div>
-        </div>
-    </div>
-</div>
+<div class="row">
 
-<!-- Store Information Section -->
-<div class="bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-800 mb-3">Kenapa Belanja di Invoify?</h2>
-            <p class="text-gray-600">Kami berkomitmen memberikan pengalaman belanja terbaik untuk Anda</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-truck-fast text-3xl text-blue-600"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Pengiriman Cepat</h3>
-                <p class="text-gray-600">Produk sampai dengan aman dan tepat waktu ke tangan Anda</p>
-            </div>
-            
-            <!-- Feature 2 -->
-            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-shield-halved text-3xl text-green-600"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Produk Berkualitas</h3>
-                <p class="text-gray-600">Semua produk dijamin original dan berkualitas tinggi</p>
-            </div>
-            
-            <!-- Feature 3 -->
-            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-headset text-3xl text-purple-600"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Customer Service 24/7</h3>
-                <p class="text-gray-600">Tim kami siap membantu Anda kapan saja</p>
-            </div>
+    {{-- ALERT BERJALAN --}}
+    <div class="col-12">
+        <div class="alert alert-info">
+            <marquee direction="left" scrollamount="8">
+                <strong>Selamat datang di aplikasi SIGAP! {{ Auth::user()->name }}</strong>
+                Gunakan fitur laporan pengaduan untuk menyampaikan keluhan
+                terkait layanan publik di wilayah Anda.
+            </marquee>
         </div>
     </div>
-</div>
 
-<!-- Categories Preview -->
-<div class="container mx-auto px-4 py-12">
-    <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-gray-800 mb-3">Kategori Produk</h2>
-        <p class="text-gray-600">Jelajahi berbagai kategori produk pilihan kami</p>
-    </div>
-    
-    <div class="flex flex-wrap justify-center gap-3 mb-6">
-        @if(isset($categories))
-            @foreach($categories->take(6) as $category)
-                <a href="#"
-                   class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">
-                    {{ $category->name }}
-                </a>
-            @endforeach
-        @else
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Elektronik</a>
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Fashion</a>
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Makanan</a>
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Kecantikan</a>
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Olahraga</a>
-            <a href="#" class="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">Perabotan</a>
+    {{-- ================= LEFT SIDE : FORM ================= --}}
+    <div class="col-md-5">
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
-    </div>
-</div>
 
-<!-- Products Preview Section -->
-<div class="bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">Produk Pilihan</h2>
-                <p class="text-gray-600">Produk terbaik dan terpopuler minggu ini</p>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-            <a href="{{ route('product.index') }}" 
-               class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors duration-200">
-                Lihat Semua
-            </a>
-        </div>
+        @endif
 
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-            @if(isset($products))
-                @foreach($products->take(10) as $product)
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
-                        <!-- Product Image -->
-                        <div class="relative aspect-[1/1] overflow-hidden bg-gray-100">
-                            <img src="{{ $product->image_url ?: 'https://via.placeholder.com/400' }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
-                            <div class="absolute top-2 right-2">
-                                @if ($product->quantity <= 0)
-                                    <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">HABIS</span>
-                                @else
-                                    <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">READY</span>
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <!-- Product Info -->
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem] leading-tight">
-                                {{ $product->name }}
-                            </h3>
-                            
-                            <p class="text-xl font-bold text-blue-700 mb-3">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </p>
-                            
-                            <a href="{{ route('login') }}"
-                               class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
-                                Beli Sekarang
-                            </a>
-                        </div>
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                Tulis Laporan Baru
+            </div>
+
+            <div class="card-body">
+                <form action="{{ route('user.lapor.store') }}" 
+                      method="POST" 
+                      enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Judul --}}
+                    <div class="mb-3">
+                        <label class="form-label">Judul Laporan</label>
+                        <input type="text"
+                               name="title"
+                               class="form-control"
+                               placeholder="Contoh: Jalan Berlubang"
+                               required>
                     </div>
-                @endforeach
-            @else
-                <!-- Sample Products -->
-                @for($i = 1; $i <= 5; $i++)
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
-                        <div class="relative aspect-[1/1] overflow-hidden bg-gray-100">
-                            <img src="https://via.placeholder.com/400" 
-                                 alt="Product {{ $i }}" 
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
-                            <div class="absolute top-2 right-2">
-                                <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">READY</span>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem] leading-tight">
-                                Produk Berkualitas {{ $i }}
-                            </h3>
-                            
-                            <p class="text-xl font-bold text-blue-700 mb-3">
-                                Rp {{ number_format(100000 * $i, 0, ',', '.') }}
-                            </p>
-                            
-                            <a href="{{ route('login') }}"
-                               class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold transition-colors duration-200">
-                                Beli Sekarang
-                            </a>
-                        </div>
+
+                    {{-- Deskripsi --}}
+                    <div class="mb-3">
+                        <label class="form-label">Isi Keluhan</label>
+                        <textarea name="description"
+                                  class="form-control"
+                                  rows="4"
+                                  required></textarea>
                     </div>
-                @endfor
-            @endif
+
+                    {{-- Lokasi --}}
+                    <div class="mb-3">
+                        <label class="form-label">Lokasi Kejadian</label>
+
+                        <input type="text"
+                               name="location"
+                               id="location_text"
+                               class="form-control mb-2"
+                               placeholder="Geser marker di peta..."
+                               required>
+
+                        <div id="map" 
+                             style="height:300px; border-radius:10px; border:1px solid #ccc;">
+                        </div>
+
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                    </div>
+
+                    {{-- Foto --}}
+                    <div class="mb-3">
+                        <label class="form-label">Bukti Foto</label>
+                        <input type="file"
+                               name="image"
+                               class="form-control">
+                        <small class="text-muted">
+                            Format JPG/PNG, Maks 2MB
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        KIRIM LAPORAN
+                    </button>
+
+                </form>
+            </div>
         </div>
     </div>
+
+    {{-- ================= RIGHT SIDE : TABLE ================= --}}
+    <div class="col-md-7">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                Riwayat Laporan Saya
+            </div>
+
+            <div class="card-body">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Judul & Tanggal</th>
+                            <th>Status & Balasan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($reports as $item)
+                            <tr>
+
+                                {{-- DATA LAPORAN --}}
+                                <td>
+                                    <strong>{{ $item->title }}</strong><br>
+                                    <small class="text-muted">
+                                        {{ $item->created_at->format('d/m/Y H:i') }}
+                                    </small>
+
+                                    @if ($item->image)
+                                        <br>
+                                        <img src="{{ asset('storage/' . $item->image) }}"
+                                             width="80"
+                                             class="mt-2 rounded">
+                                    @endif
+                                </td>
+
+                                {{-- STATUS & RESPON --}}
+                                <td style="min-width: 300px;">
+
+                                    {{-- Status Badge --}}
+                                    <div class="mb-3">
+                                        @if ($item->status == '0')
+                                            <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                                Menunggu
+                                            </span>
+                                        @elseif($item->status == 'proses')
+                                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                                                Sedang Diproses
+                                            </span>
+                                        @else
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">
+                                                Selesai
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    {{-- Timeline --}}
+                                    @if($item->responses->count() > 0)
+                                        <div class="ps-3 mt-2" style="border-left:3px solid #dee2e6;">
+                                            @foreach($item->responses as $resp)
+                                                <div class="position-relative mb-3">
+
+                                                    <span class="position-absolute bg-primary rounded-circle"
+                                                          style="width:12px;height:12px;left:-23px;top:4px;border:2px solid white;">
+                                                    </span>
+
+                                                    <div class="bg-light p-3 rounded-3 border shadow-sm">
+                                                        <small class="text-primary fw-bold d-block mb-1">
+                                                            {{ $resp->created_at->format('d M Y, H:i') }}
+                                                        </small>
+
+                                                        <p class="mb-2 text-dark small">
+                                                            <strong>Petugas:</strong>
+                                                            {{ $resp->response_text }}
+                                                        </p>
+
+                                                        @if($resp->image)
+                                                            <img src="{{ asset('storage/' . $resp->image) }}"
+                                                                 class="img-fluid rounded border"
+                                                                 style="max-height:100px;">
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p class="text-muted small mt-2">
+                                            <em>Belum ada tindakan dari petugas.</em>
+                                        </p>
+                                    @endif
+
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2" class="text-center text-muted">
+                                    Belum ada laporan.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- Call to Action Section -->
-<div class="bg-blue-600 text-white py-16">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-4">Mulai Belanja Sekarang!</h2>
-        <p class="text-xl mb-8 text-blue-100">Daftar sekarang dan dapatkan penawaran khusus untuk member baru</p>
-        <a href="{{ route('register') }}" 
-           class="inline-block px-10 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
-            Daftar Gratis
-        </a>
-    </div>
-</div>
+{{-- ================= MAP SCRIPT ================= --}}
+<script>
+    var defaultLat = -6.200000;
+    var defaultLng = 106.816666;
 
-<!-- Statistics Section -->
-<div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="text-center">
-            <div class="text-4xl font-bold text-blue-600 mb-2">10,000+</div>
-            <div class="text-gray-600">Produk Tersedia</div>
-        </div>
-        <div class="text-center">
-            <div class="text-4xl font-bold text-blue-600 mb-2">50,000+</div>
-            <div class="text-gray-600">Pelanggan Puas</div>
-        </div>
-        <div class="text-center">
-            <div class="text-4xl font-bold text-blue-600 mb-2">100+</div>
-            <div class="text-gray-600">Kategori Produk</div>
-        </div>
-        <div class="text-center">
-            <div class="text-4xl font-bold text-blue-600 mb-2">4.8/5</div>
-            <div class="text-gray-600">Rating Toko</div>
-        </div>
-    </div>
-</div>
+    var map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    var marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+    function getAddress(lat, lng) {
+        document.getElementById("location_text").value = "Sedang mencari lokasi...";
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("location_text").value =
+                    data.display_name ?? "Alamat tidak ditemukan";
+            })
+            .catch(() => {
+                document.getElementById("location_text").value = "Alamat tidak ditemukan";
+            });
+    }
+
+    marker.on('dragend', function () {
+        var coord = marker.getLatLng();
+        document.getElementById("latitude").value = coord.lat;
+        document.getElementById("longitude").value = coord.lng;
+        getAddress(coord.lat, coord.lng);
+    });
+
+    map.on('click', function (e) {
+        marker.setLatLng(e.latlng);
+        document.getElementById("latitude").value = e.latlng.lat;
+        document.getElementById("longitude").value = e.latlng.lng;
+        getAddress(e.latlng.lat, e.latlng.lng);
+    });
+</script>
+
 @endsection
