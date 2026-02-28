@@ -3,22 +3,17 @@
 @section('content')
 <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
     
-    {{-- Background Decorative Circles --}}
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div class="absolute top-[10%] left-[5%] w-64 h-64 bg-green-200 rounded-full blur-[100px] opacity-40 animate-pulse"></div>
         <div class="absolute bottom-[10%] right-[5%] w-64 h-64 bg-blue-200 rounded-full blur-[100px] opacity-40 animate-pulse"></div>
     </div>
 
     <div class="max-w-xl w-full relative z-10">
-        {{-- Main Card --}}
         <div class="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 overflow-hidden transform transition-all duration-700 hover:scale-[1.01]">
             
-            {{-- Header with Success Animation --}}
             <div class="bg-gradient-to-b from-green-50 to-white pt-12 pb-8 text-center">
                 <div class="relative inline-block">
-                    {{-- Ping Animation --}}
                     <div class="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
-                    {{-- Check Icon --}}
                     <div class="relative w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-200 animate-bounce-short">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -30,10 +25,8 @@
                 <p class="text-gray-500 font-medium animate-fade-in-up delay-100">Hore! Pesananmu sedang kami siapkan.</p>
             </div>
 
-            {{-- Modern Receipt UI --}}
             <div class="px-8 pb-10">
                 <div class="bg-gray-50 rounded-[2rem] p-6 border-2 border-dashed border-gray-200 relative">
-                    {{-- Half-circle cutouts for receipt effect --}}
                     <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full"></div>
                     <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full"></div>
                     
@@ -60,12 +53,13 @@
                     </div>
                 </div>
 
-                {{-- Action Buttons --}}
                 <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {{-- FIX: Memanggil rute tanpa prefix admin. --}}
                     <a href="{{ route('transactions.print-invoice', $transaction->id) }}" 
                        class="flex items-center justify-center px-6 py-4 bg-gray-900 text-white rounded-2xl font-bold hover:bg-black transition-all transform active:scale-95">
                        <i class="fa-solid fa-file-invoice mr-2"></i> Download Struk
                     </a>
+
                     <a href="{{ route('product.index') }}" 
                        class="flex items-center justify-center px-6 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all transform active:scale-95">
                        <i class="fa-solid fa-cart-shopping mr-2"></i> Belanja Lagi
@@ -80,10 +74,8 @@
     </div>
 </div>
 
-{{-- Animations & Confetti Script --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Efek Confetti Otomatis saat halaman dimuat
         var duration = 3 * 1000;
         var end = Date.now() + duration;
 
@@ -115,12 +107,8 @@
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
     }
-    .animate-bounce-short {
-        animation: bounce-short 2s ease-in-out infinite;
-    }
-    .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-    }
+    .animate-bounce-short { animation: bounce-short 2s ease-in-out infinite; }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }

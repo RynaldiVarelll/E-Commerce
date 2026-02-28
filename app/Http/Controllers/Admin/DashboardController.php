@@ -55,17 +55,20 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function updateStatus(Transaction $transaction, $status)
-    {
-        $validStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
-
-        if (!in_array($status, $validStatuses)) {
-            return back()->with('error', 'Status tidak valid.');
-        }
-
+    public function updateStatus(\App\Models\Transaction $transaction, $status)
+{
+    // Validasi status yang diperbolehkan
+    $allowedStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
+    
+    if (in_array($status, $allowedStatuses)) {
         $transaction->update(['status' => $status]);
-
-        return back()->with('success', "Status transaksi #{$transaction->invoice_code} diubah menjadi {$status}.");
+        
+        return redirect()->route('admin.dashboard')
+            ->with('success', "Status transaksi #{$transaction->id} berhasil diupdate menjadi {$status}!");
     }
+
+    return redirect()->route('admin.dashboard')
+        ->with('error', 'Status tidak valid!');
+}
 }
 

@@ -9,7 +9,7 @@
             <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali! Berikut ringkasan performa toko hari ini.</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('transactions.report') }}" 
+            <a href="{{ route('admin.transactions.report') }}" 
                class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-2xl font-bold shadow-xl shadow-gray-200 hover:bg-black transition-all transform active:scale-95">
                 <i class="fa-solid fa-file-export mr-2 text-green-400"></i>
                 Generate Report
@@ -117,7 +117,7 @@
                                         </select>
                                     </form>
 
-                                    <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" class="inline">
+                                    <form action="{{ route('admin.transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
@@ -134,7 +134,7 @@
     </div>
 </div>
 
-{{-- SweetAlert2 for Better Confirmations --}}
+{{-- SweetAlert2 --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -155,7 +155,8 @@ function updateStatus(transactionId, status) {
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.getElementById(`form-${transactionId}`);
-            form.action = `/transactions/${transactionId}/${status}`;
+            // 🔥 FIX: Menambahkan /admin di depan URL agar sesuai dengan prefix rute admin
+            form.action = `/admin/transactions/${transactionId}/${status}`;
             form.submit();
         }
     });
