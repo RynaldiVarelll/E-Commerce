@@ -34,9 +34,9 @@ class ProductController extends Controller
             'description' => 'required',
             'whatsapp_link' => 'nullable|url',
             'quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
             'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
         ]);
 
         $imageName = null;
