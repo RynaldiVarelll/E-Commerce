@@ -115,7 +115,7 @@
                             </div>
                             <div class="flex justify-between text-gray-500 font-medium pb-4 border-b border-gray-100">
                                 <span>Pengiriman</span>
-                                <span class="text-green-500 font-bold uppercase text-xs tracking-widest mt-1">Gratis Ongkir</span>
+                                <span class="text-green-500 font-bold uppercase text-xs tracking-widest mt-1">Pilih Shipping Method</span>
                             </div>
                             
                             <div class="pt-2">

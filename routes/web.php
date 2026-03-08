@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\User\OrderController; // 🔥 PASTIKAN INI ADA
+use App\Http\Controllers\User\OrderController; 
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 
 /* ================= PUBLIC ================= */
@@ -39,12 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [TransactionController::class,'checkoutPage'])->name('checkout.page');
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout.process');
 
-    Route::get('/checkout/success/{transaction}', function ($transaction) {
-        $transaction = \App\Models\Transaction::findOrFail($transaction);
-        return view('frontend.checkout-success', compact('transaction'));
-    })->name('checkout.success');
+    // 🔥 MODIFIKASI: Diarahkan ke Controller agar data Transaction ter-load dengan benar
+    Route::get('/checkout/success/{transaction}', [TransactionController::class, 'success'])->name('checkout.success');
 
-    // 🔥 FITUR BARU: Riwayat Pesanan Customer
+    // Riwayat Pesanan Customer
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/my-orders/{transaction}', [OrderController::class, 'show'])->name('orders.show');
 

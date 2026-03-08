@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
-use App\Models\TransactionItem; // ✅ singular
+use App\Models\TransactionItem; 
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\ShippingMethod;
@@ -31,12 +31,10 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-
             $subtotal = 0;
 
             // 🔥 Hitung subtotal & cek stok dulu
             foreach ($request->items as $item) {
-
                 $product = Product::findOrFail($item['product_id']);
 
                 if ($product->quantity < $item['quantity']) {
@@ -50,7 +48,6 @@ class TransactionController extends Controller
 
             // 🔥 Ambil shipping
             $shippingMethod = ShippingMethod::findOrFail($request->shipping_method_id);
-
             $grandTotal = $subtotal + $shippingMethod->cost;
 
             // 🔥 Buat transaksi (invoice auto dari model)
@@ -59,12 +56,11 @@ class TransactionController extends Controller
                 'shipping_method_id' => $shippingMethod->id,
                 'total_amount' => $grandTotal,
                 'status' => 'pending',
-                'payment_method' => 'manual', // bisa lu ganti nanti
+                'payment_method' => 'manual', 
             ]);
 
             // 🔥 Simpan items & kurangi stok
             foreach ($request->items as $item) {
-
                 $product = Product::findOrFail($item['product_id']);
 
                 $product->quantity -= $item['quantity'];
@@ -83,11 +79,12 @@ class TransactionController extends Controller
 
             DB::commit();
 
+            // Redirect ke halaman sukses dengan membawa ID transaksi
             return redirect()
                 ->route('checkout.success', $transaction->id)
                 ->with('success', 'Transaksi berhasil diproses!');
-        } catch (\Exception $e) {
 
+        } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Checkout Error: ' . $e->getMessage());
 
@@ -95,6 +92,24 @@ class TransactionController extends Controller
                 'system' => 'Terjadi kesalahan sistem. Silakan coba lagi.'
             ]);
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CHECKOUT SUCCESS PAGE (MODIFIKASI BARU)
+    |--------------------------------------------------------------------------
+    */
+    public function success(Transaction $transaction)
+    {
+        // Pastikan hanya pemilik transaksi yang bisa melihat halaman sukses ini
+        if ($transaction->user_id !== auth()->id()) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        // Load relasi agar data di blade checkout-success tidak error
+        $transaction->load('items.product', 'shippingMethod');
+
+        return view('frontend.checkout-success', compact('transaction'));
     }
 
     /*
@@ -115,20 +130,34 @@ class TransactionController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | PRINT INVOICE (USER & ADMIN)
+    |--------------------------------------------------------------------------
+    */
+    public function printInvoice(Transaction $transaction)
+    {
+        // Izinkan jika dia pemilik OR dia adalah Admin
+        if ($transaction->user_id !== auth()->id() && !auth()->user()->is_admin) {
+            abort(403, 'Anda tidak memiliki akses ke invoice ini.');
+        }
+
+        $transaction->load('user', 'items.product', 'shippingMethod');
+
+        // Menggunakan view admin.transactions.invoice yang sudah kita rapikan tadi
+        $pdf = Pdf::loadView('admin.transactions.invoice', compact('transaction'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->download("Invoice-{$transaction->invoice_code}.pdf");
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | GENERATE REPORT (ADMIN)
     |--------------------------------------------------------------------------
     */
     public function generateReport(Request $request)
     {
-        $startDate = $request->input(
-            'start_date',
-            Carbon::now()->startOfMonth()->toDateString()
-        );
-
-        $endDate = $request->input(
-            'end_date',
-            Carbon::now()->endOfMonth()->toDateString()
-        );
+        $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
+        $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->toDateString());
 
         $transactions = Transaction::with('user')
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -147,61 +176,12 @@ class TransactionController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | GENERATE INVOICE (USER)
-    |--------------------------------------------------------------------------
-    */
-    public function generateInvoice(Transaction $transaction)
-    {
-        $this->authorize('view', $transaction);
-
-        $transaction->load('user', 'items.product', 'shippingMethod');
-
-        $pdf = Pdf::loadView(
-            'user.transactions.invoice',
-            compact('transaction')
-        )->setPaper('A4', 'portrait');
-
-        return $pdf->download("invoice-{$transaction->invoice_code}.pdf");
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | PRINT INVOICE (ADMIN)
-    |--------------------------------------------------------------------------
-    */
-    // ... (Bagian atas tetap sama)
-
-    /*
-    |--------------------------------------------------------------------------
-    | PRINT INVOICE (BISA DIAKSES USER & ADMIN)
-    |--------------------------------------------------------------------------
-    */
-    public function printInvoice(Transaction $transaction)
-    {
-        // 🔥 LOGIKA BARU: Izinkan jika dia pemilik OR dia adalah Admin
-        // Pastikan model User kamu punya method is_admin atau cek role secara manual
-        if ($transaction->user_id !== auth()->id() && !auth()->user()->is_admin) {
-            abort(403, 'Anda tidak memiliki akses ke invoice ini.');
-        }
-
-        $transaction->load('user', 'items.product', 'shippingMethod');
-
-        // Menggunakan view yang sama untuk konsistensi struk
-        $pdf = Pdf::loadView('admin.transactions.invoice', compact('transaction'))
-            ->setPaper('A4', 'portrait');
-
-        return $pdf->download("Invoice-{$transaction->invoice_code}.pdf");
-    }
-
-// ... (Bagian bawah tetap sama)
-
-    /*
-    |--------------------------------------------------------------------------
     | DELETE TRANSACTION
     |--------------------------------------------------------------------------
     */
     public function destroy(Transaction $transaction)
     {
+        // Pastikan model Transaction memiliki method deleteWithItems()
         $transaction->deleteWithItems();
 
         return redirect()->back()
