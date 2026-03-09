@@ -17,6 +17,7 @@ class OrderController extends Controller
         // Mengambil transaksi milik user, urutkan dari yang terbaru (latest)
         // Kita gunakan simplePaginate jika suatu saat transaksi user sangat banyak
         $orders = Transaction::where('user_id', Auth::id())
+            ->with(['seller'])
             ->latest()
             ->get();
 
@@ -36,7 +37,7 @@ class OrderController extends Controller
         // 2. Eager Loading: Mengambil data relasi agar muncul di halaman detail
         // items.product = mengambil item transaksi beserta info produknya
         // shippingMethod = mengambil info kurir (JNE/J&T/dll)
-        $transaction->load(['items.product', 'shippingMethod', 'user']);
+        $transaction->load(['items.product', 'shippingMethod', 'user', 'seller']);
 
         return view('frontend.orders.show', compact('transaction'));
     }

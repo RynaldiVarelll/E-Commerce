@@ -31,47 +31,59 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-            $subtotal = 0;
+            // 🔥 Ambil shipping
+            $shippingMethod = ShippingMethod::findOrFail($request->shipping_method_id);
 
-            // 🔥 Hitung subtotal & cek stok dulu
-            foreach ($request->items as $item) {
-                $product = Product::findOrFail($item['product_id']);
+            // 🔥 Kelompokkan produk berdasarkan toko (seller_id)
+            $groupedItems = [];
+            foreach ($request->items as $itemData) {
+                $product = Product::findOrFail($itemData['product_id']);
 
-                if ($product->quantity < $item['quantity']) {
+                if ($product->quantity < $itemData['quantity']) {
                     return back()->withErrors([
                         'quantity' => "Stok {$product->name} tidak mencukupi."
                     ]);
                 }
 
-                $subtotal += $product->price * $item['quantity'];
+                $groupedItems[$product->user_id][] = [
+                    'product' => $product,
+                    'quantity' => $itemData['quantity']
+                ];
             }
 
-            // 🔥 Ambil shipping
-            $shippingMethod = ShippingMethod::findOrFail($request->shipping_method_id);
-            $grandTotal = $subtotal + $shippingMethod->cost;
+            // 🔥 Buat transaksi per toko
+            $transactionIds = [];
+            foreach ($groupedItems as $sellerId => $items) {
+                $subtotal = 0;
+                foreach ($items as $item) {
+                    $subtotal += $item['product']->price * $item['quantity'];
+                }
 
-            // 🔥 Buat transaksi (invoice auto dari model)
-            $transaction = Transaction::create([
-                'user_id' => auth()->id(),
-                'shipping_method_id' => $shippingMethod->id,
-                'total_amount' => $grandTotal,
-                'status' => 'pending',
-                'payment_method' => 'manual', 
-            ]);
+                $grandTotal = $subtotal + $shippingMethod->cost;
 
-            // 🔥 Simpan items & kurangi stok
-            foreach ($request->items as $item) {
-                $product = Product::findOrFail($item['product_id']);
-
-                $product->quantity -= $item['quantity'];
-                $product->save();
-
-                TransactionItem::create([
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $product->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $product->price,
+                $transaction = Transaction::create([
+                    'user_id' => auth()->id(),
+                    'seller_id' => $sellerId,
+                    'shipping_method_id' => $shippingMethod->id,
+                    'total_amount' => $grandTotal,
+                    'status' => 'pending',
+                    'payment_method' => 'manual', 
                 ]);
+
+                // 🔥 Simpan items & kurangi stok
+                foreach ($items as $item) {
+                    $product = $item['product'];
+                    $product->quantity -= $item['quantity'];
+                    $product->save();
+
+                    TransactionItem::create([
+                        'transaction_id' => $transaction->id,
+                        'product_id' => $product->id,
+                        'quantity' => $item['quantity'],
+                        'price' => $product->price,
+                    ]);
+                }
+                $transactionIds[] = $transaction->id;
             }
 
             // 🔥 Kosongkan cart
@@ -81,8 +93,9 @@ class TransactionController extends Controller
 
             // Redirect ke halaman sukses dengan membawa ID transaksi
             return redirect()
-                ->route('checkout.success', $transaction->id)
-                ->with('success', 'Transaksi berhasil diproses!');
+                ->route('checkout.success')
+                ->with('success', 'Transaksi berhasil diproses! Pesanan yang berbeda toko telah dipisahkan secara otomatis.')
+                ->with('transactionIds', $transactionIds);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -99,17 +112,19 @@ class TransactionController extends Controller
     | CHECKOUT SUCCESS PAGE (MODIFIKASI BARU)
     |--------------------------------------------------------------------------
     */
-    public function success(Transaction $transaction)
+    public function success()
     {
-        // Pastikan hanya pemilik transaksi yang bisa melihat halaman sukses ini
-        if ($transaction->user_id !== auth()->id()) {
+        $transactionIds = session('transactionIds');
+        if (!$transactionIds) {
+            return redirect()->route('orders.index');
+        }
+
+        $transactions = Transaction::whereIn('id', $transactionIds)->get();
+        if ($transactions->isEmpty() || $transactions->first()->user_id !== auth()->id()) {
             abort(403, 'Akses ditolak.');
         }
 
-        // Load relasi agar data di blade checkout-success tidak error
-        $transaction->load('items.product', 'shippingMethod');
-
-        return view('frontend.checkout-success', compact('transaction'));
+        return view('frontend.checkout-success', compact('transactions'));
     }
 
     /*
@@ -135,12 +150,12 @@ class TransactionController extends Controller
     */
     public function printInvoice(Transaction $transaction)
     {
-        // Izinkan jika dia pemilik OR dia adalah Admin
-        if ($transaction->user_id !== auth()->id() && !auth()->user()->is_admin) {
+        // Izinkan jika dia pembeli pengguna, admin/seller pemilik transaksi, atau super admin
+        if ($transaction->user_id !== auth()->id() && !auth()->user()->isSuperAdmin() && $transaction->seller_id !== auth()->id()) {
             abort(403, 'Anda tidak memiliki akses ke invoice ini.');
         }
 
-        $transaction->load('user', 'items.product', 'shippingMethod');
+        $transaction->load('user', 'seller', 'items.product', 'shippingMethod');
 
         // Menggunakan view admin.transactions.invoice yang sudah kita rapikan tadi
         $pdf = Pdf::loadView('admin.transactions.invoice', compact('transaction'))
@@ -159,10 +174,15 @@ class TransactionController extends Controller
         $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
         $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->toDateString());
 
-        $transactions = Transaction::with('user')
+        $query = Transaction::with('user')
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc');
+
+        if (!auth()->user()->isSuperAdmin()) {
+            $query->where('seller_id', auth()->id());
+        }
+
+        $transactions = $query->get();
 
         $totalRevenue = $transactions->sum('total_amount');
 
@@ -181,6 +201,10 @@ class TransactionController extends Controller
     */
     public function destroy(Transaction $transaction)
     {
+        if (!auth()->user()->isSuperAdmin() && $transaction->seller_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // Pastikan model Transaction memiliki method deleteWithItems()
         $transaction->deleteWithItems();
 

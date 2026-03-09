@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 relative overflow-hidden">
     
     {{-- Background Decor --}}
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
@@ -10,9 +10,11 @@
     </div>
 
     <div class="max-w-xl w-full relative z-10">
-        <div class="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 overflow-hidden transform transition-all duration-700 hover:scale-[1.01]">
+        <div class="glass-panel rounded-[3rem] overflow-hidden transform transition-all duration-700 hover:scale-[1.01]">
             
-            <div class="bg-gradient-to-b from-green-50 to-white pt-12 pb-8 text-center border-b border-gray-50">
+            <div class="bg-white/20 backdrop-blur-3xl pt-12 pb-8 text-center border-b border-white/40 relative overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-40 h-40 bg-green-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative inline-block">
                     <div class="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
                     <div class="relative w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-200 animate-bounce-short">
@@ -28,21 +30,25 @@
 
             <div class="px-8 py-10">
                 {{-- Ringkasan Singkat --}}
-                <div class="bg-gray-50 rounded-[2rem] p-6 border-2 border-dashed border-gray-200 relative mb-8">
-                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full border-r border-gray-200"></div>
-                    <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full border-l border-gray-200"></div>
+                <div class="bg-white/30 backdrop-blur-md rounded-[2rem] p-6 border-2 border-dashed border-white/60 relative mb-8">
+                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 backdrop-blur-md rounded-full border-r border-white/40"></div>
+                    <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 backdrop-blur-md rounded-full border-l border-white/40"></div>
                     
                     <div class="space-y-4 text-sm">
                         <div class="flex justify-between items-center">
                             <span class="font-bold uppercase tracking-widest text-gray-400">Kode Invoice</span>
-                            <span class="font-mono font-bold text-gray-800 bg-white px-3 py-1 rounded-lg border border-gray-100">
-                                #{{ $transaction->invoice_code }}
-                            </span>
+                            <div class="flex flex-col gap-1 items-end">
+                                @foreach($transactions as $tx)
+                                <span class="font-mono font-bold text-gray-800 bg-white/50 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/60 text-xs">
+                                    #{{ $tx->invoice_code }}
+                                </span>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="font-bold uppercase tracking-widest text-gray-400">Total Pembayaran</span>
                             <span class="text-xl font-black text-blue-600">
-                                Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}
+                                Rp {{ number_format($transactions->sum('total_amount'), 0, ',', '.') }}
                             </span>
                         </div>
                     </div>
@@ -50,20 +56,15 @@
 
                 {{-- TOMBOL UTAMA: KE DETAIL PEMBAYARAN --}}
                 <div class="space-y-4">
-                    <a href="{{ route('orders.show', $transaction->id) }}" 
+                    <a href="{{ route('orders.index') }}" 
                        class="group flex items-center justify-center w-full px-6 py-5 bg-blue-600 text-white rounded-[1.5rem] font-black text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all transform active:scale-95">
-                       <i class="fa-solid fa-wallet mr-3 group-hover:rotate-12 transition-transform"></i> 
-                       LIHAT CARA BAYAR SEKARANG
+                       <i class="fa-solid fa-list-check mr-3 group-hover:rotate-12 transition-transform"></i> 
+                       LIHAT DAFTAR PESANAN
                     </a>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <a href="{{ route('transactions.print-invoice', $transaction->id) }}" 
-                           class="flex items-center justify-center px-6 py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold hover:bg-gray-200 transition-all transform active:scale-95 text-xs uppercase tracking-widest">
-                           <i class="fa-solid fa-file-invoice mr-2"></i> Struk
-                        </a>
-
                         <a href="{{ route('product.index') }}" 
-                           class="flex items-center justify-center px-6 py-4 bg-white border border-gray-200 text-gray-500 rounded-2xl font-bold hover:bg-gray-50 transition-all transform active:scale-95 text-xs uppercase tracking-widest">
+                           class="col-span-2 flex items-center justify-center px-6 py-4 bg-white/30 backdrop-blur-md border border-white/60 text-gray-700 rounded-2xl font-bold hover:bg-white/50 transition-all transform active:scale-95 text-xs uppercase tracking-widest leading-none">
                            <i class="fa-solid fa-cart-shopping mr-2"></i> Belanja Lagi
                         </a>
                     </div>

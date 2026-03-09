@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserIsAdmin
+class EnsureUserIsSuperAdmin
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            abort(403, 'Hanya admin yang diizinkan.');
+        if (!auth()->check() || !auth()->user()->isSuperAdmin()) {
+            abort(403, 'Hanya super admin yang diizinkan.');
         }
 
         return $next($request);

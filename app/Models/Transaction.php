@@ -16,14 +16,12 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_id',
+        'seller_id',
         'shipping_method_id', 
         'total_amount',
         'status',
         'payment_method',
         'invoice_code',
-        // Optional: tambahkan ini jika ingin menyimpan nama ekspedisi secara permanen
-        // 'shipping_name', 
-        // 'shipping_cost',
     ];
 
     protected $casts = [
@@ -59,6 +57,13 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault([
             'name' => 'Guest User'
+        ]);
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id')->withDefault([
+            'name' => 'Official Store'
         ]);
     }
 

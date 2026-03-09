@@ -10,15 +10,43 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop -filter: blur(12px);
-            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
         }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Abstract blobs animations */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 15s infinite alternate ease-in-out; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-gray-900 leading-relaxed">
+<body class="bg-[#f0f2f5] text-gray-900 leading-relaxed selection:bg-blue-200 min-h-screen relative">
+    
+    {{-- MacOS-like Abstract Background --}}
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-indigo-300/40 to-purple-300/40 blur-[100px] animate-blob mix-blend-multiply"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-blue-300/40 to-cyan-300/40 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-pink-300/40 to-orange-200/40 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+    </div>
     
     <nav class="glass-nav sticky top-0 z-[100] transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">

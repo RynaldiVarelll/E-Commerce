@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -47,6 +48,16 @@ class User extends Authenticatable
     }
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->role === 'super_admin';
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

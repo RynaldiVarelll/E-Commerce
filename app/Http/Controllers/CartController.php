@@ -69,4 +69,11 @@ class CartController extends Controller
         $cart->delete();
         return back()->with('success', 'Produk telah dihapus dari keranjang.');
     }
+
+    // 🧹 Kosongkan keranjang
+    public function clear()
+    {
+        Cart::where('user_id', auth()->id())->delete();
+        return back()->with('success', 'Keranjang berhasil dikosongkan.');
+    }
 }

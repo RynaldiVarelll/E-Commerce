@@ -1,4 +1,5 @@
-<x-app-layout>
+@extends('layouts.frontend')
+@section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="mb-10">
             <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase italic">
@@ -7,7 +8,7 @@
             <p class="text-gray-500 font-medium mt-1">Pantau status pesanan dan riwayat belanja Anda.</p>
         </div>
 
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div class="glass-panel rounded-[2.5rem] overflow-hidden">
             {{-- Tabel yang sama seperti sebelumnya --}}
             <div class="overflow-x-auto">
                 <table class="min-w-full">
@@ -15,6 +16,7 @@
                         <tr class="bg-gray-50/50 text-gray-400 text-[11px] font-black uppercase tracking-[0.2em]">
                             <th class="px-8 py-5 text-left">Order ID</th>
                             <th class="px-8 py-5 text-left">Tanggal</th>
+                            <th class="px-8 py-5 text-left">Toko / Seller</th>
                             <th class="px-8 py-5 text-left">Total</th>
                             <th class="px-8 py-5 text-left">Status</th>
                             <th class="px-8 py-5 text-center">Aksi</th>
@@ -22,9 +24,15 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($orders as $order)
-                            <tr class="hover:bg-gray-50/80 transition-colors">
+                            <tr class="hover:bg-white/40 transition-colors">
                                 <td class="px-8 py-6 font-bold text-gray-900">#{{ $order->id }}</td>
                                 <td class="px-8 py-6 text-sm text-gray-500">{{ $order->created_at->format('d M Y') }}</td>
+                                <td class="px-8 py-6 text-sm font-bold text-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-store mr-2 text-blue-500"></i>
+                                        {{ $order->seller->name ?? 'Official Store' }}
+                                    </div>
+                                </td>
                                 <td class="px-8 py-6 font-black text-gray-700">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                 <td class="px-8 py-6">
                                     {{-- Badge Status --}}
@@ -54,4 +62,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

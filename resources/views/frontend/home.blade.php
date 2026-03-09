@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen">
+<div class="min-h-screen">
     <div class="container mx-auto px-4 py-12">
         
         <div class="mb-12">
@@ -12,12 +12,12 @@
             
             <div class="flex flex-wrap gap-3">
                 <a href="{{ route('product.index') }}"
-                   class="px-6 py-2.5 {{ !request('category') ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} rounded-xl text-sm font-bold hover:scale-105 transition-all duration-200">
+                   class="px-6 py-2.5 {{ !request('category') ? 'bg-blue-600/90 text-white shadow-lg shadow-blue-200 backdrop-blur-md' : 'glass-panel text-gray-700' }} rounded-xl text-sm font-bold hover:scale-105 transition-all duration-200">
                     ✨ Semua Produk
                 </a>
                 @foreach($categories as $category)
                     <a href="{{ route('product.index', ['category' => $category->id]) }}"
-                       class="px-6 py-2.5 {{ request('category') == $category->id ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} rounded-xl text-sm font-bold hover:border-blue-500 hover:text-blue-600 transition-all duration-200">
+                       class="px-6 py-2.5 {{ request('category') == $category->id ? 'bg-blue-600/90 text-white shadow-lg shadow-blue-200 backdrop-blur-md' : 'glass-panel text-gray-700' }} rounded-xl text-sm font-bold hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
                         {{ $category->name }}
                     </a>
                 @endforeach
@@ -31,17 +31,31 @@
                     <p class="text-gray-500 mt-1">Menampilkan <span class="text-blue-600 font-bold">{{ $products->count() }}</span> koleksi terbaik untukmu</p>
                 </div>
                 
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm text-gray-600 shadow-sm">
-                    <i class="fa-solid fa-sliders mr-2"></i>
-                    <span class="font-medium">Urutkan: Terpopuler</span>
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                    {{-- Pencarian --}}
+                    <form action="{{ route('product.index') }}" method="GET" class="flex w-full md:w-auto items-center gap-2">
+                        @if(request('category'))
+                            <input type="hidden" name="category" value="{{ request('category') }}">
+                        @endif
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk..." class="glass-panel px-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50 shadow-sm w-full sm:w-64 placeholder-gray-500 font-medium">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-colors text-sm font-bold">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+
+                    {{-- Sort Dummy --}}
+                    <div class="flex items-center w-full sm:w-auto glass-panel rounded-xl px-4 py-2 text-sm text-gray-700 shadow-sm relative font-medium">
+                        <i class="fa-solid fa-sliders mr-2"></i>
+                        <span class="font-medium whitespace-nowrap">Urutkan: Terpopuler</span>
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                 @foreach($products as $product)
-                    <div class="group bg-white rounded-[2rem] shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-500 overflow-hidden border border-gray-100 flex flex-col h-full">
+                    <div class="group glass-panel rounded-[2rem] hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col h-full">
                         
-                        <div class="relative aspect-square overflow-hidden bg-gray-50">
+                        <div class="relative aspect-square overflow-hidden bg-white/40">
                             <img src="{{ $product->image_url ?: 'https://via.placeholder.com/400' }}" 
                                  alt="{{ $product->name }}" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
@@ -64,9 +78,18 @@
                         
                         <div class="p-6 flex flex-col flex-grow">
                             <div class="mb-auto">
+                                <div class="mb-3">
+                                    <span class="bg-indigo-50 text-indigo-600 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-widest border border-indigo-100">
+                                        {{ $product->category->name }}
+                                    </span>
+                                </div>
                                 <h3 class="font-bold text-gray-900 mb-1 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
                                     {{ $product->name }}
                                 </h3>
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center">
+                                    <i class="fa-solid fa-store mr-1 text-blue-500"></i>
+                                    {{ $product->user ? $product->user->name : 'Official Store' }}
+                                </div>
                                 <div class="flex items-center text-[11px] text-gray-400 font-bold uppercase tracking-tighter mb-4">
                                     <i class="fa-solid fa-box-open mr-1"></i>
                                     Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500' }} ml-1">{{ $product->quantity }} pcs</span>

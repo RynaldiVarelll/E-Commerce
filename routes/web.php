@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingMethodController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Middleware\EnsureUserIsSuperAdmin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\OrderController; 
@@ -21,6 +23,9 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
         return redirect()->route('product.index');
     })->name('dashboard');
 
@@ -33,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::patch('/cart/{cart}/update', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::delete('/cart/{cart}/remove', [CartController::class, 'removeItem'])->name('cart.remove');
 
@@ -40,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout.process');
 
     // 🔥 MODIFIKASI: Diarahkan ke Controller agar data Transaction ter-load dengan benar
-    Route::get('/checkout/success/{transaction}', [TransactionController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/success', [TransactionController::class, 'success'])->name('checkout.success');
 
     // Riwayat Pesanan Customer
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
@@ -60,6 +66,7 @@ Route::middleware(['auth', EnsureUserIsAdmin::class])
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
+        Route::resource('users', UserController::class)->middleware(EnsureUserIsSuperAdmin::class);
 
         Route::post('/products/{product}/toggle-active', [ProductController::class, 'toggleActive'])
             ->name('products.toggle-active');

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-12">
+<div class="min-h-screen py-12">
     <div class="max-w-6xl mx-auto px-4">
         
         {{-- Header --}}
@@ -19,7 +19,7 @@
         </div>
 
         @if($cartItems->isEmpty())
-            <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-gray-100 text-center">
+            <div class="glass-panel p-12 rounded-[2.5rem] text-center">
                 <p class="text-gray-500 text-lg font-medium">Keranjang kamu masih kosong.</p>
             </div>
         @else
@@ -35,8 +35,8 @@
                     <div class="lg:col-span-2 space-y-6">
 
                         {{-- Rincian Pesanan --}}
-                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-                            <div class="p-6 border-b border-gray-50 bg-gray-50/50">
+                        <div class="glass-panel rounded-[2rem] overflow-hidden">
+                            <div class="p-6 border-b border-white/40 bg-white/20 backdrop-blur-md">
                                 <h3 class="font-bold text-gray-800">Rincian Pesanan</h3>
                             </div>
 
@@ -67,7 +67,7 @@
                         </div>
 
                         {{-- SHIPPING METHOD --}}
-                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                        <div class="glass-panel rounded-[2rem] p-8">
                             <h3 class="font-bold text-gray-800 mb-6 flex items-center">
                                 <i class="fa-solid fa-truck text-blue-500 mr-2"></i>
                                 Pilih Metode Pengiriman
@@ -75,7 +75,7 @@
 
                             <div class="space-y-4">
                                 @foreach($shippingMethods as $method)
-                                    <label class="flex items-center justify-between border border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-blue-500 transition group has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50/30">
+                                    <label class="flex items-center justify-between border border-white/60 bg-white/30 backdrop-blur-sm rounded-2xl p-4 cursor-pointer hover:bg-white/50 transition-all group has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 has-[:checked]:ring-2 has-[:checked]:ring-blue-400/20">
                                         <div class="flex items-center gap-3">
                                             <input type="radio"
                                                 name="shipping_method_id"
@@ -98,7 +98,7 @@
                         </div>
 
                         {{-- PAYMENT INFO --}}
-                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                        <div class="glass-panel rounded-[2rem] p-8">
                             <h3 class="font-bold text-gray-800 mb-4 flex items-center">
                                 <i class="fa-solid fa-shield-check text-green-500 mr-2"></i>
                                 Pembayaran Aman
@@ -111,8 +111,9 @@
                     </div>
 
                     {{-- RIGHT COLUMN (SUMMARY) --}}
-                    <div class="lg:sticky lg:top-8">
-                        <div class="bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
+                    <div class="lg:sticky lg:top-28">
+                        <div class="bg-blue-600/90 backdrop-blur-2xl rounded-[2.5rem] p-8 text-white shadow-2xl shadow-blue-900/10 relative overflow-hidden border border-white/20">
+                            <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                             
                             @php
                                 $initialShipping = $shippingMethods->first() ? $shippingMethods->first()->cost : 0;

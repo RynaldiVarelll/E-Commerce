@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-12">
+<div class="min-h-screen py-12">
     <div class="container mx-auto px-4 max-w-6xl">
         
         {{-- Breadcrumb --}}
@@ -16,7 +16,7 @@
             {{-- Left: Image Gallery (FIXED VERSION) --}}
             <div class="space-y-4">
                 {{-- Main Image Container --}}
-                <div class="relative bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100 flex items-center justify-center group min-h-[400px] md:min-h-[500px]">
+                <div class="relative glass-panel rounded-[2.5rem] overflow-hidden flex items-center justify-center group min-h-[400px] md:min-h-[500px]">
                     @php $firstImg = $product->images->first(); @endphp
                     
                     {{-- 
@@ -43,7 +43,7 @@
                     <div class="flex gap-4 overflow-x-auto py-2 custom-scrollbar justify-center">
                         @foreach($product->images as $img)
                             <button onclick="changeMainImage('{{ $img->image_url }}')" 
-                                    class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-transparent hover:border-blue-600 transition-all focus:border-blue-600 outline-none bg-white shadow-sm">
+                                    class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all focus:border-blue-500 outline-none glass-panel p-1">
                                 {{-- Thumbnail tetap pakai object-cover agar seragam ukurannya --}}
                                 <img src="{{ $img->image_url }}" class="w-full h-full object-cover">
                             </button>
@@ -53,10 +53,19 @@
             </div>
             {{-- Right: Product Info --}}
             <div class="flex flex-col h-full">
-                <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100">
+                <div class="glass-panel rounded-[2.5rem] p-8 md:p-10">
+                    <div class="mb-4">
+                        <a href="{{ route('product.index', ['category' => $product->category->id]) }}" class="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors font-black text-xs px-3 py-1.5 rounded-full uppercase tracking-widest border border-indigo-100 inline-block">
+                            {{ $product->category->name }}
+                        </a>
+                    </div>
                     <h1 class="text-4xl font-black text-gray-900 leading-tight mb-2 uppercase tracking-tighter">
                         {{ $product->name }}
                     </h1>
+                    <div class="flex items-center text-sm font-bold text-gray-500 mb-6 uppercase tracking-widest bg-white/40 backdrop-blur-sm inline-block px-3 py-1 rounded-lg border border-white/60">
+                        <i class="fa-solid fa-store text-blue-600 mr-2"></i>
+                        Store: <span class="text-gray-900 ml-1">{{ $product->user ? $product->user->name : 'Official Store' }}</span>
+                    </div>
                     
                     <div class="flex items-center gap-4 mb-6">
                         <span class="text-3xl font-black text-blue-600">
@@ -80,7 +89,7 @@
                             
                             <div class="flex flex-col sm:flex-row gap-4">
                                 {{-- Modern Quantity Selector --}}
-                                <div class="flex items-center bg-gray-100 rounded-2xl p-1 border border-transparent focus-within:border-blue-200 transition-all">
+                                <div class="flex items-center bg-white/40 backdrop-blur-md rounded-2xl p-1 border border-white/60 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-400/20 transition-all">
                                     <button type="button" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
                                     <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}"
                                            class="w-12 bg-transparent text-center font-black text-gray-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
@@ -99,7 +108,7 @@
                         {{-- WhatsApp Button --}}
                         <a href="https://wa.me/{{ parse_url($product->whatsapp_link, PHP_URL_HOST) }}?text=Halo, saya tertarik dengan produk {{ urlencode($product->name) }}"
                            target="_blank"
-                           class="w-full flex items-center justify-center gap-3 bg-white border-2 border-green-500 text-green-600 py-4 rounded-2xl font-black hover:bg-green-500 hover:text-white transition-all duration-300">
+                           class="w-full flex items-center justify-center gap-3 bg-white/30 backdrop-blur-md border border-white/60 text-green-600 py-4 rounded-2xl font-black hover:bg-green-500 hover:text-white transition-all duration-300">
                             <i class="fa-brands fa-whatsapp text-2xl"></i>
                             TANYA ADMIN (WA)
                         </a>

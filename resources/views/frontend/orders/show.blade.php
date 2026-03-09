@@ -1,4 +1,5 @@
-<x-app-layout>
+@extends('layouts.frontend')
+@section('content')
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         {{-- Tombol Kembali --}}
@@ -10,7 +11,7 @@
         </div>
 
         {{-- Header & Status --}}
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-gray-100 pb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-8">
             <div>
                 <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none">
                     Detail Pesanan <span class="text-blue-600">#{{ $transaction->id }}</span>
@@ -42,8 +43,8 @@
             <div class="lg:col-span-2 space-y-6">
                 
                 {{-- Card Produk --}}
-                <div class="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden shadow-sm">
-                    <div class="p-6 border-b border-gray-50 bg-gray-50/50">
+                <div class="glass-panel rounded-[2.5rem] overflow-hidden">
+                    <div class="p-6 border-b border-white/40 bg-white/20 backdrop-blur-md">
                         <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest">Produk yang Dibeli</h2>
                     </div>
                     
@@ -51,7 +52,7 @@
                         @foreach($transaction->items as $item)
                         <div class="p-6 flex items-center gap-6">
                             {{-- Gambar Produk (Update: Menggunakan image_url) --}}
-                            <div class="w-20 h-20 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 flex-shrink-0 shadow-inner">
+                            <div class="w-20 h-20 bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/60 flex-shrink-0 shadow-inner">
                                 @if($item->product)
                                     <img src="{{ $item->product->image_url }}" 
                                          alt="{{ $item->product->name }}" 
@@ -96,7 +97,7 @@
                             <h3 class="font-black text-xl mb-1">Instruksi Pembayaran</h3>
                             <p class="text-blue-100 mb-6 font-medium text-sm">Silakan transfer sesuai nominal total ke rekening di bawah ini:</p>
                             
-                            <div class="bg-white rounded-3xl p-6 text-gray-900">
+                            <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 text-gray-900 shadow-xl shadow-blue-900/10">
                                 <div class="flex justify-between items-center mb-4">
                                     <span class="text-[10px] font-black uppercase tracking-widest text-blue-600">Bank Transfer</span>
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-4" alt="BCA">
@@ -112,8 +113,8 @@
 
             {{-- KOLOM KANAN: Ringkasan --}}
             <div class="space-y-6">
-                <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 shadow-sm sticky top-24">
-                    <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest mb-6 border-b border-gray-50 pb-4">Ringkasan Biaya</h2>
+                <div class="glass-panel rounded-[2.5rem] p-8 sticky top-28">
+                    <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest mb-6 border-b border-white/40 pb-4">Ringkasan Biaya</h2>
                     
                     <div class="space-y-4">
                         <div class="flex justify-between text-sm">
@@ -151,4 +152,4 @@
 
         </div>
     </div>
-</x-app-layout>
+@endsection

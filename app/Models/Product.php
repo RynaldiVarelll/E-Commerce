@@ -16,6 +16,7 @@ class Product extends Model
         'is_active',
         'slug',
         'quantity',
+        'user_id',
     ];
 
     /*
@@ -42,5 +43,10 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

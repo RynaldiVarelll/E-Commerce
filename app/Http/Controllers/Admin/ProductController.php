@@ -12,9 +12,20 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->get();
+        $search = $request->input('search');
+        $query = Product::with(['category', 'user'])->latest();
+
+        if (!auth()->user()->isSuperAdmin()) {
+            $query->where('user_id', auth()->id());
+        }
+
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        $products = $query->get();
         return view('admin.products.index', compact('products'));
     }
 
@@ -48,6 +59,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             'category_id' => $request->category_id,
+            'user_id' => auth()->id(),
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->description,
@@ -77,6 +89,10 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+        if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $product->load('images');
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
@@ -84,6 +100,10 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
@@ -137,6 +157,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         if ($product->image_url && Storage::disk('public')->exists('products/' . $product->image_url)) {
             Storage::disk('public')->delete('products/' . $product->image_url);
         }
@@ -156,6 +180,10 @@ class ProductController extends Controller
 
     public function toggleActive(Product $product)
     {
+        if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $product->is_active = !$product->is_active;
         $product->save();
         return back()->with('success', 'Status produk diperbarui.');

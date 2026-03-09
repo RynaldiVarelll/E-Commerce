@@ -13,28 +13,41 @@ class DashboardController extends Controller
 {
      public function index()
     {
+        $user = auth()->user();
+
+        // Base Query instances handling Super Admin vs Seller Logic
+        $transactionQuery = Transaction::query();
+        $productQuery = Product::query();
+
+        if (!$user->isSuperAdmin()) {
+            $transactionQuery->where('seller_id', $user->id);
+            $productQuery->where('user_id', $user->id);
+        }
+
         // Statistik utama
-        $totalUsers = User::count();
-        $totalTransactions = Transaction::count();
-        $totalRevenue = Transaction::sum('total_amount');
+        $totalUsers = User::count(); // Tetap semua jika mau tau jumlah user (atau bisa dihilangkan di view jika bukan super admin)
+        $totalTransactions = (clone $transactionQuery)->count();
+        $totalRevenue = (clone $transactionQuery)->sum('total_amount');
 
         // Statistik berdasarkan status transaksi
-        $pendingCount = Transaction::where('status', 'pending')->count();
-        $completedCount = Transaction::where('status', 'completed')->count();
-        $failedCount = Transaction::where('status', 'failed')->count();
+        $pendingCount = (clone $transactionQuery)->where('status', 'pending')->count();
+        $completedCount = (clone $transactionQuery)->where('status', 'completed')->count();
+        $failedCount = (clone $transactionQuery)->where('status', 'failed')->count();
 
         // Produk
-        $totalProducts = Product::count();
-        $latestProducts = Product::latest()->take(5)->get();
+        $totalProducts = (clone $productQuery)->count();
+        $latestProducts = (clone $productQuery)->latest()->take(5)->get();
 
         // Transaksi terbaru
-        $recentTransactions = Transaction::with('user')
+        $recentTransactions = (clone $transactionQuery)
+            ->with(['user', 'seller'])
             ->latest()
             ->take(10)
             ->get();
 
         // Grafik pendapatan 7 hari terakhir
-        $revenueData = Transaction::selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+        $revenueData = (clone $transactionQuery)
+            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
             ->where('status', 'completed')
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->groupBy('date')
@@ -57,6 +70,11 @@ class DashboardController extends Controller
 
     public function updateStatus(\App\Models\Transaction $transaction, $status)
 {
+    // Cek permissions
+    if (!auth()->user()->isSuperAdmin() && $transaction->seller_id !== auth()->id()) {
+        abort(403, 'Unauthorized action.');
+    }
+
     // Validasi status yang diperbolehkan
     $allowedStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
     

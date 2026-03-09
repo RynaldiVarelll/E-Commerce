@@ -1,11 +1,19 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
     <h2 class="text-2xl font-bold">Daftar Produk</h2>
-    <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        + Tambah
-    </a>
+    <div class="flex items-center gap-2">
+        <form action="{{ route('admin.products.index') }}" method="GET" class="flex items-center gap-2">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk..." class="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            <button type="submit" class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-200 border border-gray-300">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 whitespace-nowrap">
+            + Tambah
+        </a>
+    </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -17,7 +25,14 @@
                  class="w-full h-48 object-cover">
             <div class="p-4">
                 <h3 class="text-lg font-bold text-gray-800">{{ $p->name }}</h3>
-                <p class="text-sm text-gray-600">{{ $p->category->name ?? 'Tanpa Kategori' }}</p>
+                <p class="text-sm text-gray-600 mb-1">{{ $p->category->name ?? 'Tanpa Kategori' }}</p>
+                
+                @if(auth()->user()->isSuperAdmin())
+                <p class="text-xs text-gray-500 font-medium mb-1 flex items-center">
+                    <i class="fa-solid fa-store mr-1 text-blue-500"></i> {{ $p->user ? $p->user->name : 'Official Store' }}
+                </p>
+                @endif
+                
                 <p class="text-xl font-semibold text-blue-700 mt-1 mb-2">
                     Rp {{ number_format($p->price, 0, ',', '.') }}
                 </p>

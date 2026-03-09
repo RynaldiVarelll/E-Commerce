@@ -29,7 +29,8 @@
         @endphp
 
         @foreach($stats as $stat)
-        <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
+        <div class="glass-panel p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-gray-300/30 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-{{ $stat['color'] }}-100 rounded-full blur-2xl opacity-60 pointer-events-none"></div>
             <div class="flex items-center justify-between mb-4">
                 <div class="w-12 h-12 bg-{{ $stat['color'] }}-100 text-{{ $stat['color'] }}-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     <i class="fa-solid {{ $stat['icon'] }} text-xl"></i>
@@ -51,7 +52,7 @@
     @endif
 
     {{-- Recent Transactions Table --}}
-    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+    <div class="glass-panel rounded-[2.5rem] overflow-hidden">
         <div class="p-8 border-b border-gray-50 flex items-center justify-between">
             <h2 class="text-2xl font-black text-gray-900 tracking-tight">Recent Transactions</h2>
             <div class="flex gap-2">
@@ -64,8 +65,11 @@
         <div class="overflow-x-auto">
             <table class="min-w-full">
                 <thead>
-                    <tr class="bg-gray-50/50 text-gray-400 text-[11px] font-black uppercase tracking-[0.2em]">
+                    <tr class="bg-white/30 text-gray-500 text-[11px] font-black uppercase tracking-[0.2em] backdrop-blur-md">
                         <th class="px-8 py-5 text-left">User</th>
+                        @if(auth()->user()->isSuperAdmin())
+                            <th class="px-8 py-5 text-left">Toko / Seller</th>
+                        @endif
                         <th class="px-8 py-5 text-left">Total Amount</th>
                         <th class="px-8 py-5 text-left">Status</th>
                         <th class="px-8 py-5 text-left">Tanggal</th>
@@ -74,7 +78,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @foreach ($recentTransactions as $tx)
-                        <tr class="hover:bg-gray-50/80 transition-colors group">
+                        <tr class="hover:bg-white/40 transition-colors group">
                             <td class="px-8 py-6">
                                 <div class="flex items-center">
                                     <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3">
@@ -83,6 +87,13 @@
                                     <span class="font-bold text-gray-900">{{ $tx->user->name ?? 'Unknown User' }}</span>
                                 </div>
                             </td>
+                            @if(auth()->user()->isSuperAdmin())
+                                <td class="px-8 py-6 text-sm">
+                                    <div class="flex items-center text-gray-500 font-bold mb-1">
+                                        <i class="fa-solid fa-store mr-2 text-blue-500"></i> {{ $tx->seller->name ?? 'Official Store' }}
+                                    </div>
+                                </td>
+                            @endif
                             <td class="px-8 py-6 font-bold text-gray-700">
                                 Rp {{ number_format($tx->total_amount, 0, ',', '.') }}
                             </td>

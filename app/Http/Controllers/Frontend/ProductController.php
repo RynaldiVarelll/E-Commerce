@@ -10,7 +10,12 @@ class ProductController extends Controller
 {
  public function index(Request $request)
 {
-    $query = Product::query()->with('category');
+    $query = Product::query()->with(['category', 'user']);
+
+    // Jika pencarian text
+    if ($request->has('search') && $request->search != '') {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
 
     // Jika kategori dipilih
     if ($request->has('category') && $request->category) {
@@ -29,7 +34,7 @@ class ProductController extends Controller
      */
     public function show($id)
 {
-    $product = Product::findOrFail($id);
+    $product = Product::with('user')->findOrFail($id);
     return view('product.show', compact('product'));
 }
 

@@ -27,18 +27,23 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Invoice</h1>
-            <p><strong>ID Transaksi:</strong> #{{ $transaction->id }}</p>
+            <h1>INVOICE #{{ $transaction->invoice_code }}</h1>
+            <p><strong>System Order ID:</strong> #{{ $transaction->id }}</p>
         </div>
 
         <table class="info-table">
             <tr>
-                <td>
-                    <strong>Kepada:</strong><br>
+                <td width="33%">
+                    <strong>Diterbitkan Oleh:</strong><br>
+                    Penjual: <strong>{{ $transaction->seller->name ?? 'Official Store' }}</strong><br>
+                    Merchant Terdaftar
+                </td>
+                <td width="33%">
+                    <strong>Kepada (Pembeli):</strong><br>
                     {{ $transaction->user->name }}<br>
                     {{ $transaction->user->email }}
                 </td>
-                <td style="text-align: right;">
+                <td width="34%" style="text-align: right;">
                     <strong>Tanggal:</strong> {{ $transaction->created_at->format('d F Y, H:i') }} WIB<br>
                     <strong>Metode Kirim:</strong> {{ $transaction->shippingMethod->name ?? 'N/A' }} ({{ $transaction->shippingMethod->service ?? '-' }})<br>
                     <strong>Status:</strong> <span style="color: #059669;">{{ strtoupper($transaction->status) }}</span>

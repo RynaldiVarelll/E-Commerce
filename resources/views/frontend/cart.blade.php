@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-12">
+<div class="min-h-screen py-12">
     <div class="container mx-auto px-4">
         
         {{-- Header Section --}}
@@ -19,10 +19,23 @@
                    Lanjut Belanja
                 </a>
             </div>
+            
+            @if(!$cartItems->isEmpty())
+            <div>
+                <form action="{{ route('cart.clear') }}" method="POST" onsubmit="return confirm('Kosongkan semua item di keranjang?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="flex items-center px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-xl font-bold text-sm transition-all focus:outline-none">
+                        <i class="fa-solid fa-trash-can mr-2"></i> Kosongkan Keranjang
+                    </button>
+                </form>
+            </div>
+            @endif
         </div>
 
         @if($cartItems->isEmpty())
-            <div class="bg-white rounded-[3rem] p-20 shadow-sm border border-gray-100 text-center">
+            <div class="glass-panel rounded-[3rem] p-20 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none"></div>
                 <div class="relative w-32 h-32 mx-auto mb-6">
                     <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse"></div>
                     <div class="relative flex items-center justify-center h-full">
@@ -42,8 +55,9 @@
                 {{-- Left: Cart Items List --}}
                 <div class="lg:col-span-2 space-y-6">
                     @foreach($cartItems as $item)
-                    <div class="group relative bg-white rounded-[2.5rem] p-6 shadow-sm border border-gray-50 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500">
-                        <div class="flex flex-col sm:flex-row items-center gap-6">
+                    <div class="group relative glass-panel rounded-[2.5rem] p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
                             
                             {{-- Image --}}
                             <div class="relative w-full sm:w-32 h-32 flex-shrink-0">
@@ -59,7 +73,7 @@
                                 
                                 <div class="flex items-center justify-center sm:justify-start gap-4">
                                     {{-- Modern Quantity Update --}}
-                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="inline-flex items-center bg-gray-50 rounded-2xl p-1 border border-gray-100">
+                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="inline-flex items-center bg-white/50 backdrop-blur-md rounded-2xl p-1 border border-white/60">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="quantity" id="quantity-{{ $item->id }}" value="{{ $item->quantity }}">
@@ -102,7 +116,7 @@
 
                 {{-- Right: Order Summary Sticky --}}
                 <div class="lg:col-span-1">
-                    <div class="sticky top-8 bg-white rounded-[3rem] p-8 shadow-2xl shadow-blue-900/5 border border-gray-50 overflow-hidden">
+                    <div class="sticky top-28 glass-panel rounded-[3rem] p-8 shadow-2xl shadow-blue-900/10 overflow-hidden backdrop-blur-3xl border border-white/60">
                         {{-- Decorative gradient background --}}
                         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-indigo-600"></div>
                         
