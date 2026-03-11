@@ -1,3 +1,14 @@
+## Cara Install buat pengguna laragon/xampp (Tanpa Docker/Sail)
+
+1. Clone repository: `git clone <url-repo>`
+2. Install dependencies: `composer install` & `npm install`
+3. Copy .env: `cp .env.example .env`
+4. Generate key: `php artisan key:generate`
+5. Sesuaikan konfigurasi DB di `.env` (DB_HOST=127.0.0.1)
+6. Jalankan migrasi: `php artisan migrate --seed`
+7. Hubungkan storage: `php artisan storage:link`
+8. Jalankan server: `php artisan serve` & `npm run dev`
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
