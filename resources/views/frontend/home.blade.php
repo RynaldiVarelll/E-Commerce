@@ -111,19 +111,28 @@
                                             <i class="fa-solid fa-circle-xmark mr-2"></i> Habis
                                         </button>
                                     @else
-                                        <div class="flex items-center gap-2">
-                                            <div class="flex items-center bg-gray-100 rounded-xl p-1 border border-transparent focus-within:border-blue-200 transition-all">
-                                                <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
-                                                <input type="number" name="quantity" value="1" min="1"
-                                                       class="w-10 bg-transparent text-center text-sm font-bold text-gray-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                                                <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
-                                            </div>
+                                        @auth
+                                            <div class="flex items-center gap-2">
+                                                <div class="flex items-center bg-gray-100 rounded-xl p-1 border border-transparent focus-within:border-blue-200 transition-all">
+                                                    <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
+                                                    <input type="number" name="quantity" value="1" min="1"
+                                                           class="w-10 bg-transparent text-center text-sm font-bold text-gray-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                                    <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
+                                                </div>
 
-                                            <button type="submit"
-                                                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all duration-300 shadow-[0_10px_20px_rgba(37,_99,_235,_0.2)] hover:shadow-blue-300 active:scale-95">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                            </button>
-                                        </div>
+                                                <button type="submit"
+                                                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all duration-300 shadow-[0_10px_20px_rgba(37,_99,_235,_0.2)] hover:shadow-blue-300 active:scale-95">
+                                                    <i class="fa-solid fa-cart-plus"></i>
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="flex items-center gap-2">
+                                                <a href="{{ route('login') }}" 
+                                                   class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold flex items-center justify-center transition-all duration-300 shadow-[0_10px_20px_rgba(37,_99,_235,_0.2)] hover:shadow-blue-300 active:scale-95">
+                                                    <i class="fa-solid fa-cart-plus mr-2"></i> Tambah Keranjang
+                                                </a>
+                                            </div>
+                                        @endauth
                                     @endif
                                 </form>
                             </div>

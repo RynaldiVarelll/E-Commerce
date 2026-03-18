@@ -30,15 +30,17 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                    <a href="{{ route('register') }}" 
+                    <a href="{{ route('product.index') }}" 
                        class="group px-10 py-5 bg-white text-blue-700 rounded-2xl font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex items-center justify-center gap-3">
                         MULAI BELANJA 
                         <i class="fa-solid fa-bolt-lightning group-hover:rotate-12 transition-transform"></i>
                     </a>
+                    @guest
                     <a href="{{ route('login') }}" 
                        class="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-lg hover:bg-white/20 transition-all duration-300">
                         MASUK AKUN
                     </a>
+                    @endguest
                 </div>
             </div>
             

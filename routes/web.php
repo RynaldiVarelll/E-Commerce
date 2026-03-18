@@ -19,6 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/products', [FrontendProductController::class, 'index'])->name('product.index');
+Route::get('/products/{product}', [FrontendProductController::class, 'show'])->name('product.show');
+
 /* ================= USER AREA (Login Required) ================= */
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -32,9 +35,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/products', [FrontendProductController::class, 'index'])->name('product.index');
-    Route::get('/products/{product}', [FrontendProductController::class, 'show'])->name('product.show');
 
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
