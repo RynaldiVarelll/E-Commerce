@@ -8,6 +8,13 @@
             <p class="text-gray-500 font-medium mt-1">Pantau status pesanan dan riwayat belanja Anda.</p>
         </div>
 
+        @if(session('success'))
+            <div class="mb-6 bg-green-50 border border-green-200 text-green-600 px-6 py-4 rounded-2xl flex items-center font-bold">
+                <i class="fa-solid fa-circle-check mr-3 text-xl"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="glass-panel rounded-[2.5rem] overflow-hidden">
             {{-- Tabel yang sama seperti sebelumnya --}}
             <div class="overflow-x-auto">
@@ -52,6 +59,15 @@
                                     class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-xl text-xs font-black hover:bg-gray-50 transition-all">
                                         <i class="fa-solid fa-print mr-2"></i> INVOICE
                                     </a>
+
+                                    {{-- TOMBOL HAPUS --}}
+                                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus riwayat pesanan ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-black hover:bg-red-600 hover:text-white transition-all">
+                                            <i class="fa-solid fa-trash mr-2"></i> HAPUS
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty

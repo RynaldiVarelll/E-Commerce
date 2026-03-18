@@ -41,4 +41,20 @@ class OrderController extends Controller
 
         return view('frontend.orders.show', compact('transaction'));
     }
+
+    /**
+     * Menghapus riwayat pesanan user.
+     */
+    public function destroy(Transaction $transaction)
+    {
+        // 1. Keamanan: Pastikan user tidak bisa menghapus pesanan orang lain
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus pesanan ini.');
+        }
+
+        // Hapus transaksi (jika menggunakan soft delete, ini aman; jika regular delete, data akan terhapus)
+        $transaction->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Riwayat pesanan berhasil dihapus.');
+    }
 }
