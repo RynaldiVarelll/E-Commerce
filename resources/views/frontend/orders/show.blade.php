@@ -88,7 +88,7 @@
 
                 {{-- Instruksi Pembayaran --}}
                 @if($transaction->status == 'pending')
-                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-8 text-white shadow-xl shadow-blue-100">
+                <div class="bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-blue-100">
                     <div class="flex items-start gap-4">
                         <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
                             <i class="fa-solid fa-wallet text-xl"></i>

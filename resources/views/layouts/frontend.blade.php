@@ -43,9 +43,9 @@
     
     {{-- MacOS-like Abstract Background --}}
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-indigo-300/40 to-purple-300/40 blur-[100px] animate-blob mix-blend-multiply"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-blue-300/40 to-cyan-300/40 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
-        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-pink-300/40 to-orange-200/40 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-blue-200/40 blur-[100px] animate-blob mix-blend-multiply"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-blue-100/40 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
     </div>
     
     <nav class="glass-nav sticky top-0 z-[100] transition-all duration-300">
@@ -89,8 +89,12 @@
                         @else
                             <a href="{{ route('profile.edit', auth()->user()->id) }}" 
                                class="hidden md:flex items-center px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
-                                <div class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mr-2 font-black text-xs">
-                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                <div class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mr-2 font-black text-xs overflow-hidden">
+                                    @if(auth()->user()->profile_photo_path)
+                                        <img src="{{ Storage::url(auth()->user()->profile_photo_path) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                    @endif
                                 </div>
                                 {{ explode(' ', auth()->user()->name)[0] }}
                             </a>

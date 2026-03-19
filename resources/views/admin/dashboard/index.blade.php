@@ -81,8 +81,12 @@
                         <tr class="hover:bg-white/40 transition-colors group">
                             <td class="px-8 py-6">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3">
-                                        {{ strtoupper(substr($tx->user->name ?? 'U', 0, 1)) }}
+                                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3 overflow-hidden">
+                                        @if(optional($tx->user)->profile_photo_path)
+                                            <img src="{{ Storage::url($tx->user->profile_photo_path) }}" alt="{{ $tx->user->name }}" class="w-full h-full object-cover">
+                                        @else
+                                            {{ strtoupper(substr($tx->user->name ?? 'U', 0, 1)) }}
+                                        @endif
                                     </div>
                                     <span class="font-bold text-gray-900">{{ $tx->user->name ?? 'Unknown User' }}</span>
                                 </div>

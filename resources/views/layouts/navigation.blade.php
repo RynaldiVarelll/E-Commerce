@@ -4,7 +4,7 @@
             <div class="flex items-center">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="group flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 group-hover:rotate-12 transition-transform duration-300">
+                        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 group-hover:rotate-12 transition-transform duration-300">
                             {{-- Icon Petir Putih --}}
                             <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 24 24">
                                 <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -36,9 +36,12 @@
                 <x-dropdown align="right" width="56">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center gap-3 px-3 py-1.5 rounded-2xl border border-transparent hover:bg-gray-50 hover:border-gray-100 transition-all duration-300 focus:outline-none">
-                            {{-- Avatar Inisial --}}
-                            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-md">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-md overflow-hidden">
+                                @if(Auth::user()->profile_photo_path)
+                                    <img src="{{ Storage::url(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                             
                             <div class="text-left hidden lg:block">
@@ -110,8 +113,12 @@
 
         <div class="pt-4 pb-6 border-t border-gray-100 px-6">
             <div class="flex items-center mb-6">
-                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black shadow-lg">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black shadow-lg overflow-hidden">
+                    @if(Auth::user()->profile_photo_path)
+                        <img src="{{ Storage::url(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @else
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    @endif
                 </div>
                 <div class="ms-4">
                     <div class="font-black text-gray-900 leading-none mb-1">{{ Auth::user()->name }}</div>

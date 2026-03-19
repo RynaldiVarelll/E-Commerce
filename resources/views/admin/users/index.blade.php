@@ -29,8 +29,12 @@
                     <tr class="hover:bg-white/40 transition-colors group">
                         <td class="px-8 py-6">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3 border border-white">
-                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3 border border-white overflow-hidden">
+                                    @if($user->profile_photo_path)
+                                        <img src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    @endif
                                 </div>
                                 <span class="font-black text-gray-900">{{ $user->name }}</span>
                             </div>

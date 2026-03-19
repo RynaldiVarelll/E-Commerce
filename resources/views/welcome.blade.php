@@ -22,7 +22,7 @@
                 
                 <h1 class="text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter">
                     Smart Shopping <br/> 
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-indigo-100">Starts at Invoify.</span>
+                    <span class="text-blue-200">Starts at Invoify.</span>
                 </h1>
                 
                 <p class="text-lg text-blue-100/70 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
@@ -54,7 +54,7 @@
                     {{-- Glass Card Effect as Base --}}
                     <div class="absolute -inset-4 bg-white/5 backdrop-blur-sm rounded-[3rem] border border-white/10 rotate-3 group-hover:rotate-0 transition-transform duration-700"></div>
                     
-                    <div class="relative bg-gradient-to-br from-white/10 to-transparent p-4 rounded-[3rem] border border-white/20 shadow-2xl overflow-hidden transform -rotate-2 group-hover:rotate-0 transition-transform duration-700">
+                    <div class="relative bg-white/10 p-4 rounded-[3rem] border border-white/20 shadow-2xl overflow-hidden transform -rotate-2 group-hover:rotate-0 transition-transform duration-700">
                         {{-- Ganti asset('images/app_logo.png') dengan gambar produk toko Anda --}}
                         <img src="{{ asset('images/app_logov2.jpg') }}" 
                              alt="Premium Product" 

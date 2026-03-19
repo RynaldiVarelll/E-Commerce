@@ -35,7 +35,7 @@
 
         @if($cartItems->isEmpty())
             <div class="glass-panel rounded-[3rem] p-20 text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-white/40 pointer-events-none"></div>
                 <div class="relative w-32 h-32 mx-auto mb-6">
                     <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse"></div>
                     <div class="relative flex items-center justify-center h-full">
@@ -56,7 +56,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     @foreach($cartItems as $item)
                     <div class="group relative glass-panel rounded-[2.5rem] p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="absolute inset-0 bg-white/40 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
                             
                             {{-- Image --}}
@@ -118,7 +118,7 @@
                 <div class="lg:col-span-1">
                     <div class="sticky top-28 glass-panel rounded-[3rem] p-8 shadow-2xl shadow-blue-900/10 overflow-hidden backdrop-blur-3xl border border-white/60">
                         {{-- Decorative gradient background --}}
-                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-indigo-600"></div>
+                        <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
                         
                         <h2 class="text-2xl font-black text-gray-900 mb-6">Ringkasan Pesanan</h2>
                         

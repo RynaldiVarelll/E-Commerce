@@ -3,17 +3,36 @@
     pageSubtitle="{{ __('Bergabung dan mulai belanja sekarang') }}"
     pageIcon="user-plus"
 >
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
         <!-- Name -->
-        <div class="form-group">
+        <div class="form-group mb-4">
             <x-input-label for="name" :value="__('Nama Lengkap')" />
             <x-text-input id="name" class="block mt-1 w-full"
                           type="text" name="name"
                           :value="old('name')"
                           required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Role Option -->
+        <div class="form-group mb-4">
+            <x-input-label for="role" :value="__('Daftar sebagai')" />
+            <select id="role" name="role" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>Customer (Pembeli)</option>
+                <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin (Penjual)</option>
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+        </div>
+
+        <!-- Profile Photo (Optional) -->
+        <div class="form-group mb-4">
+            <x-input-label for="profile_photo" :value="__('Foto Profil (Opsional)')" />
+            <input id="profile_photo" type="file" name="profile_photo" 
+                   class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                   accept="image/*" />
+            <x-input-error :messages="$errors->get('profile_photo')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

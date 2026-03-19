@@ -33,17 +33,30 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:user,admin'],
+            'profile_photo' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        $photoPath = null;
+        if ($request->hasFile('profile_photo')) {
+            $photoPath = $request->file('profile_photo')->store('profile-photos', 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'profile_photo_path' => $photoPath,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        if ($user->role === 'admin') {
+            return redirect(route('admin.dashboard'));
+        }
 
         return redirect(route('product.index', absolute: false));
     }

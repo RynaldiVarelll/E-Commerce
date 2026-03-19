@@ -11,7 +11,7 @@
 
     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data" 
         class="glass-panel p-10 rounded-[2.5rem] relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-white/40 pointer-events-none"></div>
         <div class="relative z-10">
             @csrf
             @method('PUT')

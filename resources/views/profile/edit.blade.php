@@ -2,7 +2,7 @@
     {{-- Custom Header dengan Glassmorphism --}}
     <div class="pt-12 pb-6 px-4">
         <div class="max-w-7xl mx-auto">
-            <div class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-blue-200">
+            <div class="relative overflow-hidden bg-blue-700 rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-blue-200">
                 {{-- Decorative Shapes --}}
                 <div class="absolute top-0 right-0 -translate-y-12 translate-x-12 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
                 
@@ -10,10 +10,13 @@
                     {{-- Profile Avatar Besar --}}
                     <div class="relative">
                         <div class="w-32 h-32 bg-white/20 backdrop-blur-xl rounded-[2rem] flex items-center justify-center border border-white/40 shadow-2xl relative z-10 overflow-hidden">
-                            {{-- Menampilkan Inisial Nama User --}}
-                            <span class="text-4xl font-black text-white uppercase">
-                                {{ substr(Auth::user()->name, 0, 1) }}
-                            </span>
+                            @if(Auth::user()->profile_photo_path)
+                                <img src="{{ Storage::url(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                            @else
+                                <span class="text-4xl font-black text-white uppercase">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </span>
+                            @endif
                         </div>
                         {{-- Hiasan di belakang avatar --}}
                         <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-green-400 border-4 border-blue-700 rounded-full z-20 flex items-center justify-center" title="Online">
