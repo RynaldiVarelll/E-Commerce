@@ -43,7 +43,17 @@
                                 <td class="px-8 py-6 font-black text-gray-700">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                 <td class="px-8 py-6">
                                     {{-- Badge Status --}}
-                                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-700">
+                                    @php
+                                        $statusClasses = [
+                                            'pending'   => 'bg-amber-100 text-amber-700',
+                                            'confirmed' => 'bg-blue-100 text-blue-700',
+                                            'shipped'   => 'bg-indigo-100 text-indigo-700',
+                                            'completed' => 'bg-green-100 text-green-700',
+                                            'cancelled' => 'bg-red-100 text-red-700',
+                                        ];
+                                        $colorClass = $statusClasses[$order->status] ?? 'bg-gray-100 text-gray-700';
+                                    @endphp
+                                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest {{ $colorClass }}">
                                         {{ $order->status }}
                                     </span>
                                 </td>

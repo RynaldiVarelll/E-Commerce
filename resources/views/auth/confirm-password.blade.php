@@ -1,27 +1,30 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+<x-guest-layout 
+    pageTitle="{{ __('Konfirmasi Akses') }}"
+    pageSubtitle="{{ __('Keamanan ekstra untuk area sensitif.') }}"
+>
+    <div class="mb-8 text-[11px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed text-center px-4">
+        {{ __('Ini adalah area aman aplikasi. Harap konfirmasi kata sandi Anda sebelum melanjutkan.') }}
     </div>
 
-    <form method="POST" action="{{ route('password.confirm') }}">
+    <form method="POST" action="{{ route('password.confirm') }}" class="space-y-6">
         @csrf
 
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <label for="password" class="custom-label">{{ __('Kata Sandi') }}</label>
+            <div class="relative">
+                <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input id="password" class="custom-input !pl-14" type="password" name="password" required autocomplete="current-password" placeholder="••••••••" />
+            </div>
+            @if ($errors->has('password'))
+                <p class="mt-2 text-[10px] font-black text-red-500 ml-2 italic uppercase tracking-widest">{{ $errors->first('password') }}</p>
+            @endif
         </div>
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
+        <div class="pt-4">
+            <button type="submit" class="btn-primary">
+                {{ __('Konfirmasi') }}
+            </button>
         </div>
     </form>
 </x-guest-layout>

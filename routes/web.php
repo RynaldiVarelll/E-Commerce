@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Riwayat Pesanan Customer
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/my-orders/{transaction}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/my-orders/{transaction}/pay', [OrderController::class, 'pay'])->name('orders.pay');
     Route::delete('/my-orders/{transaction}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     // Nama rute: transactions.print-invoice (Bisa diakses Admin & User)

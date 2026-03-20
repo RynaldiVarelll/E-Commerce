@@ -145,5 +145,48 @@
             }
         };
     </script>
+
+    {{-- SweetAlert2 Library --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Global Toast Notification
+        @if(session('success'))
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 4000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}',
+                background: '#ffffff',
+                iconColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-gray-100 mt-20 md:mt-0',
+                }
+            });
+        @endif
+
+        // Global Error Alert
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-[2rem]',
+                }
+            });
+        @endif
+    </script>
 </body>
 </html>

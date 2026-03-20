@@ -5,125 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $pageTitle ?? config('app.name', 'Invoify') }}</title>
+    <title>{{ $pageTitle ?? config('app.name', 'Invoify') }} — Secure Portal</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Instrument+Sans:400,500,600,700,800&display=swap" rel="stylesheet" />
+    {{-- Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        :root {
-            --blue-deep: #0a2463;
-            --blue-mid: #1e5fb4;
-            --blue-soft: #4a90d9;
-            --blue-pale: #daeafc;
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --glass-shadow: 0 25px 50px -12px rgba(10, 36, 99, 0.1);
-            --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: var(--font-sans);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            background: #daeafc;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(74, 144, 217, 0.3) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(200, 223, 248, 0.5) 0px, transparent 50%);
-            background-attachment: fixed;
-        }
-
-        .auth-card {
-            width: 100%;
-            max-width: 440px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border);
-            border-radius: 3rem;
-            padding: 3.5rem 2.5rem;
-            box-shadow: var(--glass-shadow);
-            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .auth-logo-wrap {
-            width: 4.5rem;
-            height: 4.5rem;
-            border-radius: 1.5rem;
-            background: linear-gradient(135deg, var(--blue-soft), var(--blue-deep));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 15px 30px rgba(30, 95, 180, 0.2);
-            transform: rotate(-6deg);
-            transition: transform 0.3s ease;
-        }
-
-        .auth-logo-wrap:hover { transform: rotate(0deg) scale(1.05); }
-
-        .brand-name {
-            font-size: 1.75rem;
-            font-weight: 900;
-            color: var(--blue-deep);
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-            font-style: italic;
-        }
-
-        .brand-dot { color: var(--blue-soft); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Merapikan Input Breeze agar konsisten dengan Glassmorphism */
-        input:not([type="checkbox"]) {
-            @apply block w-full bg-white/50 border-white/80 rounded-2xl px-5 py-4 text-sm font-bold text-blue-900 placeholder-blue-300 transition-all duration-300 shadow-sm !important;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden;
         }
         
-        input:focus {
-            @apply ring-4 ring-blue-500/10 border-blue-400 bg-white outline-none !important;
-        }
-
-        button[type="submit"] {
-            @apply w-full bg-blue-900 hover:bg-blue-800 text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-blue-900/10 active:scale-[0.97] transition-all duration-200 tracking-widest uppercase text-xs !important;
-        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body>
+<body class="bg-[#f0f2f5] text-gray-900 antialiased min-h-screen relative flex items-center justify-center py-12 px-4">
+    
+    <div class="noise"></div>
 
-    <main class="auth-card">
-        <div class="text-center mb-10">
-            {{-- Logo Petir Sentral --}}
-            <div class="auth-logo-wrap">
-                <svg class="w-9 h-9 text-white fill-current" viewBox="0 0 24 24">
-                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
+    {{-- MacOS-like Abstract Background --}}
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-blue-200/40 blur-[120px] animate-blob mix-blend-multiply"></div>
+        <div class="absolute top-[10%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-purple-200/40 blur-[120px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
+        <div class="absolute -bottom-[20%] left-[10%] w-[80vw] h-[80vw] rounded-full bg-indigo-100/40 blur-[140px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+        <div class="absolute top-[40%] left-[30%] w-[40vw] h-[40vw] rounded-full bg-blue-50/40 blur-[100px] animate-blob animation-delay-2000 opacity-50"></div>
+    </div>
+    
+    <div class="w-full max-w-[520px] animate-fade-in opacity-0">
+        <div class="glass-card rounded-[4rem] p-12 md:p-16 relative overflow-hidden border border-white/80 shadow-2xl shadow-blue-900/5">
+            {{-- Visual Accents --}}
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-80"></div>
+            <div class="absolute -top-32 -left-32 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="mb-14 relative z-10 text-left">
+                {{-- Header Header --}}
+                <div class="flex items-center justify-between mb-8">
+                    <a href="{{ route('home') }}" class="inline-flex items-center space-x-3 group">
+                        <div class="w-12 h-12 logo-gradient rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-200 group-hover:rotate-12 transition-all duration-500">
+                            <i class="fa-solid fa-bolt text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter text-gray-900">
+                            invoify<span class="text-blue-600">.</span>
+                        </span>
+                    </a>
+                    <div class="hidden sm:block">
+                        <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-blue-100">Portal Keamanan</span>
+                    </div>
+                </div>
+
+                <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none mb-3">
+                    {{ $pageTitle ?? 'Secure Gateway' }}
+                </h1>
+                
+                @if(isset($pageSubtitle))
+                    <p class="text-sm font-bold text-gray-400 leading-relaxed max-w-[280px]">{{ $pageSubtitle }}</p>
+                @endif
             </div>
 
-            <div class="brand-name">
-                Invoify<span class="brand-dot">.</span>
+            <div class="relative z-10">
+                {{ $slot }}
             </div>
-
-            <h1 class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-3">
-                {{ $pageTitle ?? 'Secure Login Portal' }}
-            </h1>
         </div>
 
-        {{-- Isi Form (Login.blade.php / Register.blade.php) --}}
-        <div class="auth-content">
-            {{ $slot }}
+        {{-- Footer Credit --}}
+        <div class="text-center mt-10 space-y-4">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">
+                &copy; {{ date('Y') }} Invoify International
+            </p>
+            <div class="flex justify-center gap-6 text-center">
+                <a href="#" class="text-[9px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">Privacy</a>
+                <a href="#" class="text-[9px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">Terms</a>
+                <a href="#" class="text-[9px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">Help</a>
+            </div>
         </div>
-    </main>
+    </div>
 
 </body>
 </html>

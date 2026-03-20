@@ -144,9 +144,6 @@
     </div>
 </div>
 
-{{-- SweetAlert2 Library --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     // Fungsi untuk mengubah kuantitas
     function changeQuantity(btn, delta) {
@@ -155,44 +152,6 @@
         value = Math.max(1, value + delta);
         input.value = value;
     }
-
-    // Logic Notifikasi Berhasil (Toast)
-    @if(session('success'))
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-
-        Toast.fire({
-            icon: 'success',
-            title: '{{ session('success') }}',
-            background: '#ffffff',
-            iconColor: '#2563eb',
-            customClass: {
-                popup: 'rounded-2xl shadow-xl border border-gray-100'
-            }
-        });
-    @endif
-
-    // Logic Notifikasi Error (Alert)
-    @if(session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{ session('error') }}',
-            confirmButtonColor: '#2563eb',
-            customClass: {
-                popup: 'rounded-[2rem]'
-            }
-        });
-    @endif
 </script>
 
 <style>

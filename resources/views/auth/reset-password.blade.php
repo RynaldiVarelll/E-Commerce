@@ -1,5 +1,8 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+<x-guest-layout 
+    pageTitle="{{ __('Reset Kata Sandi') }}"
+    pageSubtitle="{{ __('Langkah terakhir untuk mengamankan kembali akun Anda.') }}"
+>
+    <form method="POST" action="{{ route('password.store') }}" class="space-y-6">
         @csrf
 
         <!-- Password Reset Token -->
@@ -7,33 +10,35 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <label for="email" class="custom-label">{{ __('Alamat Email') }}</label>
+            <input id="email" class="custom-input bg-gray-50/50" type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus autocomplete="username" />
+            @if ($errors->has('email'))
+                <p class="mt-2 text-[10px] font-black text-red-500 ml-2 italic uppercase tracking-widest">{{ $errors->first('email') }}</p>
+            @endif
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div>
+            <label for="password" class="custom-label">{{ __('Kata Sandi Baru') }}</label>
+            <input id="password" class="custom-input" type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+            @if ($errors->has('password'))
+                <p class="mt-2 text-[10px] font-black text-red-500 ml-2 italic uppercase tracking-widest">{{ $errors->first('password') }}</p>
+            @endif
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div>
+            <label for="password_confirmation" class="custom-label">{{ __('Konfirmasi Kata Sandi') }}</label>
+            <input id="password_confirmation" class="custom-input" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="••••••••" />
+            @if ($errors->has('password_confirmation'))
+                <p class="mt-2 text-[10px] font-black text-red-500 ml-2 italic uppercase tracking-widest">{{ $errors->first('password_confirmation') }}</p>
+            @endif
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        <div class="pt-4">
+            <button type="submit" class="btn-primary">
+                {{ __('Update Kata Sandi') }}
+            </button>
         </div>
     </form>
 </x-guest-layout>

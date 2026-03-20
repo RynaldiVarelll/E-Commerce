@@ -99,12 +99,31 @@
 
                         {{-- PAYMENT INFO --}}
                         <div class="glass-panel rounded-[2rem] p-8">
-                            <h3 class="font-bold text-gray-800 mb-4 flex items-center">
+                            <h3 class="font-bold text-gray-800 mb-6 flex items-center">
                                 <i class="fa-solid fa-shield-check text-green-500 mr-2"></i>
-                                Pembayaran Aman
+                                Pembayaran Aman & Terpercaya
                             </h3>
-                            <p class="text-sm text-gray-500 italic">
-                                Pesanan Anda akan diproses secara aman. Pembayaran dilakukan secara manual setelah checkout.
+                            <p class="text-sm text-gray-500 mb-6">
+                                Pesanan Anda akan diproses setelah pembayaran dikonfirmasi. Kami mendukung berbagai bank di Indonesia:
+                            </p>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-70 grayscale hover:grayscale-0 transition-all">
+                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-4" alt="BCA">
+                                </div>
+                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-4" alt="Mandiri">
+                                </div>
+                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
+                                    <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1200px-BNI_logo.svg.png" class="h-4" alt="BNI">
+                                </div>
+                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-4" alt="BRI">
+                                </div>
+                            </div>
+                            
+                            <p class="text-[11px] text-gray-400 mt-6 font-medium italic">
+                                *Instruksi detail nomor rekening akan diberikan setelah Anda menekan tombol "Konfirmasi & Bayar".
                             </p>
                         </div>
 
