@@ -43,13 +43,7 @@
         @endforeach
     </div>
 
-    {{-- Alerts --}}
-    @if (session('success'))
-        <div class="bg-green-50 border border-green-100 text-green-700 px-6 py-4 rounded-2xl mb-6 flex items-center animate-fade-in">
-            <i class="fa-solid fa-circle-check text-xl mr-3"></i>
-            <span class="font-bold">{{ session('success') }}</span>
-        </div>
-    @endif
+
 
     {{-- Recent Transactions Table --}}
     <div class="glass-panel rounded-[2.5rem] overflow-hidden">

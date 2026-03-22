@@ -6,14 +6,14 @@
                 My <span class="text-blue-600">Orders.</span>
             </h1>
             <p class="text-gray-500 font-medium mt-1">Pantau status pesanan dan riwayat belanja Anda.</p>
+            <a href="{{ route('product.index') }}" 
+               class="group mt-2 inline-flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
+               <i class="fa-solid fa-chevron-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+               Lanjut Belanja
+            </a>
         </div>
 
-        @if(session('success'))
-            <div class="mb-6 bg-green-50 border border-green-200 text-green-600 px-6 py-4 rounded-2xl flex items-center font-bold">
-                <i class="fa-solid fa-circle-check mr-3 text-xl"></i>
-                {{ session('success') }}
-            </div>
-        @endif
+
 
         <div class="glass-panel rounded-[2.5rem] overflow-hidden">
             {{-- Tabel yang sama seperti sebelumnya --}}
@@ -81,7 +81,21 @@
                                 </td>
                             </tr>
                         @empty
-                            {{-- Pesan jika kosong --}}
+                            <tr>
+                                <td colspan="6" class="px-8 py-20 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                            <i class="fa-solid fa-receipt text-3xl text-gray-300"></i>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-gray-900">Belum ada pesanan</h3>
+                                        <p class="text-gray-500 text-sm mb-6">Sepertinya Anda belum pernah berbelanja di sini.</p>
+                                        <a href="{{ route('product.index') }}" 
+                                           class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-black hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                                            Mulai Belanja Sekarang
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>

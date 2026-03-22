@@ -32,5 +32,76 @@
                 {{ $slot }}
             </main>
         </div>
+
+        {{-- Global Notifications --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            // Success Toast
+            @if(session('success'))
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    iconColor: '#2563eb',
+                    customClass: {
+                        popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                    }
+                });
+            @endif
+
+            // Status Notification (commonly used by Laravel Breeze)
+            @if(session('status'))
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: '{{ session('status') === 'profile-updated' ? 'Profil Berhasil Diperbarui!' : session('status') }}',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    background: '#ffffff',
+                    iconColor: '#2563eb',
+                    customClass: {
+                        popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                    }
+                });
+            @endif
+
+            // Error Alert
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#2563eb',
+                    customClass: {
+                        popup: 'rounded-[2rem]',
+                    }
+                });
+            @endif
+
+            // Handle Validation Errors prominently
+            @if($errors->any())
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Format Tidak Valid!',
+                    text: 'Silakan periksa kembali isian formulir Anda.',
+                    confirmButtonColor: '#2563eb',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'rounded-2xl shadow-2xl border border-orange-100',
+                    }
+                });
+            @endif
+        </script>
     </body>
 </html>

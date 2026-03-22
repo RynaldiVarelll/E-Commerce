@@ -186,6 +186,24 @@
             });
         @endif
 
+        // status for profile updates
+        @if(session('status') === 'profile-updated')
+            Swal.fire({
+                icon: 'success',
+                title: 'Profil Diperbarui!',
+                text: 'Data profil Anda telah berhasil disimpan.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                iconColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-gray-100 mt-20 md:mt-0',
+                }
+            });
+        @endif
+
         // Global Error Alert
         @if(session('error'))
             Swal.fire({
@@ -195,6 +213,23 @@
                 confirmButtonColor: '#2563eb',
                 customClass: {
                     popup: 'rounded-[2rem]',
+                }
+            });
+        @endif
+
+        // Validation Errors
+        @if($errors->any())
+            Swal.fire({
+                icon: 'warning',
+                title: 'Format Salah!',
+                text: 'Silakan periksa kembali data Anda.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-orange-100 mt-20 md:mt-0',
                 }
             });
         @endif

@@ -154,12 +154,82 @@
         </main>
     </div>
 
-    {{-- Script untuk Flash Message Auto-Hide (Optional) --}}
+    {{-- Script untuk Flash Message Auto-Hide & SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        setTimeout(() => {
-            const flash = document.getElementById('flash-message');
-            if(flash) flash.style.display = 'none';
-        }, 3000);
+        // Global Toast Notification
+        @if(session('success'))
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 4000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}',
+                background: '#ffffff',
+                iconColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                }
+            });
+        @endif
+
+        // status for profile updates
+        @if(session('status') === 'profile-updated')
+            Swal.fire({
+                icon: 'success',
+                title: 'Profil Diperbarui!',
+                text: 'Data profil Anda telah berhasil disimpan.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                iconColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                }
+            });
+        @endif
+
+        // Global Error Alert
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                    popup: 'rounded-[2rem]',
+                }
+            });
+        @endif
+
+        // Validation Errors
+        @if($errors->any())
+            Swal.fire({
+                icon: 'warning',
+                title: 'Ada Kesalahan!',
+                text: 'Silakan periksa kembali isian formulir Anda.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-2xl shadow-2xl border border-orange-100',
+                }
+            });
+        @endif
     </script>
 </body>
 </html>
