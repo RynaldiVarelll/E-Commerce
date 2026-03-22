@@ -69,14 +69,19 @@ class DashboardController extends Controller
     }
 
     public function updateStatus(\App\Models\Transaction $transaction, $status)
-{
-    // Cek permissions
-    if (!auth()->user()->isSuperAdmin() && $transaction->seller_id !== auth()->id()) {
-        abort(403, 'Unauthorized action.');
-    }
+    {
+        // 🚨 KEAMANAN: Super Admin tidak mengelola status transaksi, itu tugas Seller
+        if (auth()->user()->isSuperAdmin()) {
+            abort(403, 'Aksi ini hanya diperbolehkan untuk Seller (Admin).');
+        }
 
-    // Validasi status yang diperbolehkan
-    $allowedStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
+        // Cek apakah seller ini pemilik produk di transaksi tersebut
+        if ($transaction->seller_id !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki hak untuk mengelola transaksi ini.');
+        }
+
+        // Validasi status yang diperbolehkan
+        $allowedStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
     
     if (in_array($status, $allowedStatuses)) {
         $transaction->update(['status' => $status]);

@@ -121,21 +121,23 @@
                             </td>
                             <td class="px-8 py-6 text-center">
                                 <div class="flex items-center justify-center space-x-3">
-                                    <form method="POST" id="form-{{ $tx->id }}">
-                                        @csrf
-                                        <select onchange="updateStatus({{ $tx->id }}, this.value)" 
-                                                class="bg-gray-50 border border-gray-200 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
-                                            <option disabled selected>Update</option>
-                                            @foreach(['pending', 'confirmed', 'shipped', 'completed', 'cancelled'] as $status)
-                                                <option value="{{ $status }}">{{ ucfirst($status) }}</option>
-                                            @endforeach
-                                        </select>
-                                    </form>
+                                    @if(!auth()->user()->isSuperAdmin())
+                                        <form method="POST" id="form-{{ $tx->id }}">
+                                            @csrf
+                                            <select onchange="updateStatus({{ $tx->id }}, this.value)" 
+                                                    class="bg-gray-50 border border-gray-200 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
+                                                <option disabled selected>Update</option>
+                                                @foreach(['pending', 'confirmed', 'shipped', 'completed', 'cancelled'] as $status)
+                                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    @endif
 
                                     <form action="{{ route('admin.transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+                                        <button type="submit" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all" title="Hapus Transaksi">
                                             <i class="fa-solid fa-trash-can text-sm"></i>
                                         </button>
                                     </form>

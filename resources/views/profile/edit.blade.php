@@ -26,7 +26,7 @@
 
                     <div class="text-center md:text-left">
                         <div class="inline-block px-4 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-blue-100 text-xs font-bold uppercase tracking-widest mb-3">
-                            Personal Account
+                            {{ Auth::user()->isAdmin() ? (Auth::user()->isSuperAdmin() ? 'Super Admin' : 'Admin Seller') : 'Personal Customer' }}
                         </div>
                         <h2 class="text-4xl font-black text-white tracking-tight leading-none">
                             {{ Auth::user()->name }}

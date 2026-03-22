@@ -106,12 +106,35 @@
                         </form>
 
                         {{-- WhatsApp Button --}}
-                        <a href="https://wa.me/{{ parse_url($product->whatsapp_link, PHP_URL_HOST) }}?text=Halo, saya tertarik dengan produk {{ urlencode($product->name) }}"
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $product->whatsapp_link) }}?text=Halo, saya tertarik dengan produk {{ urlencode($product->name) }}"
                            target="_blank"
                            class="w-full flex items-center justify-center gap-3 bg-white/30 backdrop-blur-md border border-white/60 text-green-600 py-4 rounded-2xl font-black hover:bg-green-500 hover:text-white transition-all duration-300">
                             <i class="fa-brands fa-whatsapp text-2xl"></i>
                             TANYA ADMIN (WA)
                         </a>
+
+                        {{-- Seller Profile Card --}}
+                        <div class="glass-panel rounded-[2rem] p-6 mt-8 flex items-center gap-4 bg-white/30 border border-white/60">
+                            <div class="w-16 h-16 bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden flex-shrink-0 border border-white/80 shadow-inner group transition-transform hover:scale-105">
+                                <img src="{{ $product->user->profile_photo_url }}" 
+                                     alt="{{ $product->user->name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-black text-gray-900 uppercase tracking-tighter leading-tight">{{ $product->user->name }}</h4>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Penjual Terverifikasi</span>
+                                </div>
+                                <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">
+                                    Bergabung {{ $product->user->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $product->whatsapp_link) }}" 
+                               class="px-4 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-gray-200">
+                                Kunjungi Toko
+                            </a>
+                        </div>
                     </div>
 
                     {{-- Trust Badges --}}

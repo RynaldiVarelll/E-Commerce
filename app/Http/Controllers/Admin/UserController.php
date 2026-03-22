@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::whereIn('role', ['admin', 'customer'])->latest()->get();
+        $users = User::latest()->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -28,17 +28,24 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:admin,customer',
+            'profile_photo_path' => 'nullable|image|max:2048',
         ]);
 
-        User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-        ]);
+        ];
+
+        if ($request->hasFile('profile_photo_path')) {
+            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('profile-photos', 'public');
+        }
+
+        User::create($data);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Admin/User berhasil ditambahkan.');
+            ->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     public function edit(User $user)
@@ -53,6 +60,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|in:admin,customer',
+            'profile_photo_path' => 'nullable|image|max:2048',
         ]);
 
         $data = [
@@ -65,10 +73,18 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
+        if ($request->hasFile('profile_photo_path')) {
+            // Hapus foto lama jika ada
+            if ($user->profile_photo_path && \Storage::disk('public')->exists($user->profile_photo_path)) {
+                \Storage::disk('public')->delete($user->profile_photo_path);
+            }
+            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('profile-photos', 'public');
+        }
+
         $user->update($data);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Admin/User berhasil diperbarui.');
+            ->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function destroy(User $user)
@@ -80,6 +96,6 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Admin/User berhasil dihapus.');
+            ->with('success', 'Pengguna berhasil dihapus.');
     }
 }

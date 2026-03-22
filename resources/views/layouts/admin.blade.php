@@ -66,11 +66,13 @@
                     <span class="font-bold">Dashboard</span>
                 </a>
 
+                @if(auth()->user()->isSuperAdmin())
                 <a href="{{ route('admin.categories.index') }}" 
                    class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-layer-group mr-3 text-lg group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold">Kategori</span>
                 </a>
+                @endif
 
                 <a href="{{ route('admin.products.index') }}" 
                    class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
@@ -78,22 +80,29 @@
                     <span class="font-bold">Produk</span>
                 </a>
 
+                @if(auth()->user()->isSuperAdmin())
                 <a href="{{ route('admin.shipping-methods.index') }}" 
                    class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('admin.shipping-methods.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-truck-fast mr-3 text-lg group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold">Shipping Delivery</span>
                 </a>
+                @endif
 
                 @if(auth()->user()->isSuperAdmin())
                 <a href="{{ route('admin.users.index') }}" 
                    class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-users mr-3 text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="font-bold">Kelola Admin</span>
+                    <span class="font-bold">Data Pengguna</span>
                 </a>
                 @endif
 
                 <div class="pt-6">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4 mb-2">System</p>
+                    <a href="{{ route('profile.edit') }}" 
+                       class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                        <i class="fa-solid fa-user-gear mr-3 text-lg group-hover:scale-110 transition-transform"></i>
+                        <span class="font-bold">Profil Saya</span>
+                    </a>
                     <a href="{{ route('home') }}" 
                        class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group">
                         <i class="fa-solid fa-house-user mr-3 text-lg"></i>
@@ -118,9 +127,15 @@
             <header class="glass-panel px-8 py-4 flex justify-end items-center sticky top-0 z-30 border-b border-white/60">
                 <div class="flex items-center gap-4">
                     <div class="text-right hidden sm:block">
-                        <p class="text-xs font-black text-gray-900">{{ auth()->user()->name }}</p>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                            {{ auth()->user()->isSuperAdmin() ? 'Super Admin' : 'Admin Seller' }}
+                        <p class="text-xs font-black text-gray-900 leading-none mb-1">{{ auth()->user()->name }}</p>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">
+                            @if(auth()->user()->isSuperAdmin())
+                                Super Admin
+                            @elseif(auth()->user()->isAdmin())
+                                Seller (Admin)
+                            @else
+                                Customer
+                            @endif
                         </p>
                     </div>
                     <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-blue-200 overflow-hidden">

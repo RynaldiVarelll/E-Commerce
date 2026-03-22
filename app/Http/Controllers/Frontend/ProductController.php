@@ -8,9 +8,15 @@ use App\Models\Product;
 use App\Models\Category;
 class ProductController extends Controller
 {
- public function index(Request $request)
-{
-    $query = Product::query()->with(['category', 'user']);
+    public function index(Request $request)
+    {
+        // 🚨 KEAMANAN: Admin tidak boleh belanja atau melihat produk toko lain di frontend
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard')
+                ->with('error', 'Akses ditolak. Admin hanya diperbolehkan mengelola produk, bukan berbelanja.');
+        }
+
+        $query = Product::query()->with(['category', 'user']);
 
     // Jika pencarian text
     if ($request->has('search') && $request->search != '') {
@@ -33,9 +39,14 @@ class ProductController extends Controller
      * Show the form for creating a new resource.
      */
     public function show($id)
-{
-    $product = Product::with('user')->findOrFail($id);
-    return view('product.show', compact('product'));
-}
+    {
+        // 🚨 KEAMANAN: Admin tidak boleh melihat detail produk di frontend
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        $product = Product::with('user')->findOrFail($id);
+        return view('product.show', compact('product'));
+    }
 
 }

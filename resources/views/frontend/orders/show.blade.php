@@ -80,7 +80,7 @@
                         @foreach($transaction->items as $item)
                         <div class="p-6 flex items-center gap-6">
                             {{-- Gambar Produk (Update: Menggunakan image_url) --}}
-                            <div class="w-20 h-20 bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/60 flex-shrink-0 shadow-inner">
+                            <div class="w-20 h-20 aspect-square bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/60 flex-shrink-0 shadow-inner">
                                 @if($item->product)
                                     <img src="{{ $item->product->image_url }}" 
                                          alt="{{ $item->product->name }}" 
@@ -154,7 +154,7 @@
                                 <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 text-gray-900 shadow-xl shadow-blue-900/10 border border-white">
                                     <div class="flex justify-between items-center mb-3">
                                         <span class="text-[9px] font-black uppercase tracking-widest text-blue-600">Bank BNI</span>
-                                        <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1200px-BNI_logo.svg.png" class="h-3" alt="BNI">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-3" alt="BNI">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">554 321 0987</p>
                                     <p class="font-bold text-gray-400 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
@@ -185,9 +185,72 @@
                 @endif
             </div>
 
-            {{-- KOLOM KANAN: Ringkasan --}}
+            {{-- KOLOM KANAN: Ringkasan & Info --}}
             <div class="space-y-6">
-                <div class="glass-panel rounded-[2.5rem] p-8 sticky top-28">
+                {{-- CARD: INFO TOKO & PEMBELI --}}
+                <div class="glass-panel rounded-[2.5rem] p-8 space-y-8 animate-fade-in-up">
+                    {{-- Detail Toko --}}
+                    <div class="relative group">
+                        <div class="absolute -right-2 -top-2 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <i class="fa-solid fa-store text-xs"></i>
+                        </div>
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-5 flex items-center gap-2">
+                             <i class="fa-solid fa-shop"></i> Informasi Penjual
+                        </h3>
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 flex-shrink-0 aspect-square bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 border-2 border-white ring-4 ring-blue-50 transition-transform group-hover:rotate-3">
+                                <img src="{{ $transaction->seller->profile_photo_url }}" 
+                                     alt="{{ $transaction->seller->name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-black text-gray-900 leading-tight mb-1 truncate text-lg uppercase tracking-tighter italic">
+                                    {{ $transaction->seller->name }}
+                                </p>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest truncate">Verified Seller</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative py-2">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-dashed border-gray-100"></div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <span class="bg-white/40 backdrop-blur-sm px-3 text-gray-300 uppercase text-[8px] font-black tracking-[0.4em]">Connection</span>
+                        </div>
+                    </div>
+
+                    {{-- Detail Pembeli --}}
+                    <div class="group">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-5 flex items-center gap-2">
+                            <i class="fa-solid fa-user-check"></i> Detail Penerima
+                        </h3>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 flex-shrink-0 aspect-square bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-md border border-gray-100 group-hover:-rotate-3 transition-transform">
+                                <img src="{{ $transaction->user->profile_photo_url }}" 
+                                     alt="{{ $transaction->user->name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-black text-gray-900 leading-tight mb-0.5 truncate text-sm uppercase tracking-tight">
+                                    {{ $transaction->user->name }}
+                                </p>
+                                <p class="text-[10px] text-gray-400 font-bold tracking-wider truncate mb-1">{{ $transaction->user->email }}</p>
+                            </div>
+                        </div>
+                        
+                        {{-- Badge Role --}}
+                        <div class="inline-flex items-center px-4 py-1.5 bg-gray-50 text-[9px] font-black text-gray-500 rounded-full border border-gray-100 uppercase tracking-widest">
+                            Customer Profile
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2.5rem] p-8 sticky top-28 animate-fade-in-up delay-100">
                     <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest mb-6 border-b border-white/40 pb-4">Ringkasan Biaya</h2>
                     
                     <div class="space-y-4">
@@ -272,6 +335,13 @@
     </div>
 
     <style>
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+    .delay-100 { animation-delay: 0.1s; }
+
     @keyframes fade-in {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }

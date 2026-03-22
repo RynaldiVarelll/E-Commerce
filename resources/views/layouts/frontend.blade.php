@@ -65,18 +65,29 @@
             <div class="flex items-center gap-2">
                 @auth
                     <div class="flex items-center space-x-1">
-                        {{-- Cart Button with Badge --}}
-                        <a href="{{ route('cart.index') }}" 
-                           class="relative p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all group">
-                            <i class="fa-solid fa-cart-shopping text-lg"></i>
-                            <span class="absolute top-2 right-2 flex h-4 w-4">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 text-[10px] text-white items-center justify-center font-bold">
-                                    {{-- Jika ada variabel $cartCount bisa ditaruh di sini --}}
-                                    !
+                        {{-- Shopping Features (Only for Customers) --}}
+                        @if(!auth()->user()->isAdmin())
+                            {{-- Cart Button with Badge --}}
+                            <a href="{{ route('cart.index') }}" 
+                               class="relative p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all group"
+                               title="Keranjang Belanja">
+                                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                                <span class="absolute top-2 right-2 flex h-4 w-4">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 text-[10px] text-white items-center justify-center font-bold">
+                                        {{-- Jika ada variabel $cartCount bisa ditaruh di sini --}}
+                                        !
+                                    </span>
                                 </span>
-                            </span>
-                        </a>
+                            </a>
+
+                            {{-- My Orders Button --}}
+                            <a href="{{ route('orders.index') }}" 
+                               class="p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all group"
+                               title="Pesanan Saya">
+                                <i class="fa-solid fa-receipt text-lg"></i>
+                            </a>
+                        @endif
 
                         {{-- User Interaction --}}
                         <div class="h-8 w-[1px] bg-gray-200 mx-2 hidden md:block"></div>

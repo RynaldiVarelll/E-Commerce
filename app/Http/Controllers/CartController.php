@@ -10,6 +10,10 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+        if (auth()->user()->isAdmin()) {
+            return back()->with('error', 'Admin tidak diperbolehkan melakukan pembelian.');
+        }
+
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
@@ -42,6 +46,10 @@ class CartController extends Controller
 
     public function viewCart()
     {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
         return view('frontend.cart', compact('cartItems'));
     }

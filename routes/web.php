@@ -66,14 +66,14 @@ Route::middleware(['auth', EnsureUserIsAdmin::class])
     ->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::resource('categories', CategoryController::class);
+        Route::resource('categories', CategoryController::class)->middleware(EnsureUserIsSuperAdmin::class);
         Route::resource('products', ProductController::class);
         Route::resource('users', UserController::class)->middleware(EnsureUserIsSuperAdmin::class);
 
         Route::post('/products/{product}/toggle-active', [ProductController::class, 'toggleActive'])
             ->name('products.toggle-active');
 
-        Route::resource('shipping-methods', ShippingMethodController::class);
+        Route::resource('shipping-methods', ShippingMethodController::class)->middleware(EnsureUserIsSuperAdmin::class);
 
         Route::post('/transactions/{transaction}/{status}', [DashboardController::class, 'updateStatus'])
             ->name('transactions.update-status');

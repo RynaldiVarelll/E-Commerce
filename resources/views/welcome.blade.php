@@ -30,10 +30,10 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                    <a href="{{ route('product.index') }}" 
+                    <a href="{{ auth()->check() && auth()->user()->isAdmin() ? route('admin.dashboard') : route('product.index') }}" 
                        class="group px-10 py-5 bg-white text-blue-700 rounded-2xl font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex items-center justify-center gap-3">
-                        MULAI BELANJA 
-                        <i class="fa-solid fa-bolt-lightning group-hover:rotate-12 transition-transform"></i>
+                        {{ auth()->check() && auth()->user()->isAdmin() ? 'KELOLA TOKO' : 'MULAI BELANJA' }}
+                        <i class="fa-solid {{ auth()->check() && auth()->user()->isAdmin() ? 'fa-gauge-high' : 'fa-bolt-lightning' }} group-hover:rotate-12 transition-transform"></i>
                     </a>
                     @guest
                     <a href="{{ route('login') }}" 

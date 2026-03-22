@@ -23,10 +23,12 @@
                     </a>
 
                     {{-- NEW: Tombol My Orders untuk Customer --}}
-                    <a href="{{ route('orders.index') }}" 
-                       class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-extrabold tracking-tight transition-all duration-200 {{ request()->routeIs('orders.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-gray-500 hover:text-blue-600 hover:bg-white' }}">
-                        <i class="fa-solid fa-receipt mr-2 text-xs"></i>{{ __('My Orders') }}
-                    </a>
+                    @if(!Auth::user()->isAdmin())
+                        <a href="{{ route('orders.index') }}" 
+                           class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-extrabold tracking-tight transition-all duration-200 {{ request()->routeIs('orders.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-gray-500 hover:text-blue-600 hover:bg-white' }}">
+                            <i class="fa-solid fa-receipt mr-2 text-xs"></i>{{ __('My Orders') }}
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -48,8 +50,14 @@
                                 <div class="text-sm font-black text-gray-800 leading-none">{{ Auth::user()->name }}</div>
                                 
                                 {{-- Role Label Dinamis --}}
-                                <div class="text-[10px] font-bold uppercase tracking-widest mt-1 {{ Auth::user()->is_admin ? 'text-blue-600' : 'text-gray-400' }}">
-                                    {{ Auth::user()->is_admin ? 'Administrator' : 'Customer' }}
+                                <div class="text-[10px] font-bold uppercase tracking-widest mt-1 {{ Auth::user()->isAdmin() ? 'text-blue-600' : 'text-gray-400' }}">
+                                    @if(Auth::user()->isSuperAdmin())
+                                        Super Admin
+                                    @elseif(Auth::user()->isAdmin())
+                                        Administrator
+                                    @else
+                                        Customer
+                                    @endif
                                 </div>
                             </div>
 
@@ -106,9 +114,11 @@
             </x-responsive-nav-link>
             
             {{-- NEW: Mobile Link My Orders --}}
-            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')" class="rounded-2xl font-black">
-                {{ __('My Orders') }}
-            </x-responsive-nav-link>
+            @if(!Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')" class="rounded-2xl font-black">
+                    {{ __('My Orders') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <div class="pt-4 pb-6 border-t border-gray-100 px-6">
@@ -124,8 +134,14 @@
                     <div class="font-black text-gray-900 leading-none mb-1">{{ Auth::user()->name }}</div>
                     
                     {{-- Role Label Mobile --}}
-                    <div class="text-[10px] font-bold uppercase tracking-widest mb-1 {{ Auth::user()->is_admin ? 'text-blue-600' : 'text-gray-400' }}">
-                        {{ Auth::user()->is_admin ? 'Administrator' : 'Customer' }}
+                    <div class="text-[10px] font-bold uppercase tracking-widest mb-1 {{ Auth::user()->isAdmin() ? 'text-blue-600' : 'text-gray-400' }}">
+                        @if(Auth::user()->isSuperAdmin())
+                            Super Admin
+                        @elseif(Auth::user()->isAdmin())
+                            Administrator
+                        @else
+                            Customer
+                        @endif
                     </div>
                     
                     <div class="font-medium text-[11px] text-gray-500">{{ Auth::user()->email }}</div>

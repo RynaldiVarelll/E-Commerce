@@ -15,10 +15,12 @@
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </form>
-            <a href="{{ route('admin.products.create') }}" 
-                class="inline-flex items-center bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all active:scale-95 whitespace-nowrap">
-                <i class="fa-solid fa-plus mr-2"></i> TAMBAH PRODUK
-            </a>
+            @if(!auth()->user()->isSuperAdmin())
+                <a href="{{ route('admin.products.create') }}" 
+                    class="inline-flex items-center bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all active:scale-95 whitespace-nowrap">
+                    <i class="fa-solid fa-plus mr-2"></i> TAMBAH PRODUK
+                </a>
+            @endif
         </div>
     </div>
 
@@ -55,15 +57,20 @@
                 </div>
 
                 <div class="flex items-center gap-2 pt-4 border-t border-white/40 mt-4">
-                    <a href="{{ route('admin.products.edit', $p) }}" 
-                       class="flex-1 flex items-center justify-center bg-white/50 hover:bg-blue-600 hover:text-white py-3 rounded-2xl text-xs font-black transition-all border border-white/60">
-                        <i class="fa-solid fa-pen-to-square mr-2"></i> EDIT
-                    </a>
-                    <form action="{{ route('admin.products.destroy', $p) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')" class="flex-shrink-0">
+                    @if(!auth()->user()->isSuperAdmin())
+                        <a href="{{ route('admin.products.edit', $p) }}" 
+                           class="flex-1 flex items-center justify-center bg-white/50 hover:bg-blue-600 hover:text-white py-3 rounded-2xl text-xs font-black transition-all border border-white/60">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i> EDIT
+                        </a>
+                    @endif
+                    <form action="{{ route('admin.products.destroy', $p) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')" class="{{ auth()->user()->isSuperAdmin() ? 'w-full' : 'flex-shrink-0' }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="w-12 h-12 flex items-center justify-center bg-red-50/50 text-red-600 hover:bg-red-600 hover:text-white rounded-2xl transition-all border border-red-100/40">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button type="submit" class="{{ auth()->user()->isSuperAdmin() ? 'w-full' : 'w-12' }} h-12 flex items-center justify-center bg-red-50/50 text-red-600 hover:bg-red-600 hover:text-white rounded-2xl transition-all border border-red-100/40">
+                            <i class="fa-solid fa-trash-can {{ auth()->user()->isSuperAdmin() ? 'mr-2' : '' }}"></i>
+                            @if(auth()->user()->isSuperAdmin())
+                                <span class="text-xs font-black uppercase tracking-widest">Hapus Produk</span>
+                            @endif
                         </button>
                     </form>
                 </div>

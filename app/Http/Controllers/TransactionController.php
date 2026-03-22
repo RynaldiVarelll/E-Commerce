@@ -21,6 +21,10 @@ class TransactionController extends Controller
     */
     public function checkout(Request $request)
     {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard')->with('error', 'Admin tidak diperbolehkan melakukan transaksi pembelian.');
+        }
+
         $request->validate([
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
@@ -134,6 +138,10 @@ class TransactionController extends Controller
     */
     public function checkoutPage()
     {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $cartItems = Cart::where('user_id', auth()->id())
             ->with('product')
             ->get();

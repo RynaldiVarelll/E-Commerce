@@ -4,12 +4,12 @@
 <div class="container mx-auto px-6 py-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
         <div>
-            <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none uppercase italic">Kelola <span class="text-blue-600">Accounts.</span></h1>
-            <p class="text-gray-500 mt-2 font-medium">Atur hak akses admin dan customer dengan mudah.</p>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none uppercase italic">Kelola <span class="text-blue-600">Pengguna.</span></h1>
+            <p class="text-gray-500 mt-2 font-medium">Atur hak akses Seller dan Customer dengan mudah.</p>
         </div>
         <a href="{{ route('admin.users.create') }}" 
-            class="inline-flex items-center bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all active:scale-95 whitespace-nowrap">
-            <i class="fa-solid fa-user-plus mr-2"></i> TAMBAH AKUN
+            class="inline-flex items-center bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all active:scale-95 whitespace-nowrap uppercase tracking-widest text-xs">
+            <i class="fa-solid fa-user-plus mr-2"></i> TAMBAH PENGGUNA
         </a>
     </div>
 
@@ -20,7 +20,7 @@
                     <tr class="bg-white/30 text-gray-500 text-[11px] font-black uppercase tracking-[0.2em] backdrop-blur-md">
                         <th class="px-8 py-5 text-left">Nama & Profil</th>
                         <th class="px-8 py-5 text-left">Email</th>
-                        <th class="px-8 py-5 text-left">Role Access</th>
+                        <th class="px-8 py-5 text-left">Jabatan / Role</th>
                         <th class="px-8 py-5 text-center">Aksi</th>
                     </tr> 
                 </thead>
@@ -29,11 +29,11 @@
                     <tr class="hover:bg-white/40 transition-colors group">
                         <td class="px-8 py-6">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3 border border-white overflow-hidden">
+                                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-black text-xs mr-3 border border-white overflow-hidden shadow-inner">
                                     @if($user->profile_photo_path)
                                         <img src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
                                     @else
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&color=7F9CF5&background=EBF4FF" alt="{{ $user->name }}" class="w-full h-full object-cover">
                                     @endif
                                 </div>
                                 <span class="font-black text-gray-900">{{ $user->name }}</span>
@@ -41,9 +41,19 @@
                         </td>
                         <td class="px-8 py-6 text-sm text-gray-500 font-medium">{{ $user->email }}</td>
                         <td class="px-8 py-6">
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest {{ $user->role === 'admin' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700' }}">
-                                {{ $user->role }}
-                            </span>
+                            @if($user->isSuperAdmin())
+                                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-900 text-white">
+                                    Super Admin (Owner)
+                                </span>
+                            @elseif($user->role === 'admin')
+                                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-700">
+                                    Seller (Penjual)
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-green-100 text-green-700">
+                                    Customer (Pembeli)
+                                </span>
+                            @endif
                         </td>
                         <td class="px-8 py-6 text-center">
                             <div class="flex items-center justify-center gap-3">

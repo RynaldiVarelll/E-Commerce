@@ -115,7 +115,7 @@
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-4" alt="Mandiri">
                                 </div>
                                 <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
-                                    <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1200px-BNI_logo.svg.png" class="h-4" alt="BNI">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-4" alt="BNI">
                                 </div>
                                 <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-4" alt="BRI">
