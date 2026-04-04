@@ -6,8 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 
+/**
+ * Controller untuk mengelola keranjang belanja (cart).
+ * Menangani penambahan, pembaruan, penghapusan, dan pembersihan item di keranjang.
+ */
 class CartController extends Controller
 {
+    /**
+     * Menambahkan produk ke dalam keranjang.
+     * Validasi stok dan peran user (admin tidak boleh beli).
+     */
     public function addToCart(Request $request)
     {
         if (auth()->user()->isAdmin()) {
@@ -44,6 +52,9 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Product added to cart!');
     }
 
+    /**
+     * Menampilkan halaman keranjang belanja user.
+     */
     public function viewCart()
     {
         if (auth()->user()->isAdmin()) {
@@ -54,7 +65,10 @@ class CartController extends Controller
         return view('frontend.cart', compact('cartItems'));
     }
 
-    // 🟢 Ubah jumlah item di keranjang
+    /**
+     * Memperbarui jumlah (quantity) item di dalam keranjang.
+     * 🟢 Ubah jumlah item di keranjang
+     */
     public function updateQuantity(Request $request, Cart $cart)
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
@@ -71,14 +85,20 @@ class CartController extends Controller
         return back()->with('success', 'Jumlah produk berhasil diperbarui.');
     }
 
-    // 🗑️ Hapus item dari keranjang
+    /**
+     * Menghapus satu item dari keranjang.
+     * 🗑️ Hapus item dari keranjang
+     */
     public function removeItem(Cart $cart)
     {
         $cart->delete();
         return back()->with('success', 'Produk telah dihapus dari keranjang.');
     }
 
-    // 🧹 Kosongkan keranjang
+    /**
+     * Mengosongkan seluruh isi keranjang user.
+     * 🧹 Kosongkan keranjang
+     */
     public function clear()
     {
         Cart::where('user_id', auth()->id())->delete();

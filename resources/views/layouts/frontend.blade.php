@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoify — Smart Shopping Experience</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://kit.fontawesome.com/e16c014aae.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -68,17 +69,39 @@
                         {{-- Shopping Features (Only for Customers) --}}
                         @if(!auth()->user()->isAdmin())
                             {{-- Cart Button with Badge --}}
+                            @php
+                                $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
+                            @endphp
                             <a href="{{ route('cart.index') }}" 
                                class="relative p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all group"
                                title="Keranjang Belanja">
                                 <i class="fa-solid fa-cart-shopping text-lg"></i>
-                                <span class="absolute top-2 right-2 flex h-4 w-4">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 text-[10px] text-white items-center justify-center font-bold">
-                                        {{-- Jika ada variabel $cartCount bisa ditaruh di sini --}}
-                                        !
+                                @if($cartCount > 0)
+                                    <span class="absolute top-2 right-2 flex h-4 w-4">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 text-[10px] text-white items-center justify-center font-bold">
+                                            !
+                                        </span>
                                     </span>
-                                </span>
+                                @endif
+                            </a>
+
+                            {{-- Chat Button --}}
+                            <a href="{{ route('chat.index') }}" 
+                               class="relative p-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all group"
+                               title="Pesan Saya">
+                                <i class="fa-solid fa-comment-dots text-lg"></i>
+                                @php
+                                    $unreadTotal = \App\Models\Message::where('receiver_id', auth()->id())->where('is_read', false)->count();
+                                @endphp
+                                @if($unreadTotal > 0)
+                                    <span class="absolute top-2 right-2 flex h-4 w-4">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600 text-[10px] text-white items-center justify-center font-bold">
+                                            {{ $unreadTotal }}
+                                        </span>
+                                    </span>
+                                @endif
                             </a>
 
                             {{-- My Orders Button --}}

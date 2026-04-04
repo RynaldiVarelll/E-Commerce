@@ -12,13 +12,19 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Controller untuk mengelola transaksi, checkout, dan laporan keuangan.
+ */
 class TransactionController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | CHECKOUT PROCESS
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Memproses alur checkout belanja.
+     * 1. Validasi stok produk.
+     * 2. Pengelompokan produk berdasarkan penjual (seller).
+     * 3. Pembuatan transaksi untuk masing-masing penjual.
+     * 4. Pengurangan stok produk.
+     * 5. Pengosongan keranjang belanja.
+     */
     public function checkout(Request $request)
     {
         if (auth()->user()->isAdmin()) {
@@ -35,7 +41,7 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-            // 🔥 Ambil shipping
+            // 🔥 Ambil metode pengiriman
             $shippingMethod = ShippingMethod::findOrFail($request->shipping_method_id);
 
             // 🔥 Kelompokkan produk berdasarkan toko (seller_id)
@@ -74,7 +80,7 @@ class TransactionController extends Controller
                     'payment_method' => 'manual', 
                 ]);
 
-                // 🔥 Simpan items & kurangi stok
+                // 🔥 Simpan detail item transaksi & kurangi stok produk
                 foreach ($items as $item) {
                     $product = $item['product'];
                     $product->quantity -= $item['quantity'];
@@ -90,7 +96,7 @@ class TransactionController extends Controller
                 $transactionIds[] = $transaction->id;
             }
 
-            // 🔥 Kosongkan cart
+            // 🔥 Kosongkan cart belanja setelah checkout sukses
             Cart::where('user_id', auth()->id())->delete();
 
             DB::commit();
@@ -111,11 +117,9 @@ class TransactionController extends Controller
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CHECKOUT SUCCESS PAGE (MODIFIKASI BARU)
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Menampilkan halaman sukses setelah checkout.
+     */
     public function success()
     {
         $transactionIds = session('transactionIds');
@@ -131,11 +135,9 @@ class TransactionController extends Controller
         return view('frontend.checkout-success', compact('transactions'));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CHECKOUT PAGE
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Menampilkan halaman formulir checkout.
+     */
     public function checkoutPage()
     {
         if (auth()->user()->isAdmin()) {
@@ -151,11 +153,9 @@ class TransactionController extends Controller
         return view('frontend.checkout', compact('cartItems', 'shippingMethods'));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PRINT INVOICE (USER & ADMIN)
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Membuat dan mengunduh file PDF invoice untuk transaksi tertentu.
+     */
     public function printInvoice(Transaction $transaction)
     {
         // Izinkan jika dia pembeli pengguna, admin/seller pemilik transaksi, atau super admin
@@ -165,18 +165,16 @@ class TransactionController extends Controller
 
         $transaction->load('user', 'seller', 'items.product', 'shippingMethod');
 
-        // Menggunakan view admin.transactions.invoice yang sudah kita rapikan tadi
+        // Menggunakan view admin.transactions.invoice
         $pdf = Pdf::loadView('admin.transactions.invoice', compact('transaction'))
             ->setPaper('A4', 'portrait');
 
         return $pdf->download("Invoice-{$transaction->invoice_code}.pdf");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | GENERATE REPORT (ADMIN)
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Membuat dan mengunduh laporan transaksi dalam rentang waktu tertentu (PDF).
+     */
     public function generateReport(Request $request)
     {
         $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
@@ -202,11 +200,9 @@ class TransactionController extends Controller
         return $pdf->download("laporan-transaksi-$startDate-$endDate.pdf");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DELETE TRANSACTION
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Menghapus data transaksi (hanya oleh Super Admin atau Seller pemilik).
+     */
     public function destroy(Transaction $transaction)
     {
         if (!auth()->user()->isSuperAdmin() && $transaction->seller_id !== auth()->id()) {

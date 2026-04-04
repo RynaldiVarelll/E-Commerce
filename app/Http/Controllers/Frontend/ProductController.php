@@ -17,11 +17,18 @@ class ProductController extends Controller
         }
 
         $query = Product::query()->with(['category', 'user']);
+        $shops = collect(); // Default empty collection
 
-    // Jika pencarian text
-    if ($request->has('search') && $request->search != '') {
-        $query->where('name', 'like', '%' . $request->search . '%');
-    }
+        // Jika pencarian text
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+
+            // Cari toko yang namanya mirip (Sellers only)
+            $shops = \App\Models\User::where('role', 'admin')
+                ->where('name', 'like', '%' . $searchTerm . '%')
+                ->get();
+        }
 
     // Jika kategori dipilih
     if ($request->has('category') && $request->category) {
@@ -31,7 +38,7 @@ class ProductController extends Controller
     $products = $query->where('is_active', true)->latest()->get();
     $categories = Category::all();
 
-    return view('frontend.home', compact('products', 'categories'));
+        return view('frontend.home', compact('products', 'categories', 'shops'));
 }
 
 

@@ -51,13 +51,6 @@
                             class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-black text-lg placeholder-gray-400 text-gray-900" 
                             min="0" required>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Link WhatsApp (lengkap)</label>
-                        <input type="url" name="whatsapp_link" value="{{ old('whatsapp_link', $product->whatsapp_link) }}" 
-                            class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-gray-900 placeholder-gray-400 text-sm" 
-                            placeholder="https://wa.me/6281234567890" required>
-                    </div>
                 </div>
 
                 {{-- Kanan --}}
@@ -71,23 +64,44 @@
 
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Gambar Utama (Ubah Opsional)</label>
+                        @if($product->image_url)
+                            <div class="mb-3 relative w-32 h-32 rounded-2xl overflow-hidden border border-white/60 shadow-lg">
+                                <img src="{{ $product->image_url }}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20"></div>
+                            </div>
+                        @endif
                         <input type="file" name="image" 
                             class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" 
                             accept="image/*">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Galeri Gambar (Multi Upload)</label>
-                        <input type="file" name="images[]" 
-                            class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" 
-                            accept="image/*" multiple>
-                    </div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Galeri Gambar Saat Ini</label>
+                        @if($product->images->count() > 0)
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                @foreach($product->images as $img)
+                                    <div class="w-16 h-16 rounded-xl overflow-hidden border border-white/60 shadow-md">
+                                        <img src="{{ $img->image_url }}" class="w-full h-full object-cover">
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest italic mb-4">Belum ada galeri gambar.</p>
+                        @endif
 
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Galeri Gambar (URL, 1 per baris)</label>
-                        <textarea name="images" rows="4" 
-                            class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-medium text-gray-900 placeholder-gray-400 text-sm" 
-                            placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg">{{ implode("\n", $product->images->pluck('image_url')->toArray()) ?? old('images') }}</textarea>
+                        <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2 mt-4 text-blue-600">Ganti Semua Galeri (Opsional)</label>
+                        <div class="space-y-3">
+                            <input type="file" name="images[]" 
+                                class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-[11px] text-gray-900 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" 
+                                accept="image/*">
+                            <input type="file" name="images[]" 
+                                class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-[11px] text-gray-900 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" 
+                                accept="image/*">
+                            <input type="file" name="images[]" 
+                                class="w-full bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all font-bold text-[11px] text-gray-900 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" 
+                                accept="image/*">
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-widest italic">* Mengunggah gambar baru akan menggantikan seluruh galeri lama.</p>
                     </div>
 
                     <div class="flex items-center bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-4">

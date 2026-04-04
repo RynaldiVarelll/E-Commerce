@@ -22,13 +22,25 @@
                         <i class="fa-solid fa-house-chimney mr-2 text-xs"></i>{{ __('Dashboard') }}
                     </a>
 
-                    {{-- NEW: Tombol My Orders untuk Customer --}}
-                    @if(!Auth::user()->isAdmin())
-                        <a href="{{ route('orders.index') }}" 
-                           class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-extrabold tracking-tight transition-all duration-200 {{ request()->routeIs('orders.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-gray-500 hover:text-blue-600 hover:bg-white' }}">
-                            <i class="fa-solid fa-receipt mr-2 text-xs"></i>{{ __('My Orders') }}
+                    {{-- Products Menu for Admin --}}
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('admin.products.index') }}" 
+                           class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-extrabold tracking-tight transition-all duration-200 {{ request()->routeIs('admin.products.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-gray-500 hover:text-blue-600 hover:bg-white' }}">
+                            <i class="fa-solid fa-box mr-2 text-xs"></i>{{ __('Produk') }}
                         </a>
                     @endif
+
+                    {{-- Chat Menu for Everyone --}}
+                    <a href="{{ route('chat.index') }}" 
+                       class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-extrabold tracking-tight transition-all duration-200 {{ request()->routeIs('chat.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-gray-500 hover:text-blue-600 hover:bg-white' }}">
+                        <i class="fa-solid fa-comments mr-2 text-xs"></i>{{ __('Chat') }}
+                        @php
+                            $unreadCount = \App\Models\Message::where('receiver_id', auth()->id())->where('is_read', false)->count();
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="ms-2 px-1.5 py-0.5 bg-red-500 text-white text-[10px] rounded-full animate-pulse shadow-sm">{{ $unreadCount }}</span>
+                        @endif
+                    </a>
                 </div>
             </div>
 

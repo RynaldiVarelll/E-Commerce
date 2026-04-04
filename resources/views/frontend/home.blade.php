@@ -24,6 +24,39 @@
             </div>
         </div>
 
+        {{-- Hasil Pencarian Toko --}}
+        @if($shops->isNotEmpty())
+            <div class="mb-12 animate-fade-in">
+                <div class="flex items-center space-x-2 mb-6">
+                    <div class="w-2 h-8 bg-indigo-600 rounded-full shadow-lg shadow-indigo-200"></div>
+                    <h2 class="text-3xl font-black text-gray-900 tracking-tight uppercase italic">Toko <span class="text-indigo-600">Terindex.</span></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($shops as $shop)
+                        <a href="{{ route('shop.show', $shop->id) }}" class="glass-panel rounded-[2rem] p-6 flex items-center gap-5 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1.5 transition-all duration-500 group bg-white/60 border border-white">
+                            <div class="w-20 h-20 rounded-2xl overflow-hidden border-2 border-white shadow-xl shadow-indigo-100/50 flex-shrink-0">
+                                <img src="{{ $shop->profile_photo_url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-black text-gray-900 uppercase tracking-tighter group-hover:text-indigo-600 transition-colors line-clamp-1">{{ $shop->name }}</h3>
+                                <div class="flex items-center gap-3 mt-1.5">
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                                        <i class="fa-solid fa-box-open text-indigo-400"></i>
+                                        {{ $shop->products->count() }} Item
+                                    </span>
+                                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <span class="text-[10px] font-bold text-green-600 uppercase tracking-widest">Verified</span>
+                                </div>
+                                <div class="mt-3 inline-flex items-center gap-2 text-[9px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                                    Kunjungi Toko <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <div class="mb-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>

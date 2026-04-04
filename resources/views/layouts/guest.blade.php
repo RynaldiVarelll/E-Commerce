@@ -41,6 +41,16 @@
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-80"></div>
             <div class="absolute -top-32 -left-32 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl pointer-events-none"></div>
             
+            {{-- Back Button --}}
+            <div class="relative z-20 mb-10">
+                <a href="{{ route('home') }}" class="group inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/40 hover:bg-white/80 border border-white/60 hover:border-blue-200 transition-all duration-300 shadow-sm">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-arrow-left-long text-xs transition-transform group-hover:-translate-x-1"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-gray-500 group-hover:text-blue-600 uppercase tracking-widest leading-none">Kembali ke Beranda</span>
+                </a>
+            </div>
+
             <div class="mb-14 relative z-10 text-left">
                 {{-- Header Header --}}
                 <div class="flex items-center justify-between mb-8">

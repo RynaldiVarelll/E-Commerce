@@ -54,6 +54,11 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->pluck('total', 'date');
 
+        // Chat Unread Count
+        $unreadChatCount = \App\Models\Message::where('receiver_id', $user->id)
+            ->where('is_read', false)
+            ->count();
+
         return view('admin.dashboard.index', [
             'totalUsers' => $totalUsers,
             'totalTransactions' => $totalTransactions,
@@ -65,6 +70,7 @@ class DashboardController extends Controller
             'latestProducts' => $latestProducts,
             'recentTransactions' => $recentTransactions,
             'revenueData' => $revenueData,
+            'unreadChatCount' => $unreadChatCount,
         ]);
     }
 

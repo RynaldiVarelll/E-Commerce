@@ -39,12 +39,13 @@
         </div>
 
         {{-- Header & Status --}}
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 pb-8 border-b border-gray-100/50">
             <div>
                 <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none">
                     Detail Pesanan <span class="text-blue-600">#{{ $transaction->id }}</span>
                 </h1>
-                <p class="text-gray-500 font-medium mt-2 italic">
+                <p class="text-gray-500 font-medium mt-3 italic flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-calendar-day text-blue-400"></i>
                     Dipesan pada {{ $transaction->created_at->format('d F Y, H:i') }} WIB
                 </p>
             </div>
@@ -59,9 +60,93 @@
                         'cancelled' => 'bg-red-100 text-red-700',
                     ];
                 @endphp
-                <span class="px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.15em] {{ $statusClasses[$transaction->status] ?? 'bg-gray-100 text-gray-600' }}">
+                <span class="px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] {{ $statusClasses[$transaction->status] ?? 'bg-gray-100 text-gray-600' }} shadow-sm">
                     Status: {{ $transaction->status }}
                 </span>
+            </div>
+        </div>
+        
+        {{-- Progress Status Bar --}}
+        <div class="mb-12 glass-panel rounded-[3rem] p-8 md:p-12 relative overflow-hidden">
+            {{-- Background patterns --}}
+            <div class="absolute -left-10 -top-10 w-40 h-40 bg-blue-50/50 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-50/50 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-xs font-black uppercase tracking-[0.25em] text-gray-400">Order Tracking</h2>
+                    @if($transaction->status == 'cancelled')
+                        <div class="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-1.5 rounded-full border border-red-100">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Pesanan Dibatalkan</span>
+                        </div>
+                    @endif
+                </div>
+
+                @php
+                    $stages = [
+                        ['id' => 'confirmed', 'label' => 'Konfirmasi', 'icon' => 'fa-check-circle', 'desc' => 'Pembayaran Berhasil'],
+                        ['id' => 'shipped', 'label' => 'Pengiriman', 'icon' => 'fa-truck-fast', 'desc' => 'Sedang Dikirim'],
+                        ['id' => 'completed', 'label' => 'Selesai', 'icon' => 'fa-box-open', 'desc' => 'Pesanan Diterima'],
+                    ];
+                    
+                    $currentStatus = $transaction->status;
+                    $statusOrder = ['pending' => 0, 'confirmed' => 1, 'shipped' => 2, 'completed' => 3, 'cancelled' => -1];
+                    $currentPriority = $statusOrder[$currentStatus] ?? 0;
+                @endphp
+
+                <div class="relative">
+                    {{-- Progress Line --}}
+                    <div class="absolute top-1/2 left-0 w-full h-[2px] bg-gray-100 -translate-y-1/2 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-600 transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
+                             style="width: {{ $currentPriority <= 1 ? '0' : ($currentPriority == 2 ? '50' : '100') }}%">
+                        </div>
+                    </div>
+
+                    {{-- Step Points --}}
+                    <div class="relative flex justify-between items-center">
+                        @foreach($stages as $index => $stage)
+                            @php
+                                $isCompleted = $currentPriority >= ($index + 1);
+                                $isActive = $currentPriority == ($index + 1);
+                                $isFailed = $currentStatus == 'cancelled' && $currentPriority < ($index + 1);
+                            @endphp
+                            
+                            <div class="flex flex-col items-center group relative">
+                                <div class="w-16 h-16 md:w-20 md:h-20 rounded-[1.75rem] flex items-center justify-center transition-all duration-500 shadow-xl border-4
+                                    {{ $isCompleted ? 'bg-blue-600 border-white text-white rotate-6' : 'bg-white border-gray-100 text-gray-300' }}
+                                    {{ $isActive ? 'ring-8 ring-blue-50/50 scale-110 !rotate-0' : '' }}
+                                    {{ $isFailed && $index == 0 ? 'bg-red-50 border-red-100 text-red-400 opacity-50' : '' }}">
+                                    
+                                    <i class="fa-solid {{ $stage['icon'] }} text-xl md:text-2xl transition-transform group-hover:scale-110"></i>
+                                    
+                                    @if($isActive)
+                                        <div class="absolute -inset-1 bg-blue-400 rounded-[1.75rem] blur opacity-20 animate-pulse"></div>
+                                    @endif
+                                </div>
+                                
+                                <div class="mt-6 text-center">
+                                    <p class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] {{ $isCompleted ? 'text-gray-900' : 'text-gray-400' }}">
+                                        {{ $stage['label'] }}
+                                    </p>
+                                    <p class="text-[9px] font-medium text-gray-400 mt-1 hidden md:block">
+                                        {{ $stage['desc'] }}
+                                    </p>
+                                </div>
+
+                                {{-- Tooltip --}}
+                                @if($isActive)
+                                    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[9px] font-black py-1.5 px-4 rounded-full uppercase tracking-widest whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                                        Status Sekarang
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
 

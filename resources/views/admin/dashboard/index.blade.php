@@ -25,21 +25,35 @@
                 ['label' => 'Total Transactions', 'value' => $totalTransactions, 'icon' => 'fa-receipt', 'color' => 'indigo'],
                 ['label' => 'Total Revenue', 'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.'), 'icon' => 'fa-wallet', 'color' => 'green'],
                 ['label' => 'Total Products', 'value' => $totalProducts, 'icon' => 'fa-box-open', 'color' => 'orange'],
+                ['label' => 'Unread Chats', 'value' => $unreadChatCount, 'icon' => 'fa-comments', 'color' => 'blue', 'link' => route('chat.index')],
             ];
         @endphp
 
         @foreach($stats as $stat)
-        <div class="glass-panel p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-gray-300/30 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+        @isset($stat['link'])
+        <a href="{{ $stat['link'] }}" class="block group">
+        @endisset
+        <div class="glass-panel p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-gray-300/30 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden h-full">
             <div class="absolute -right-4 -top-4 w-24 h-24 bg-{{ $stat['color'] }}-100 rounded-full blur-2xl opacity-60 pointer-events-none"></div>
             <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-{{ $stat['color'] }}-100 text-{{ $stat['color'] }}-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div class="w-12 h-12 bg-{{ $stat['color'] }}-100 text-{{ $stat['color'] }}-600 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
                     <i class="fa-solid {{ $stat['icon'] }} text-xl"></i>
                 </div>
-                <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Live Data</span>
+                @if(isset($stat['link']) && $stat['value'] > 0)
+                    <span class="flex h-3 w-3 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
+                @else
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Live Data</span>
+                @endif
             </div>
             <h2 class="text-gray-500 text-sm font-bold uppercase tracking-tight">{{ $stat['label'] }}</h2>
             <p class="text-3xl font-black text-gray-900 mt-1 leading-none">{{ $stat['value'] }}</p>
         </div>
+        @isset($stat['link'])
+        </a>
+        @endisset
         @endforeach
     </div>
 
@@ -121,7 +135,7 @@
                                             <select onchange="updateStatus({{ $tx->id }}, this.value)" 
                                                     class="bg-gray-50 border border-gray-200 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
                                                 <option disabled selected>Update</option>
-                                                @foreach(['pending', 'confirmed', 'shipped', 'completed', 'cancelled'] as $status)
+                                                @foreach(['shipped', 'completed', 'cancelled'] as $status)
                                                     <option value="{{ $status }}">{{ ucfirst($status) }}</option>
                                                 @endforeach
                                             </select>

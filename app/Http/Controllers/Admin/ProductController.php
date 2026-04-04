@@ -10,8 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controller untuk manajemen produk di area Admin/Seller.
+ * Mendukung pencarian, pembuatan, pembaruan, penghapusan, dan pengaturan status aktif produk.
+ */
 class ProductController extends Controller
 {
+    /**
+     * Menampilkan daftar produk yang dimiliki oleh user (Seller) atau semua produk (Super Admin).
+     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -29,6 +36,9 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products'));
     }
 
+    /**
+     * Menampilkan formulir tambah produk baru.
+     */
     public function create()
     {
         $categories = Category::all();
@@ -36,6 +46,9 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'product'));
     }
 
+    /**
+     * Menyimpan data produk baru ke database (termasuk upload gambar).
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -43,7 +56,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'required',
-            'whatsapp_link' => 'nullable|url',
+            'whatsapp_link' => 'nullable',
             'quantity' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
             'images' => 'nullable|array',
@@ -52,6 +65,7 @@ class ProductController extends Controller
 
         $imageName = null;
 
+        // 🔥 Proses upload gambar utama
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $imageName = basename($path); // simpan cuma nama file
@@ -70,16 +84,18 @@ class ProductController extends Controller
             'quantity' => $request->quantity,
         ]);
 
-        // Simpan galeri
+        // 🔥 Simpan galeri gambar tambahan
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $i => $file) {
-                $path = $file->store('product_images', 'public');
+                if ($file && $file->isValid()) {
+                    $path = $file->store('product_images', 'public');
 
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_url' => basename($path),
-                    'position' => $i,
-                ]);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => basename($path),
+                        'position' => $i,
+                    ]);
+                }
             }
         }
 
@@ -87,6 +103,9 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil ditambahkan.');
     }
 
+    /**
+     * Menampilkan formulir edit produk.
+     */
     public function edit(Product $product)
     {
         if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
@@ -98,6 +117,9 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
+    /**
+     * Memperbarui data produk (termasuk penggantian gambar).
+     */
     public function update(Request $request, Product $product)
     {
         if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
@@ -115,12 +137,12 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
         ]);
 
-        // 🔥 Ganti gambar utama
+        // 🔥 Ganti gambar utama jika ada file baru
         if ($request->hasFile('image')) {
 
-            // hapus lama
-            if ($product->image_url && Storage::disk('public')->exists('products/' . $product->image_url)) {
-                Storage::disk('public')->delete('products/' . $product->image_url);
+            // hapus file gambar lama dari storage
+            if ($product->getRawOriginal('image_url') && Storage::disk('public')->exists('products/' . $product->getRawOriginal('image_url'))) {
+                Storage::disk('public')->delete('products/' . $product->getRawOriginal('image_url'));
             }
 
             $path = $request->file('image')->store('products', 'public');
@@ -129,24 +151,32 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        // 🔥 Update galeri
+        // 🔥 Update galeri gambar tambahan
         if ($request->hasFile('images')) {
 
-            foreach ($product->images as $img) {
-                if (Storage::disk('public')->exists('product_images/' . $img->image_url)) {
-                    Storage::disk('public')->delete('product_images/' . $img->image_url);
+            // Hapus galeri lama hanya jika ada gambar baru yang diunggah
+            // Filter array untuk memastikan ada setidaknya satu file valid
+            $validFiles = array_filter($request->file('images'), function($f) {
+                return $f && $f->isValid();
+            });
+
+            if (count($validFiles) > 0) {
+                foreach ($product->images as $img) {
+                    if (Storage::disk('public')->exists('product_images/' . $img->getRawOriginal('image_url'))) {
+                        Storage::disk('public')->delete('product_images/' . $img->getRawOriginal('image_url'));
+                    }
+                    $img->delete();
                 }
-                $img->delete();
-            }
 
-            foreach ($request->file('images') as $i => $file) {
-                $path = $file->store('product_images', 'public');
+                foreach ($validFiles as $i => $file) {
+                    $path = $file->store('product_images', 'public');
 
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_url' => basename($path),
-                    'position' => $i,
-                ]);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => basename($path),
+                        'position' => $i,
+                    ]);
+                }
             }
         }
 
@@ -155,19 +185,24 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
+    /**
+     * Menghapus produk beserta seluruh gambarnya dari storage & database.
+     */
     public function destroy(Product $product)
     {
         if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
-        if ($product->image_url && Storage::disk('public')->exists('products/' . $product->image_url)) {
-            Storage::disk('public')->delete('products/' . $product->image_url);
+        // Hapus gambar utama
+        if ($product->getRawOriginal('image_url') && Storage::disk('public')->exists('products/' . $product->getRawOriginal('image_url'))) {
+            Storage::disk('public')->delete('products/' . $product->getRawOriginal('image_url'));
         }
 
+        // Hapus semua gambar di galeri
         foreach ($product->images as $img) {
-            if (Storage::disk('public')->exists('product_images/' . $img->image_url)) {
-                Storage::disk('public')->delete('product_images/' . $img->image_url);
+            if (Storage::disk('public')->exists('product_images/' . $img->getRawOriginal('image_url'))) {
+                Storage::disk('public')->delete('product_images/' . $img->getRawOriginal('image_url'));
             }
             $img->delete();
         }
@@ -178,6 +213,9 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil dihapus.');
     }
 
+    /**
+     * Mengubah status aktif/non-aktif produk.
+     */
     public function toggleActive(Product $product)
     {
         if (!auth()->user()->isSuperAdmin() && $product->user_id !== auth()->id()) {
