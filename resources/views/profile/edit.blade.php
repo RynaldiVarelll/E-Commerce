@@ -143,7 +143,7 @@
             @apply text-gray-500;
         }
         /* Custom Input styling for Breeze Forms */
-        input[type="text"], input[type="email"], input[type="password"] {
+        input[type="text"], input[type="email"], input[type="password"], textarea {
             @apply w-full rounded-2xl border-gray-100 bg-gray-50/50 px-4 py-3 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300;
         }
     </style>

@@ -53,6 +53,18 @@
             @endif
         </div>
 
+        <div class="space-y-2">
+            <x-input-label for="address" :value="__('Alamat Lengkap Rumah (Sesuai Shopee)')" class="text-xs font-bold uppercase tracking-widest text-gray-400" />
+            <div class="relative">
+                <i class="fa-solid fa-map-location-dot absolute left-4 top-4 text-blue-500/50"></i>
+                <textarea id="address" name="address" 
+                          class="!pl-12 min-h-[120px]" 
+                          placeholder="Contoh: Jl. Merdeka No. 123, Kel. Gambir, Kec. Gambir, Jakarta Pusat, 10110"
+                          required>{{ old('address', $user->address) }}</textarea>
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('address')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

@@ -31,6 +31,10 @@ class TransactionController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Admin tidak diperbolehkan melakukan transaksi pembelian.');
         }
 
+        if (empty(auth()->user()->address)) {
+            return redirect()->route('profile.edit')->with('error', 'Silakan lengkapi alamat rumah Anda terlebih dahulu.');
+        }
+
         $request->validate([
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
@@ -142,6 +146,10 @@ class TransactionController extends Controller
     {
         if (auth()->user()->isAdmin()) {
             return redirect()->route('admin.dashboard');
+        }
+
+        if (empty(auth()->user()->address)) {
+            return redirect()->route('profile.edit')->with('error', 'Silakan lengkapi alamat rumah Anda terlebih dahulu sebelum melakukan checkout.');
         }
 
         $cartItems = Cart::where('user_id', auth()->id())

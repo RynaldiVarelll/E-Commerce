@@ -71,6 +71,20 @@
             @endif
         </div>
 
+        <!-- Address -->
+        <div>
+            <label for="address" class="custom-label">{{ __('Alamat Rumah') }}</label>
+            <div class="relative">
+                <i class="fa-solid fa-map-location-dot absolute left-5 top-5 text-gray-400"></i>
+                <textarea id="address" name="address" required
+                          placeholder="Masukkan alamat lengkap rumah Anda"
+                          class="custom-input !pl-14 min-h-[100px] py-4">{{ old('address') }}</textarea>
+            </div>
+            @if ($errors->has('address'))
+                <p class="mt-1.5 text-[10px] font-bold text-red-500 ml-2 italic uppercase tracking-wider">{{ $errors->first('address') }}</p>
+            @endif
+        </div>
+
         <!-- Password Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Password -->

@@ -34,6 +34,39 @@
                     {{-- LEFT COLUMN --}}
                     <div class="lg:col-span-2 space-y-6">
 
+                        {{-- ALAMAT PENGIRIMAN (READ-ONLY) --}}
+                        <div class="glass-panel rounded-[2rem] p-8 border-l-4 border-blue-500 shadow-xl shadow-blue-500/5">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-800 flex items-center">
+                                    <i class="fa-solid fa-location-dot text-blue-500 mr-2"></i>
+                                    Alamat Pengiriman
+                                </h3>
+                                <a href="{{ route('profile.edit') }}" class="text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all">
+                                    Ubah Alamat
+                                </a>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
+                                    <i class="fa-solid fa-house-user"></i>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="font-black text-gray-900">{{ auth()->user()->name }}</p>
+                                    <p class="text-sm text-gray-500 flex items-center">
+                                        <i class="fa-solid fa-envelope mr-1.5 text-xs"></i>
+                                        {{ auth()->user()->email }}
+                                    </p>
+                                    <div class="mt-3 p-4 bg-gray-50/50 border border-gray-100 rounded-2xl italic text-gray-600 text-sm leading-relaxed">
+                                        {{ auth()->user()->address ?? 'Alamat belum diatur. Silakan klik "Ubah Alamat" untuk menambahkan alamat rumah Anda.' }}
+                                    </div>
+                                    <p class="text-[10px] font-bold text-orange-500 uppercase tracking-tighter mt-2">
+                                        <i class="fa-solid fa-circle-info mr-1"></i>
+                                        Alamat ini wajib diisi dan tidak dapat diubah di halaman ini.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Rincian Pesanan --}}
                         <div class="glass-panel rounded-[2rem] overflow-hidden">
                             <div class="p-6 border-b border-white/40 bg-white/20 backdrop-blur-md">
