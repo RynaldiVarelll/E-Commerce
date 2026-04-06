@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
+      x-data="{ darkMode: document.documentElement.classList.contains('dark') }" 
+      @theme-updated.window="darkMode = $event.detail.isDark"
+      :class="{ 'dark': darkMode }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,9 +10,43 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        {{-- Icons & Fonts --}}
+        <script src="https://kit.fontawesome.com/e16c014aae.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+        {{-- Global Theme Switcher & Flicker Prevention --}}
+        <script>
+            (function() {
+                const applyTheme = (isDark) => {
+                    if (isDark) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                    // Sync Alpine if initialized
+                    window.dispatchEvent(new CustomEvent('theme-updated', { detail: { isDark } }));
+                };
+
+                const isDarkMode = localStorage.getItem('darkMode') === 'true' || 
+                                (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                
+                applyTheme(isDarkMode);
+
+                window.toggleDarkMode = function() {
+                    const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                    const nextDark = !isCurrentlyDark;
+                    applyTheme(nextDark);
+                    localStorage.setItem('darkMode', nextDark);
+                };
+
+                // Sync across tabs
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'darkMode') {
+                        applyTheme(e.newValue === 'true');
+                    }
+                });
+            })();
+        </script>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

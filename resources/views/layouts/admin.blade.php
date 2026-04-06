@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
+<html lang="en" 
+      x-data="{ darkMode: document.documentElement.classList.contains('dark') }" 
+      @theme-updated.window="darkMode = $event.detail.isDark"
+      :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +12,44 @@
     <script src="https://kit.fontawesome.com/e16c014aae.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    {{-- Global Theme Switcher & Flicker Prevention --}}
+    <script>
+        (function() {
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                // Sync Alpine if initialized
+                window.dispatchEvent(new CustomEvent('theme-updated', { detail: { isDark } }));
+            };
+
+            const isDarkMode = localStorage.getItem('darkMode') === 'true' || 
+                             (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            applyTheme(isDarkMode);
+
+            window.toggleDarkMode = function() {
+                const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                const nextDark = !isCurrentlyDark;
+                applyTheme(nextDark);
+                localStorage.setItem('darkMode', nextDark);
+            };
+
+            // Sync across tabs
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'darkMode') {
+                    applyTheme(e.newValue === 'true');
+                }
+            });
+        })();
+    </script>
+    
     <style>
         body { font-family: 'Poppins', sans-serif; }
         
-        /* Glassmorphism Classes */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-        }
 
-        .dark .glass-panel {
-            background: rgba(17, 24, 39, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
         
         .sidebar-link.active {
             background: rgba(239, 246, 255, 0.7);
@@ -139,9 +163,14 @@
             <header class="glass-panel px-8 py-4 flex justify-between items-center sticky top-0 z-30 border-b border-white/60 dark:border-white/5">
                 <div class="flex items-center">
                     {{-- Dark Mode Toggle --}}
-                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" 
+                    <button @click="window.toggleDarkMode()" 
                             class="p-2.5 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all group">
-                        <i class="fa-solid" :class="darkMode ? 'fa-sun text-yellow-400' : 'fa-moon'"></i>
+                        <template x-if="darkMode">
+                            <i class="fa-solid fa-sun text-yellow-400 animate-spin-slow"></i>
+                        </template>
+                        <template x-if="!darkMode">
+                            <i class="fa-solid fa-moon text-blue-600"></i>
+                        </template>
                     </button>
                 </div>
                 <div class="flex items-center gap-4">

@@ -5,7 +5,7 @@
 @layer components {
     /* Custom Input Styles */
     .custom-input {
-        @apply block w-full bg-white/40 dark:bg-gray-800/40 border-white dark:border-gray-700 text-sm font-bold text-gray-900 dark:text-white rounded-2xl px-5 py-4 placeholder-gray-400 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white dark:focus:bg-gray-800 transition-all duration-500 shadow-sm outline-none !important;
+        @apply block w-full bg-white/50 dark:bg-black/20 border border-white/20 dark:border-white/5 text-sm font-bold text-gray-900 dark:text-white rounded-2xl px-5 py-4 placeholder-gray-300 dark:placeholder:text-gray-600 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white dark:focus:bg-gray-900 transition-all duration-500 shadow-sm outline-none !important;
     }
 
     .custom-label {
@@ -15,23 +15,15 @@
     .btn-primary {
         @apply w-full bg-gray-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white font-black py-5 rounded-[1.5rem] shadow-2xl shadow-gray-300 dark:shadow-none active:scale-[0.97] transition-all duration-500 tracking-[0.2em] uppercase text-[11px] flex justify-center items-center !important;
     }
-}
 
-/* Glassmorphism Classes */
-.glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 
-        0 25px 50px -12px rgba(31, 38, 135, 0.1),
-        inset 0 0 80px rgba(255, 255, 255, 0.3);
-}
+    /* Premium Glassmorphism */
+    .glass-panel {
+        @apply bg-white/65 dark:bg-gray-900/60 backdrop-blur-2xl border border-white/80 dark:border-gray-800 shadow-xl shadow-blue-900/5 dark:shadow-none transition-all duration-500;
+    }
 
-.dark .glass-card {
-    background: rgba(17, 24, 39, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    .glass-card {
+        @apply bg-white/70 dark:bg-gray-900/70 backdrop-blur-[40px] border border-white/90 dark:border-white/5 shadow-2xl shadow-blue-100 dark:shadow-none transition-all;
+    }
 }
 
 .logo-gradient {
@@ -62,3 +54,9 @@
 }
 
 .animate-fade-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 8s linear infinite; }

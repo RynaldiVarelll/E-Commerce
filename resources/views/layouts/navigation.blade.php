@@ -1,4 +1,6 @@
-<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 shadow-sm dark:shadow-none transition-all duration-300">
+<nav x-data="{ open: false, darkMode: document.documentElement.classList.contains('dark') }" 
+     @theme-updated.window="darkMode = $event.detail.isDark"
+     class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 shadow-sm dark:shadow-none transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20"> 
             <div class="flex items-center">
@@ -45,7 +47,18 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div class="h-8 w-[1px] bg-gray-100 mx-4"></div>
+                {{-- Dark Mode Toggle --}}
+                <button @click="window.toggleDarkMode()" 
+                        class="p-2.5 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all group border border-transparent dark:border-gray-700">
+                    <template x-if="darkMode">
+                        <i class="fa-solid fa-sun text-yellow-400 animate-spin-slow"></i>
+                    </template>
+                    <template x-if="!darkMode">
+                        <i class="fa-solid fa-moon text-blue-600"></i>
+                    </template>
+                </button>
+
+                <div class="h-8 w-[1px] bg-gray-100 dark:bg-gray-700 mx-4"></div>
                 
                 <x-dropdown align="right" width="56">
                     <x-slot name="trigger">
@@ -131,6 +144,20 @@
                     {{ __('My Orders') }}
                 </x-responsive-nav-link>
             @endif
+
+            {{-- Mobile Dark Mode Toggle --}}
+            <div class="mt-4 px-3 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-2xl flex items-center justify-between">
+                <span class="text-sm font-bold text-gray-600 dark:text-gray-400">Mode Kegelapan</span>
+                <button @click="window.toggleDarkMode()" 
+                        class="p-2.5 bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-xl shadow-sm transition-all border border-gray-100 dark:border-gray-600">
+                    <template x-if="darkMode">
+                        <i class="fa-solid fa-sun text-yellow-400 animate-spin-slow"></i>
+                    </template>
+                    <template x-if="!darkMode">
+                        <i class="fa-solid fa-moon text-blue-600"></i>
+                    </template>
+                </button>
+            </div>
         </div>
 
         <div class="pt-4 pb-6 border-t border-gray-100 dark:border-gray-800 px-6">

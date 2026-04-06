@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
+<html lang="en" class="scroll-smooth" 
+      x-data="{ darkMode: document.documentElement.classList.contains('dark') }" 
+      @theme-updated.window="darkMode = $event.detail.isDark"
+      :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +11,40 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://kit.fontawesome.com/e16c014aae.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    {{-- Global Theme Switcher & Flicker Prevention --}}
+    <script>
+        (function() {
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                // Sync Alpine if initialized
+                window.dispatchEvent(new CustomEvent('theme-updated', { detail: { isDark } }));
+            };
+
+            const isDarkMode = localStorage.getItem('darkMode') === 'true' || 
+                             (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            applyTheme(isDarkMode);
+
+            window.toggleDarkMode = function() {
+                const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                const nextDark = !isCurrentlyDark;
+                applyTheme(nextDark);
+                localStorage.setItem('darkMode', nextDark);
+            };
+
+            // Sync across tabs
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'darkMode') {
+                    applyTheme(e.newValue === 'true');
+                }
+            });
+        })();
+    </script>
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -55,9 +92,9 @@
     
     {{-- MacOS-like Abstract Background --}}
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-blue-200/40 dark:bg-blue-900/20 blur-[100px] animate-blob mix-blend-multiply"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 dark:bg-indigo-900/20 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
-        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-blue-100/40 dark:bg-blue-800/10 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-[100px] animate-blob"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-indigo-400/20 dark:bg-indigo-600/10 blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-sky-400/20 dark:bg-sky-600/10 blur-[120px] animate-blob animation-delay-4000"></div>
     </div>
     
     <nav class="glass-nav sticky top-0 z-[100] transition-all duration-300">
@@ -76,10 +113,15 @@
             {{-- Right Menu --}}
             <div class="flex items-center gap-2">
                 {{-- Dark Mode Toggle --}}
-                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" 
+                <button @click="window.toggleDarkMode()" 
                         class="p-3 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-all"
                         title="Alihkan Tema">
-                    <i class="fa-solid" :class="darkMode ? 'fa-sun text-yellow-400' : 'fa-moon'"></i>
+                    <template x-if="darkMode">
+                        <i class="fa-solid fa-sun text-yellow-400 animate-spin-slow"></i>
+                    </template>
+                    <template x-if="!darkMode">
+                        <i class="fa-solid fa-moon text-blue-600"></i>
+                    </template>
                 </button>
                 @auth
                     <div class="flex items-center space-x-1">

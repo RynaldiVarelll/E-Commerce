@@ -216,43 +216,43 @@
                             {{-- Pilihan Bank --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                 {{-- BCA --}}
-                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
+                                <div class="bg-white/95 dark:bg-gray-800/40 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-gray-700">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BCA</span>
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Bank BCA</span>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BCA">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">123 456 7890</p>
-                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- Mandiri --}}
-                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
+                                <div class="bg-white/95 dark:bg-gray-800/40 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-gray-700">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank Mandiri</span>
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Bank Mandiri</span>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="Mandiri">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">987 654 3210</p>
-                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- BNI --}}
-                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
+                                <div class="bg-white/95 dark:bg-gray-800/40 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-gray-700">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BNI</span>
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Bank BNI</span>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BNI">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">554 321 0987</p>
-                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- BRI --}}
-                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
+                                <div class="bg-white/95 dark:bg-gray-800/40 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-gray-700">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BRI</span>
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Bank BRI</span>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BRI">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">001 2345 6789</p>
-                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
                             </div>
 
