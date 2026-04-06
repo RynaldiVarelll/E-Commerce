@@ -3,14 +3,7 @@
 @if ($messages)
     <ul {{ $attributes }}>
         @foreach ((array) $messages as $message)
-            <li style="
-                display: block;
-                margin-top: 0.35rem;
-                font-size: 0.8125rem;
-                font-weight: 500;
-                color: #dc2626;
-                font-family: inherit;
-            ">{{ $message }}</li>
+            <li class="block mt-1 text-sm font-medium text-red-600 dark:text-red-400 font-sans" style="font-family: inherit;">{{ $message }}</li>
         @endforeach
     </ul>
 @endif

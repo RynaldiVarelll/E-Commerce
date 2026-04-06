@@ -7,20 +7,20 @@
         {{-- Header --}}
         <div class="flex items-center justify-between mb-8">
             <div>
-                <a href="{{ route('cart.index') }}" class="group inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors mb-2">
+                <a href="{{ route('cart.index') }}" class="group inline-flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2">
                     <i class="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
                     Kembali ke Keranjang
                 </a>
-                <h1 class="text-4xl font-black text-gray-900 tracking-tight">Checkout</h1>
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Checkout</h1>
             </div>
             <div class="hidden md:block">
-                <span class="text-sm font-bold uppercase tracking-widest text-gray-400">Langkah 2 dari 2</span>
+                <span class="text-sm font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Langkah 2 dari 2</span>
             </div>
         </div>
 
         @if($cartItems->isEmpty())
-            <div class="glass-panel p-12 rounded-[2.5rem] text-center">
-                <p class="text-gray-500 text-lg font-medium">Keranjang kamu masih kosong.</p>
+            <div class="glass-panel dark:bg-gray-800/60 p-12 rounded-[2.5rem] text-center border-white/60 dark:border-gray-700">
+                <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">Keranjang kamu masih kosong.</p>
             </div>
         @else
 
@@ -35,31 +35,31 @@
                     <div class="lg:col-span-2 space-y-6">
 
                         {{-- ALAMAT PENGIRIMAN (READ-ONLY) --}}
-                        <div class="glass-panel rounded-[2rem] p-8 border-l-4 border-blue-500 shadow-xl shadow-blue-500/5">
+                        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] p-8 border-l-4 border-blue-500 dark:border-gray-700 dark:border-l-blue-500 shadow-xl shadow-blue-500/5 dark:shadow-none">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-800 flex items-center">
+                                <h3 class="font-bold text-gray-800 dark:text-gray-200 flex items-center">
                                     <i class="fa-solid fa-location-dot text-blue-500 mr-2"></i>
                                     Alamat Pengiriman
                                 </h3>
-                                <a href="{{ route('profile.edit') }}" class="text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all">
+                                <a href="{{ route('profile.edit') }}" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-800/50 px-3 py-1.5 rounded-lg transition-all">
                                     Ubah Alamat
                                 </a>
                             </div>
                             
                             <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
+                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                                     <i class="fa-solid fa-house-user"></i>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="font-black text-gray-900">{{ auth()->user()->name }}</p>
-                                    <p class="text-sm text-gray-500 flex items-center">
+                                    <p class="font-black text-gray-900 dark:text-white">{{ auth()->user()->name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                                         <i class="fa-solid fa-envelope mr-1.5 text-xs"></i>
                                         {{ auth()->user()->email }}
                                     </p>
-                                    <div class="mt-3 p-4 bg-gray-50/50 border border-gray-100 rounded-2xl italic text-gray-600 text-sm leading-relaxed">
+                                    <div class="mt-3 p-4 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl italic text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                                         {{ auth()->user()->address ?? 'Alamat belum diatur. Silakan klik "Ubah Alamat" untuk menambahkan alamat rumah Anda.' }}
                                     </div>
-                                    <p class="text-[10px] font-bold text-orange-500 uppercase tracking-tighter mt-2">
+                                    <p class="text-[10px] font-bold text-orange-500 dark:text-orange-400 uppercase tracking-tighter mt-2">
                                         <i class="fa-solid fa-circle-info mr-1"></i>
                                         Alamat ini wajib diisi dan tidak dapat diubah di halaman ini.
                                     </p>
@@ -68,12 +68,12 @@
                         </div>
 
                         {{-- Rincian Pesanan --}}
-                        <div class="glass-panel rounded-[2rem] overflow-hidden">
-                            <div class="p-6 border-b border-white/40 bg-white/20 backdrop-blur-md">
-                                <h3 class="font-bold text-gray-800">Rincian Pesanan</h3>
+                        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] overflow-hidden dark:border-gray-700">
+                            <div class="p-6 border-b border-white/40 dark:border-gray-700 bg-white/20 dark:bg-gray-800/30 backdrop-blur-md">
+                                <h3 class="font-bold text-gray-800 dark:text-gray-200">Rincian Pesanan</h3>
                             </div>
 
-                            <div class="divide-y divide-gray-100">
+                            <div class="divide-y divide-gray-100 dark:divide-gray-700">
                                 @foreach($cartItems as $index => $item)
                                     @php 
                                         $itemSubtotal = $item->product->price * $item->quantity; 
@@ -82,16 +82,16 @@
 
                                     <div class="p-6 flex justify-between items-center">
                                         <div>
-                                            <h4 class="font-bold text-gray-900">
+                                            <h4 class="font-bold text-gray-900 dark:text-white">
                                                 {{ $item->product->name }}
                                             </h4>
-                                            <p class="text-sm text-gray-500">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
                                                 Rp {{ number_format($item->product->price, 0, ',', '.') }} x {{ $item->quantity }}
                                             </p>
                                             <input type="hidden" name="items[{{ $index }}][product_id]" value="{{ $item->product->id }}">
                                             <input type="hidden" name="items[{{ $index }}][quantity]" value="{{ $item->quantity }}">
                                         </div>
-                                        <div class="font-black text-gray-900">
+                                        <div class="font-black text-gray-900 dark:text-white">
                                             Rp {{ number_format($itemSubtotal, 0, ',', '.') }}
                                         </div>
                                     </div>
@@ -100,29 +100,29 @@
                         </div>
 
                         {{-- SHIPPING METHOD --}}
-                        <div class="glass-panel rounded-[2rem] p-8">
-                            <h3 class="font-bold text-gray-800 mb-6 flex items-center">
+                        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] p-8 dark:border-gray-700">
+                            <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
                                 <i class="fa-solid fa-truck text-blue-500 mr-2"></i>
                                 Pilih Metode Pengiriman
                             </h3>
 
                             <div class="space-y-4">
                                 @foreach($shippingMethods as $method)
-                                    <label class="flex items-center justify-between border border-white/60 bg-white/30 backdrop-blur-sm rounded-2xl p-4 cursor-pointer hover:bg-white/50 transition-all group has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 has-[:checked]:ring-2 has-[:checked]:ring-blue-400/20">
+                                    <label class="flex items-center justify-between border border-white/60 dark:border-gray-700 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl p-4 cursor-pointer hover:bg-white/50 dark:hover:bg-gray-700/50 transition-all group has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 dark:has-[:checked]:bg-blue-900/20 has-[:checked]:ring-2 has-[:checked]:ring-blue-400/20 dark:has-[:checked]:ring-blue-500/20">
                                         <div class="flex items-center gap-3">
                                             <input type="radio"
                                                 name="shipping_method_id"
                                                 value="{{ $method->id }}"
                                                 data-cost="{{ $method->cost }}"
-                                                class="shipping-radio w-5 h-5 text-blue-600"
+                                                class="shipping-radio w-5 h-5 text-blue-600 dark:bg-gray-700 dark:border-gray-600"
                                                 {{ $loop->first ? 'checked' : '' }}
                                                 required>
                                             <div>
-                                                <p class="font-bold text-gray-800">{{ $method->name }}</p>
-                                                <p class="text-sm text-gray-500">{{ $method->service }}</p>
+                                                <p class="font-bold text-gray-800 dark:text-gray-200">{{ $method->name }}</p>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $method->service }}</p>
                                             </div>
                                         </div>
-                                        <span class="font-bold text-gray-900">
+                                        <span class="font-bold text-gray-900 dark:text-white">
                                             Rp {{ number_format($method->cost, 0, ',', '.') }}
                                         </span>
                                     </label>
@@ -131,31 +131,31 @@
                         </div>
 
                         {{-- PAYMENT INFO --}}
-                        <div class="glass-panel rounded-[2rem] p-8">
-                            <h3 class="font-bold text-gray-800 mb-6 flex items-center">
+                        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] p-8 dark:border-gray-700">
+                            <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
                                 <i class="fa-solid fa-shield-check text-green-500 mr-2"></i>
                                 Pembayaran Aman & Terpercaya
                             </h3>
-                            <p class="text-sm text-gray-500 mb-6">
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
                                 Pesanan Anda akan diproses setelah pembayaran dikonfirmasi. Kami mendukung berbagai bank di Indonesia:
                             </p>
                             
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-70 grayscale hover:grayscale-0 transition-all">
-                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-4" alt="BCA">
+                                <div class="bg-white/50 dark:bg-gray-700/50 p-3 rounded-xl flex items-center justify-center border border-white/40 dark:border-gray-600">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-4 brightness-100 dark:invert" alt="BCA">
                                 </div>
-                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-4" alt="Mandiri">
+                                <div class="bg-white/50 dark:bg-gray-700/50 p-3 rounded-xl flex items-center justify-center border border-white/40 dark:border-gray-600">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-4 brightness-100 dark:invert" alt="Mandiri">
                                 </div>
-                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-4" alt="BNI">
+                                <div class="bg-white/50 dark:bg-gray-700/50 p-3 rounded-xl flex items-center justify-center border border-white/40 dark:border-gray-600">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-4 brightness-100 dark:invert" alt="BNI">
                                 </div>
-                                <div class="bg-white/50 p-3 rounded-xl flex items-center justify-center border border-white/40">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-4" alt="BRI">
+                                <div class="bg-white/50 dark:bg-gray-700/50 p-3 rounded-xl flex items-center justify-center border border-white/40 dark:border-gray-600">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-4 brightness-100 dark:invert" alt="BRI">
                                 </div>
                             </div>
                             
-                            <p class="text-[11px] text-gray-400 mt-6 font-medium italic">
+                            <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-6 font-medium italic">
                                 *Instruksi detail nomor rekening akan diberikan setelah Anda menekan tombol "Konfirmasi & Bayar".
                             </p>
                         </div>

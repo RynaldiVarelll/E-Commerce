@@ -7,14 +7,14 @@
         {{-- Header Section --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
             <div>
-                <h1 class="text-4xl font-black text-gray-900 tracking-tight flex items-center">
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight flex items-center">
                     Keranjang Belanja 
                     <span class="ml-3 px-3 py-1 bg-blue-100 text-blue-600 text-sm rounded-full tracking-normal">
                         {{ $cartItems->sum('quantity') }} Item
                     </span>
                 </h1>
                 <a href="{{ route('product.index') }}" 
-                   class="group mt-2 inline-flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
+                   class="group mt-2 inline-flex items-center text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                    <i class="fa-solid fa-chevron-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
                    Lanjut Belanja
                 </a>
@@ -34,16 +34,16 @@
         </div>
 
         @if($cartItems->isEmpty())
-            <div class="glass-panel rounded-[3rem] p-20 text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-white/40 pointer-events-none"></div>
+            <div class="glass-panel dark:bg-gray-800/60 rounded-[3rem] p-20 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/40 dark:bg-gray-800/40 pointer-events-none"></div>
                 <div class="relative w-32 h-32 mx-auto mb-6">
                     <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse"></div>
                     <div class="relative flex items-center justify-center h-full">
                         <i class="fa-solid fa-cart-ghost text-5xl text-blue-400"></i>
                     </div>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800">Wah, keranjangmu kosong!</h2>
-                <p class="text-gray-500 mt-2 mb-8">Yuk, cari produk impianmu dan masukkan ke sini.</p>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Wah, keranjangmu kosong!</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-2 mb-8">Yuk, cari produk impianmu dan masukkan ke sini.</p>
                 <a href="{{ route('product.index') }}" 
                    class="px-8 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200 hover:scale-105 transition-all">
                     Mulai Belanja Sekarang
@@ -55,38 +55,38 @@
                 {{-- Left: Cart Items List --}}
                 <div class="lg:col-span-2 space-y-6">
                     @foreach($cartItems as $item)
-                    <div class="group relative glass-panel rounded-[2.5rem] p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden">
-                        <div class="absolute inset-0 bg-white/40 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="group relative glass-panel dark:bg-gray-800/50 rounded-[2.5rem] p-6 hover:shadow-2xl hover:shadow-black/20 hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+                        <div class="absolute inset-0 bg-white/40 dark:bg-gray-800/40 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
                             
                             {{-- Image --}}
                             <div class="relative w-full sm:w-32 h-32 flex-shrink-0">
                                 <img src="{{ $item->product->image_url ?? '/images/default.png' }}" 
                                      alt="{{ $item->product->name }}" 
-                                     class="w-full h-full object-cover rounded-3xl border border-gray-50 group-hover:scale-105 transition-transform duration-500">
+                                     class="w-full h-full object-cover rounded-3xl border border-gray-50 dark:border-gray-700 group-hover:scale-105 transition-transform duration-500">
                             </div>
 
                             {{-- Info --}}
                             <div class="flex-1 text-center sm:text-left">
-                                <h2 class="text-lg font-black text-gray-900 leading-tight mb-1">{{ $item->product->name }}</h2>
-                                <p class="text-blue-600 font-bold mb-4">Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
+                                <h2 class="text-lg font-black text-gray-900 dark:text-white leading-tight mb-1">{{ $item->product->name }}</h2>
+                                <p class="text-blue-600 dark:text-blue-400 font-bold mb-4">Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
                                 
                                 <div class="flex items-center justify-center sm:justify-start gap-4">
                                     {{-- Modern Quantity Update --}}
-                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="inline-flex items-center bg-white/50 backdrop-blur-md rounded-2xl p-1 border border-white/60">
+                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="inline-flex items-center bg-white/50 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-1 border border-white/60 dark:border-gray-700">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="quantity" id="quantity-{{ $item->id }}" value="{{ $item->quantity }}">
 
                                         <button type="button" 
                                                 onclick="updateQuantity({{ $item->id }}, -1)"
-                                                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-sm text-gray-500 hover:text-blue-600 transition-all">−</button>
+                                                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all">−</button>
                                         
-                                        <span class="w-12 text-center font-black text-gray-800" id="display-quantity-{{ $item->id }}">{{ $item->quantity }}</span>
+                                        <span class="w-12 text-center font-black text-gray-800 dark:text-gray-200" id="display-quantity-{{ $item->id }}">{{ $item->quantity }}</span>
                                         
                                         <button type="button" 
                                                 onclick="updateQuantity({{ $item->id }}, 1)"
-                                                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-sm text-gray-500 hover:text-blue-600 transition-all">+</button>
+                                                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all">+</button>
                                     </form>
 
                                     {{-- Remove Button --}}
@@ -104,8 +104,8 @@
 
                             {{-- Subtotal --}}
                             <div class="text-center sm:text-right min-w-[120px]">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Subtotal</p>
-                                <p class="text-xl font-black text-gray-900">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Subtotal</p>
+                                <p class="text-xl font-black text-gray-900 dark:text-white">
                                     Rp {{ number_format($item->total_price, 0, ',', '.') }}
                                 </p>
                             </div>
@@ -116,26 +116,26 @@
 
                 {{-- Right: Order Summary Sticky --}}
                 <div class="lg:col-span-1">
-                    <div class="sticky top-28 glass-panel rounded-[3rem] p-8 shadow-2xl shadow-blue-900/10 overflow-hidden backdrop-blur-3xl border border-white/60">
+                    <div class="sticky top-28 glass-panel dark:bg-gray-800/60 rounded-[3rem] p-8 shadow-2xl shadow-blue-900/10 dark:shadow-none overflow-hidden backdrop-blur-3xl border border-white/60 dark:border-gray-700">
                         {{-- Decorative gradient background --}}
                         <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
                         
-                        <h2 class="text-2xl font-black text-gray-900 mb-6">Ringkasan Pesanan</h2>
+                        <h2 class="text-2xl font-black text-gray-900 dark:text-white mb-6">Ringkasan Pesanan</h2>
                         
                         <div class="space-y-4">
-                            <div class="flex justify-between text-gray-500 font-medium">
+                            <div class="flex justify-between text-gray-500 dark:text-gray-400 font-medium">
                                 <span>Total Harga ({{ $cartItems->sum('quantity') }} produk)</span>
                                 <span>Rp {{ number_format($cartItems->sum('total_price'), 0, ',', '.') }}</span>
                             </div>
-                            <div class="flex justify-between text-gray-500 font-medium pb-4 border-b border-gray-100">
+                            <div class="flex justify-between text-gray-500 dark:text-gray-400 font-medium pb-4 border-b border-gray-100 dark:border-gray-700">
                                 <span>Pengiriman</span>
-                                <span class="text-green-500 font-bold uppercase text-xs tracking-widest mt-1">Pilih Shipping Method</span>
+                                <span class="text-green-500 dark:text-green-400 font-bold uppercase text-xs tracking-widest mt-1">Pilih Shipping Method</span>
                             </div>
                             
                             <div class="pt-2">
                                 <div class="flex justify-between items-end mb-8">
-                                    <span class="text-gray-900 font-bold">Total Tagihan</span>
-                                    <span class="text-3xl font-black text-blue-600 tracking-tighter">
+                                    <span class="text-gray-900 dark:text-white font-bold">Total Tagihan</span>
+                                    <span class="text-3xl font-black text-blue-600 dark:text-blue-400 tracking-tighter">
                                         Rp {{ number_format($cartItems->sum('total_price'), 0, ',', '.') }}
                                     </span>
                                 </div>

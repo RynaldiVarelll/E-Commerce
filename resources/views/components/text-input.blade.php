@@ -32,4 +32,20 @@
     opacity: 0.60;
     cursor: not-allowed;
 }
+
+/* Dark Mode Styles */
+.dark .glass-input {
+    background: rgba(31, 41, 55, 0.72);
+    border: 1.5px solid rgba(75, 85, 99, 0.4);
+    color: #f3f4f6;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
+.dark .glass-input::placeholder { color: rgba(156, 163, 175, 0.7); }
+.dark .glass-input:focus {
+    border-color: #60a5fa;
+    background: rgba(31, 41, 55, 0.90);
+    box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.2),
+                0 1px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
 </style>

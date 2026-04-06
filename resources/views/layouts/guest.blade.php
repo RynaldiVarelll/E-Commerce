@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
         .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="bg-[#f0f2f5] text-gray-900 antialiased min-h-screen relative flex items-center justify-center py-12 px-4">
+<body class="bg-[#f0f2f5] dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased min-h-screen relative flex items-center justify-center py-12 px-4 transition-colors duration-300">
     
     <div class="noise"></div>
 
@@ -36,15 +36,15 @@
     </div>
     
     <div class="w-full max-w-[520px] animate-fade-in opacity-0">
-        <div class="glass-card rounded-[4rem] p-12 md:p-16 relative overflow-hidden border border-white/80 shadow-2xl shadow-blue-900/5">
+        <div class="glass-card rounded-[4rem] p-12 md:p-16 relative overflow-hidden border border-white/80 dark:border-gray-700 shadow-2xl shadow-blue-900/5 dark:shadow-none">
             {{-- Visual Accents --}}
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-80"></div>
             <div class="absolute -top-32 -left-32 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl pointer-events-none"></div>
             
             {{-- Back Button --}}
             <div class="relative z-20 mb-10">
-                <a href="{{ route('home') }}" class="group inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/40 hover:bg-white/80 border border-white/60 hover:border-blue-200 transition-all duration-300 shadow-sm">
-                    <div class="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <a href="{{ route('home') }}" class="group inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/40 dark:bg-gray-800/40 hover:bg-white/80 dark:hover:bg-gray-700 border border-white/60 dark:border-gray-600 hover:border-blue-200 transition-all duration-300 shadow-sm">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                         <i class="fa-solid fa-arrow-left-long text-xs transition-transform group-hover:-translate-x-1"></i>
                     </div>
                     <span class="text-[10px] font-black text-gray-500 group-hover:text-blue-600 uppercase tracking-widest leading-none">Kembali ke Beranda</span>
@@ -58,16 +58,16 @@
                         <div class="w-12 h-12 logo-gradient rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-200 group-hover:rotate-12 transition-all duration-500">
                             <i class="fa-solid fa-bolt text-white text-xl"></i>
                         </div>
-                        <span class="text-2xl font-black tracking-tighter text-gray-900">
+                        <span class="text-2xl font-black tracking-tighter text-gray-900 dark:text-white">
                             invoify<span class="text-blue-600">.</span>
                         </span>
                     </a>
                     <div class="hidden sm:block">
-                        <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-blue-100">Portal Keamanan</span>
+                        <span class="text-[9px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-full uppercase tracking-widest border border-blue-100 dark:border-blue-800">Portal Keamanan</span>
                     </div>
                 </div>
 
-                <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none mb-3">
+                <h1 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white leading-none mb-3">
                     {{ $pageTitle ?? 'Secure Gateway' }}
                 </h1>
                 
@@ -94,74 +94,73 @@
         </div>
     </div>
 
-    {{-- Global Notifications --}}
+    {{-- SweetAlert2 Notification System --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Success Toast
-        @if(session('success'))
-            Swal.fire({
+        document.addEventListener('DOMContentLoaded', function() {
+            const isDark = document.documentElement.classList.contains('dark') || localStorage.getItem('darkMode') === 'true';
+            
+            const toastConfig = {
                 toast: true,
                 position: 'top-end',
-                icon: 'success',
-                title: '{{ session('success') }}',
                 showConfirmButton: false,
+                showCloseButton: true,
                 timer: 4000,
                 timerProgressBar: true,
-                background: '#ffffff',
-                iconColor: '#2563eb',
+                background: isDark ? '#111827' : '#ffffff',
+                color: isDark ? '#ffffff' : '#111827',
                 customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                    popup: isDark ? 'rounded-2xl border border-gray-800 shadow-none mt-20' : 'rounded-2xl shadow-2xl border border-gray-100 mt-20',
                 }
-            });
-        @endif
+            };
 
-        // Status Notification
-        @if(session('status'))
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: '{{ session('status') }}',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-                background: '#ffffff',
-                iconColor: '#2563eb',
-                customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
-                }
-            });
-        @endif
-
-        // Error Alert
-        @if(session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
+            const alertConfig = {
+                background: isDark ? '#111827' : '#ffffff',
+                color: isDark ? '#ffffff' : '#111827',
                 confirmButtonColor: '#2563eb',
                 customClass: {
                     popup: 'rounded-[2rem]',
                 }
-            });
-        @endif
+            };
 
-        // Validation Errors
-        @if($errors->any())
-            Swal.fire({
-                icon: 'warning',
-                title: 'Format Salah!',
-                text: 'Periksa kembali data Anda.',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-orange-100',
-                }
-            });
-        @endif
+            @if(session('success'))
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'success',
+                    iconColor: '#2563eb',
+                    title: '{{ session('success') }}'
+                });
+            @endif
+
+            @if(session('status'))
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'success',
+                    iconColor: '#2563eb',
+                    title: '{{ session('status') === 'profile-updated' ? 'Profil Berhasil Diperbarui!' : session('status') }}'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    ...alertConfig,
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}'
+                });
+            @endif
+
+            @if($errors->any())
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'warning',
+                    iconColor: '#f97316',
+                    title: 'Ada Kesalahan!',
+                    text: 'Silakan periksa kembali isian formulir Anda.',
+                    timer: 5000
+                });
+            @endif
+        });
     </script>
 </body>
 </html>

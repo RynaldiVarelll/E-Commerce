@@ -5,15 +5,15 @@
 @layer components {
     /* Custom Input Styles */
     .custom-input {
-        @apply block w-full bg-white/40 border-white text-sm font-bold text-gray-900 rounded-2xl px-5 py-4 placeholder-gray-400 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white transition-all duration-500 shadow-sm outline-none !important;
+        @apply block w-full bg-white/40 dark:bg-gray-800/40 border-white dark:border-gray-700 text-sm font-bold text-gray-900 dark:text-white rounded-2xl px-5 py-4 placeholder-gray-400 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-white dark:focus:bg-gray-800 transition-all duration-500 shadow-sm outline-none !important;
     }
 
     .custom-label {
-        @apply block text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] ml-2 mb-2 !important;
+        @apply block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] ml-2 mb-2 !important;
     }
 
     .btn-primary {
-        @apply w-full bg-gray-900 hover:bg-blue-600 text-white font-black py-5 rounded-[1.5rem] shadow-2xl shadow-gray-300 active:scale-[0.97] transition-all duration-500 tracking-[0.2em] uppercase text-[11px] flex justify-center items-center !important;
+        @apply w-full bg-gray-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white font-black py-5 rounded-[1.5rem] shadow-2xl shadow-gray-300 dark:shadow-none active:scale-[0.97] transition-all duration-500 tracking-[0.2em] uppercase text-[11px] flex justify-center items-center !important;
     }
 }
 
@@ -26,6 +26,12 @@
     box-shadow: 
         0 25px 50px -12px rgba(31, 38, 135, 0.1),
         inset 0 0 80px rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-card {
+    background: rgba(17, 24, 39, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .logo-gradient {

@@ -5,10 +5,10 @@
     <div class="container mx-auto px-4 max-w-6xl">
         
         {{-- Breadcrumb --}}
-        <nav class="flex mb-8 text-sm font-bold uppercase tracking-widest text-gray-400">
-            <a href="{{ route('product.index') }}" class="hover:text-blue-600 transition-colors">Shop</a>
+        <nav class="flex mb-8 text-sm font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+            <a href="{{ route('product.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Shop</a>
             <span class="mx-3">/</span>
-            <span class="text-gray-900">{{ $product->name }}</span>
+            <span class="text-gray-900 dark:text-white">{{ $product->name }}</span>
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -16,7 +16,7 @@
             {{-- Left: Image Gallery (FIXED VERSION) --}}
             <div class="space-y-4">
                 {{-- Main Image Container --}}
-                <div class="relative glass-panel rounded-[2.5rem] overflow-hidden flex items-center justify-center group min-h-[400px] md:min-h-[500px]">
+                <div class="relative glass-panel dark:bg-gray-800/60 rounded-[2.5rem] overflow-hidden flex items-center justify-center group min-h-[400px] md:min-h-[500px]">
                     @php $firstImg = $product->images->first(); @endphp
                     
                     {{-- 
@@ -43,9 +43,9 @@
                     <div class="flex gap-4 overflow-x-auto py-2 custom-scrollbar justify-center">
                         @foreach($product->images as $img)
                             <button onclick="changeMainImage('{{ $img->image_url }}')" 
-                                    class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all focus:border-blue-500 outline-none glass-panel p-1">
+                                    class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all focus:border-blue-500 outline-none glass-panel p-1 dark:bg-gray-800/60">
                                 {{-- Thumbnail tetap pakai object-cover agar seragam ukurannya --}}
-                                <img src="{{ $img->image_url }}" class="w-full h-full object-cover">
+                                <img src="{{ $img->image_url }}" class="w-full h-full object-cover rounded-xl mt-[-1px]">
                             </button>
                         @endforeach
                     </div>
@@ -53,52 +53,52 @@
             </div>
             {{-- Right: Product Info --}}
             <div class="flex flex-col h-full">
-                <div class="glass-panel rounded-[2.5rem] p-8 md:p-10">
+                <div class="glass-panel dark:bg-gray-800/60 rounded-[2.5rem] p-8 md:p-10">
                     <div class="mb-4">
-                        <a href="{{ route('product.index', ['category' => $product->category->id]) }}" class="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors font-black text-xs px-3 py-1.5 rounded-full uppercase tracking-widest border border-indigo-100 inline-block">
+                        <a href="{{ route('product.index', ['category' => $product->category->id]) }}" class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors font-black text-xs px-3 py-1.5 rounded-full uppercase tracking-widest border border-indigo-100 dark:border-indigo-900/50 inline-block">
                             {{ $product->category->name }}
                         </a>
                     </div>
-                    <h1 class="text-4xl font-black text-gray-900 leading-tight mb-2 uppercase tracking-tighter">
+                    <h1 class="text-4xl font-black text-gray-900 dark:text-white leading-tight mb-2 uppercase tracking-tighter">
                         {{ $product->name }}
                     </h1>
-                    <div class="flex items-center text-sm font-bold text-gray-500 mb-6 uppercase tracking-widest bg-white/40 backdrop-blur-sm inline-block px-3 py-1 rounded-lg border border-white/60">
-                        <i class="fa-solid fa-store text-blue-600 mr-2"></i>
-                        Store: <span class="text-gray-900 ml-1">{{ $product->user ? $product->user->name : 'Official Store' }}</span>
+                    <div class="flex items-center text-sm font-bold text-gray-500 dark:text-gray-400 mb-6 uppercase tracking-widest bg-white/40 dark:bg-gray-700/40 backdrop-blur-sm inline-block px-3 py-1 rounded-lg border border-white/60 dark:border-gray-600">
+                        <i class="fa-solid fa-store text-blue-600 dark:text-blue-400 mr-2"></i>
+                        Store: <span class="text-gray-900 dark:text-white ml-1">{{ $product->user ? $product->user->name : 'Official Store' }}</span>
                     </div>
                     
                     <div class="flex items-center gap-4 mb-6">
-                        <span class="text-3xl font-black text-blue-600">
+                        <span class="text-3xl font-black text-blue-600 dark:text-blue-400">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
-                        <div class="h-6 w-[1px] bg-gray-200"></div>
-                        <span class="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                        <div class="h-6 w-[1px] bg-gray-200 dark:bg-gray-700"></div>
+                        <span class="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                             Stock: {{ $product->quantity }} pcs
                         </span>
                     </div>
 
-                    <div class="prose prose-blue text-gray-500 max-w-none mb-8 leading-relaxed italic">
+                    <div class="prose prose-blue text-gray-500 dark:text-gray-400 max-w-none mb-8 leading-relaxed italic">
                         {!! nl2br(e($product->description)) !!}
                     </div>
 
                     {{-- Action Area --}}
-                    <div class="space-y-4 pt-6 border-t border-gray-100">
+                    <div class="space-y-4 pt-6 border-t border-gray-100 dark:border-gray-700">
                         <form action="{{ route('cart.add') }}" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             
                             <div class="flex flex-col sm:flex-row gap-4">
                                 {{-- Modern Quantity Selector --}}
-                                <div class="flex items-center bg-white/40 backdrop-blur-md rounded-2xl p-1 border border-white/60 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-400/20 transition-all">
-                                    <button type="button" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
+                                <div class="flex items-center bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-1 border border-white/60 dark:border-gray-700 focus-within:border-blue-400 dark:focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-400/20 transition-all">
+                                    <button type="button" class="w-12 h-12 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
                                     <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}"
-                                           class="w-12 bg-transparent text-center font-black text-gray-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                                    <button type="button" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
+                                           class="w-12 bg-transparent text-center font-black text-gray-800 dark:text-gray-200 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                    <button type="button" class="w-12 h-12 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
                                 </div>
 
                                 <button type="submit" 
                                         {{ $product->quantity <= 0 ? 'disabled' : '' }}
-                                        class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-4 rounded-2xl font-black text-lg transition-all shadow-xl shadow-blue-100 hover:shadow-blue-200 active:scale-95 flex items-center justify-center gap-3">
+                                        class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-500 text-white py-4 rounded-2xl font-black text-lg transition-all shadow-xl shadow-blue-100 dark:shadow-none hover:shadow-blue-200 active:scale-95 flex items-center justify-center gap-3">
                                     <i class="fa-solid fa-cart-plus"></i>
                                     ADD TO CART
                                 </button>
@@ -108,56 +108,56 @@
                         {{-- Chat Seller Button --}}
                         @auth
                             <a href="{{ route('chat.show', $product->user->id) }}"
-                               class="w-full flex items-center justify-center gap-3 bg-white/30 backdrop-blur-md border border-white/60 text-blue-600 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-xl shadow-blue-900/5 group">
+                               class="w-full flex items-center justify-center gap-3 bg-white/30 dark:bg-gray-800/60 backdrop-blur-md border border-white/60 dark:border-gray-600 text-blue-600 dark:text-blue-400 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-300 shadow-xl shadow-blue-900/5 dark:shadow-none group">
                                 <i class="fa-solid fa-comments text-2xl group-hover:scale-110 transition-transform"></i>
                                 CHAT PENJUAL
                             </a>
                         @else
                             <a href="{{ route('login') }}"
-                               class="w-full flex items-center justify-center gap-3 bg-white/30 backdrop-blur-md border border-white/60 text-blue-600 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white transition-all duration-300">
+                               class="w-full flex items-center justify-center gap-3 bg-white/30 dark:bg-gray-800/60 backdrop-blur-md border border-white/60 dark:border-gray-600 text-blue-600 dark:text-blue-400 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-300">
                                 <i class="fa-solid fa-comments text-2xl"></i>
                                 LOGIN UNTUK CHAT
                             </a>
                         @endauth
 
                         {{-- Seller Profile Card --}}
-                        <div class="glass-panel rounded-[2rem] p-6 mt-8 flex items-center gap-4 bg-white/30 border border-white/60">
-                            <div class="w-16 h-16 bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden flex-shrink-0 border border-white/80 shadow-inner group transition-transform hover:scale-105">
+                        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] p-6 mt-8 flex items-center gap-4 bg-white/30 border border-white/60 dark:border-gray-700">
+                            <div class="w-16 h-16 bg-white/50 dark:bg-gray-700/50 backdrop-blur-md rounded-2xl overflow-hidden flex-shrink-0 border border-white/80 dark:border-gray-600 shadow-inner group transition-transform hover:scale-105">
                                 <img src="{{ $product->user->profile_photo_url }}" 
                                      alt="{{ $product->user->name }}" 
                                      class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-black text-gray-900 uppercase tracking-tighter leading-tight">{{ $product->user->name }}</h4>
+                                <h4 class="font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-tight">{{ $product->user->name }}</h4>
                                 <div class="flex items-center gap-2 mt-1">
                                     <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
-                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Penjual Terverifikasi</span>
+                                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Penjual Terverifikasi</span>
                                 </div>
-                                <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1 italic">
+                                <div class="text-[9px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1 italic">
                                     Bergabung {{ $product->user->created_at->diffForHumans() }}
                                 </div>
                             </div>
                             <a href="{{ $product->user ? route('shop.show', $product->user->id) : '#' }}" 
-                               class="px-4 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-gray-200">
+                               class="px-4 py-2.5 bg-gray-900 dark:bg-gray-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 dark:hover:bg-blue-500 transition-all active:scale-95 shadow-lg shadow-gray-200 dark:shadow-none">
                                 Kunjungi Toko
                             </a>
                         </div>
                     </div>
 
                     {{-- Trust Badges --}}
-                    <div class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-gray-50">
+                    <div class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-gray-50 dark:border-gray-700">
                         <div class="text-center">
-                            <i class="fa-solid fa-truck-fast text-blue-600 text-xl mb-2"></i>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Fast Delivery</p>
+                            <i class="fa-solid fa-truck-fast text-blue-600 dark:text-blue-400 text-xl mb-2"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Fast Delivery</p>
                         </div>
                         <div class="text-center">
                             {{-- FIXED: Menggunakan ikon shield yang support versi free agar muncul --}}
-                            <i class="fa-solid fa-shield-halved text-blue-600 text-xl mb-2"></i>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Secure Payment</p>
+                            <i class="fa-solid fa-shield-halved text-blue-600 dark:text-blue-400 text-xl mb-2"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Secure Payment</p>
                         </div>
                         <div class="text-center">
-                            <i class="fa-solid fa-rotate-left text-blue-600 text-xl mb-2"></i>
-                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Easy Returns</p>
+                            <i class="fa-solid fa-rotate-left text-blue-600 dark:text-blue-400 text-xl mb-2"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Easy Returns</p>
                         </div>
                     </div>
                 </div>

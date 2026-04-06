@@ -1,10 +1,12 @@
 @props(['value'])
 
-<label {{ $attributes }} style="
-    display: block;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: #0a2463;
-    margin-bottom: 0.4rem;
-    letter-spacing: 0.01em;
-">{{ $value ?? $slot }}</label>
+<label {{ $attributes->merge(['class' => 'block font-semibold text-sm text-[#0a2463] dark:text-blue-200 mb-2 leading-tight tracking-tight']) }}>
+    {{ $value ?? $slot }}
+</label>
+
+<style>
+    /* Ensure the inline style doesn't override tailwind classes used above */
+    label {
+        font-family: inherit;
+    }
+</style>

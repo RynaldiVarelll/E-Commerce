@@ -1,26 +1,26 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-[#f8fafc] min-h-screen py-12">
+<div class="bg-[#f8fafc] dark:bg-gray-900 min-h-screen py-12 transition-colors duration-300">
     <div class="container mx-auto px-6">
         
         {{-- Header Section --}}
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div class="animate-fade-in-up">
-                <nav class="flex mb-4 text-sm font-bold uppercase tracking-widest text-gray-400">
-                    <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+                <nav class="flex mb-4 text-sm font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                    <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
                     <span class="mx-2">/</span>
-                    <span class="text-blue-600">Shop</span>
+                    <span class="text-blue-600 dark:text-blue-400">Shop</span>
                 </nav>
-                <h1 class="text-5xl font-black text-gray-900 tracking-tighter">
-                    Our Collection<span class="text-blue-600">.</span>
+                <h1 class="text-5xl font-black text-gray-900 dark:text-white tracking-tighter">
+                    Our Collection<span class="text-blue-600 dark:text-blue-400">.</span>
                 </h1>
-                <p class="text-gray-500 mt-3 text-lg font-medium">Temukan produk terbaik yang dikurasi khusus untuk kebutuhan Anda.</p>
+                <p class="text-gray-500 dark:text-gray-400 mt-3 text-lg font-medium">Temukan produk terbaik yang dikurasi khusus untuk kebutuhan Anda.</p>
             </div>
             
             {{-- Filter/Sort Shortcut (Visual Only) --}}
             <div class="flex items-center gap-4">
-                <button class="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl font-bold text-gray-600 shadow-sm hover:shadow-md transition-all">
+                <button class="flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl font-bold text-gray-600 dark:text-gray-300 shadow-sm hover:shadow-md transition-all">
                     <i class="fa-solid fa-arrow-down-wide-short"></i>
                     Sort By
                 </button>
@@ -33,7 +33,7 @@
                 <div class="group relative flex flex-col h-full animate-fade-in-up" style="animation-delay: {{ $loop->index * 50 }}ms">
                     
                     {{-- Product Image & Overlay --}}
-                    <div class="relative aspect-[4/5] mb-5 overflow-hidden rounded-[2.5rem] bg-gray-200 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-blue-900/10">
+                    <div class="relative aspect-[4/5] mb-5 overflow-hidden rounded-[2.5rem] bg-gray-200 dark:bg-gray-800 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-blue-900/10 dark:group-hover:shadow-none">
                         <img src="{{ asset(optional($product->images->first())->image_url ?? 'https://via.placeholder.com/600x800') }}" 
                              alt="{{ $product->name }}" 
                              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
@@ -43,14 +43,14 @@
                         
                         <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                             <a href="{{ route('product.show', $product->id) }}" 
-                               class="block w-full py-4 bg-white text-gray-900 text-center font-black rounded-2xl shadow-xl hover:bg-blue-600 hover:text-white transition-colors">
+                               class="block w-full py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-center font-black rounded-2xl shadow-xl hover:bg-blue-600 dark:hover:bg-blue-500 hover:text-white transition-colors">
                                 <i class="fa-solid fa-eye mr-2"></i> Quick View
                             </a>
                         </div>
 
                         {{-- Category Badge --}}
                         <div class="absolute top-6 left-6">
-                            <span class="px-4 py-2 bg-white/90 backdrop-blur-md text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 rounded-full shadow-sm">
+                            <span class="px-4 py-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-white rounded-full shadow-sm">
                                 NEW ARRIVAL
                             </span>
                         </div>
@@ -59,18 +59,18 @@
                     {{-- Product Details --}}
                     <div class="px-2 flex flex-col flex-grow">
                         <a href="{{ route('product.show', $product->id) }}" class="flex-grow">
-                            <h2 class="text-xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                 {{ $product->name }}
                             </h2>
-                            <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-2 mb-4">
                                 {{ $product->description ?? 'No description available for this premium product.' }}
                             </p>
                         </a>
                         
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/50">
                             <div class="flex flex-col">
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Price</span>
-                                <span class="text-2xl font-black text-blue-600 tracking-tighter">
+                                <span class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Price</span>
+                                <span class="text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tighter">
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </span>
                             </div>
@@ -80,7 +80,7 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="1">
                                 <button type="submit" 
-                                        class="w-12 h-12 bg-gray-900 text-white rounded-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition-all duration-300 shadow-lg shadow-gray-200">
+                                        class="w-12 h-12 bg-gray-900 dark:bg-gray-700 text-white rounded-2xl flex items-center justify-center hover:bg-blue-600 dark:hover:bg-blue-500 hover:scale-110 transition-all duration-300 shadow-lg shadow-gray-200 dark:shadow-none">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </form>

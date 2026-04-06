@@ -45,19 +45,97 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        // Grafik pendapatan 7 hari terakhir
-        $revenueData = (clone $transactionQuery)
-            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
-            ->where('status', 'completed')
-            ->where('created_at', '>=', Carbon::now()->subDays(7))
-            ->groupBy('date')
-            ->orderBy('date')
-            ->pluck('total', 'date');
+        // Generate 7 days labels
+        $dateLabels = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $dateLabels->put(Carbon::now()->subDays($i)->format('Y-m-d'), 0);
+        }
+
+        // Grafik pendapatan 7 hari terakhir (Per Seller)
+        $revenueDatasets = [];
+        
+        if ($user->isSuperAdmin()) {
+            // Get all sellers (role: admin)
+            $allSellers = User::where('role', 'admin')->get();
+            
+            // Prepare a baseline map of zeros for each seller
+            $sellerMaps = [];
+            foreach ($allSellers as $seller) {
+                $sellerMaps[$seller->id] = [
+                    'name' => $seller->name,
+                    'data' => $dateLabels->toArray()
+                ];
+            }
+
+            // Also prepare an "Unknown Seller" map just in case
+            $sellerMaps['unknown'] = [
+                'name' => 'Unknown Seller',
+                'data' => $dateLabels->toArray()
+            ];
+
+            // Fetch transaction data
+            $txData = Transaction::with('seller')
+                ->selectRaw('DATE(created_at) as date, seller_id, SUM(total_amount) as total')
+                ->where('status', 'completed')
+                ->where('created_at', '>=', Carbon::now()->subDays(6)->startOfDay())
+                ->groupBy('date', 'seller_id')
+                ->get();
+                
+            $groupedBySeller = $txData->groupBy('seller_id');
+            foreach ($groupedBySeller as $sellerId => $records) {
+                $mapKey = isset($sellerMaps[$sellerId]) ? $sellerId : 'unknown';
+                
+                foreach ($records as $record) {
+                    $sellerMaps[$mapKey]['data'][$record->date] += $record->total;
+                }
+            }
+            
+            // Build the datasets array
+            foreach ($sellerMaps as $key => $map) {
+                // If the unknown map is empty, skip it
+                if ($key === 'unknown' && array_sum(array_values($map['data'])) == 0) {
+                    continue;
+                }
+                
+                $revenueDatasets[] = [
+                    'label' => $map['name'],
+                    'data' => array_values($map['data'])
+                ];
+            }
+        } else {
+            $queriedRevenue = (clone $transactionQuery)
+                ->selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+                ->where('status', 'completed')
+                ->where('created_at', '>=', Carbon::now()->subDays(6)->startOfDay())
+                ->groupBy('date')
+                ->orderBy('date')
+                ->pluck('total', 'date');
+
+            $revenueData = $dateLabels->merge($queriedRevenue);
+            $revenueDatasets[] = [
+                'label' => 'Pendapatan Anda',
+                'data' => array_values($revenueData->toArray())
+            ];
+        }
+
+        $chartLabels = array_keys($dateLabels->toArray());
 
         // Chat Unread Count
         $unreadChatCount = \App\Models\Message::where('receiver_id', $user->id)
             ->where('is_read', false)
             ->count();
+
+        // Data pengguna (Hanya untuk Super Admin, pendaftaran 7 hari terakhir)
+        $userData = collect();
+        if ($user->isSuperAdmin()) {
+            $queriedUsers = User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->where('created_at', '>=', Carbon::now()->subDays(6)->startOfDay())
+                ->groupBy('date')
+                ->orderBy('date')
+                ->pluck('count', 'date');
+            
+            $userData = $dateLabels->merge($queriedUsers);
+        }
 
         return view('admin.dashboard.index', [
             'totalUsers' => $totalUsers,
@@ -69,8 +147,10 @@ class DashboardController extends Controller
             'totalProducts' => $totalProducts,
             'latestProducts' => $latestProducts,
             'recentTransactions' => $recentTransactions,
-            'revenueData' => $revenueData,
+            'revenueDatasets' => $revenueDatasets,
+            'chartLabels' => $chartLabels,
             'unreadChatCount' => $unreadChatCount,
+            'userData' => $userData,
         ]);
     }
 

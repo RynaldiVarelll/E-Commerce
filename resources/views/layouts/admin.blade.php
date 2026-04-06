@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +20,24 @@
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
         }
+
+        .dark .glass-panel {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
         
         .sidebar-link.active {
             background: rgba(239, 246, 255, 0.7);
             color: #2563eb;
             border-right: 4px solid #2563eb;
             backdrop-filter: blur(10px);
+        }
+
+        .dark .sidebar-link.active {
+            background: rgba(30, 41, 59, 0.7);
+            color: #60a5fa;
+            border-right-color: #60a5fa;
         }
 
         /* Abstract blobs animations */
@@ -40,20 +52,20 @@
         .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="bg-[#f0f2f5] text-gray-900 relative min-h-screen">
+<body class="bg-[#f0f2f5] dark:bg-gray-950 text-gray-900 dark:text-gray-100 relative min-h-screen transition-colors duration-300">
     {{-- MacOS-like Abstract Background --}}
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-blue-200/40 blur-[100px] animate-blob mix-blend-multiply"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
-        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-blue-100/40 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+        <div class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-blue-200/40 dark:bg-blue-900/20 blur-[100px] animate-blob mix-blend-multiply"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 dark:bg-indigo-900/20 blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-blue-100/40 dark:bg-blue-800/10 blur-[120px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
     </div>
 
     <div class="flex min-h-screen">
         
-        <aside class="w-72 glass-panel flex flex-col sticky top-0 h-screen z-40 border-r border-white/60">
+        <aside class="w-72 glass-panel flex flex-col sticky top-0 h-screen z-40 border-r border-white/60 dark:border-white/5">
             <div class="p-8">
                 <h1 class="text-2xl font-black text-blue-600 tracking-tighter flex items-center">
-                    <i class="fa-solid fa-bag-shopping mr-2"></i> ADMIN<span class="text-gray-900">POS</span>
+                    <i class="fa-solid fa-bag-shopping mr-2"></i> ADMIN<span class="text-gray-900 dark:text-white">POS</span>
                 </h1>
             </div>
 
@@ -61,7 +73,7 @@
                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4 mb-2">Main Menu</p>
                 
                 <a href="{{ route('admin.dashboard') }}" 
-                   class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                   class="sidebar-link flex items-center px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-blue-600 dark:hover:text-blue-400 rounded-2xl transition-all group {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge mr-3 text-lg group-hover:scale-110 transition-transform"></i>
                     <span class="font-bold">Dashboard</span>
                 </a>
@@ -99,19 +111,19 @@
                 <div class="pt-6">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4 mb-2">System</p>
                     <a href="{{ route('profile.edit') }}" 
-                       class="sidebar-link flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                       class="sidebar-link flex items-center px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-blue-600 dark:hover:text-blue-400 rounded-2xl transition-all group {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                         <i class="fa-solid fa-user-gear mr-3 text-lg group-hover:scale-110 transition-transform"></i>
                         <span class="font-bold">Profil Saya</span>
                     </a>
                     <a href="{{ route('home') }}" 
-                       class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-2xl transition-all group">
+                       class="flex items-center px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-blue-600 dark:hover:text-blue-400 rounded-2xl transition-all group">
                         <i class="fa-solid fa-house-user mr-3 text-lg"></i>
                         <span class="font-bold">Lihat Toko</span>
                     </a>
                 </div>
             </nav>
 
-            <div class="p-4 border-t border-gray-100">
+            <div class="p-4 border-t border-gray-100 dark:border-gray-800">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" 
@@ -124,10 +136,17 @@
         </aside>
 
         <main class="flex-1 min-w-0 overflow-auto relative z-10">
-            <header class="glass-panel px-8 py-4 flex justify-end items-center sticky top-0 z-30 border-b border-white/60">
+            <header class="glass-panel px-8 py-4 flex justify-between items-center sticky top-0 z-30 border-b border-white/60 dark:border-white/5">
+                <div class="flex items-center">
+                    {{-- Dark Mode Toggle --}}
+                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" 
+                            class="p-2.5 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all group">
+                        <i class="fa-solid" :class="darkMode ? 'fa-sun text-yellow-400' : 'fa-moon'"></i>
+                    </button>
+                </div>
                 <div class="flex items-center gap-4">
                     <div class="text-right hidden sm:block">
-                        <p class="text-xs font-black text-gray-900 leading-none mb-1">{{ auth()->user()->name }}</p>
+                        <p class="text-xs font-black text-gray-900 dark:text-white leading-none mb-1">{{ auth()->user()->name }}</p>
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">
                             @if(auth()->user()->isSuperAdmin())
                                 Super Admin
@@ -138,7 +157,7 @@
                             @endif
                         </p>
                     </div>
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-blue-200 overflow-hidden">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-blue-200 dark:shadow-none overflow-hidden">
                         @if(auth()->user()->profile_photo_path)
                             <img src="{{ Storage::url(auth()->user()->profile_photo_path) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                         @else
@@ -157,79 +176,70 @@
     {{-- Script untuk Flash Message Auto-Hide & SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Global Toast Notification
-        @if(session('success'))
-            const Toast = Swal.mixin({
+        document.addEventListener('DOMContentLoaded', function() {
+            const isDark = document.documentElement.classList.contains('dark') || localStorage.getItem('darkMode') === 'true';
+            
+            const toastConfig = {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
                 showCloseButton: true,
                 timer: 4000,
                 timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: '{{ session('success') }}',
-                background: '#ffffff',
-                iconColor: '#2563eb',
+                background: isDark ? '#111827' : '#ffffff',
+                color: isDark ? '#ffffff' : '#111827',
                 customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
+                    popup: isDark ? 'rounded-2xl border border-gray-800 shadow-none mt-20' : 'rounded-2xl shadow-2xl border border-gray-100 mt-20',
                 }
-            });
-        @endif
+            };
 
-        // status for profile updates
-        @if(session('status') === 'profile-updated')
-            Swal.fire({
-                icon: 'success',
-                title: 'Profil Diperbarui!',
-                text: 'Data profil Anda telah berhasil disimpan.',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-                iconColor: '#2563eb',
-                customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-gray-100',
-                }
-            });
-        @endif
-
-        // Global Error Alert
-        @if(session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
+            const alertConfig = {
+                background: isDark ? '#111827' : '#ffffff',
+                color: isDark ? '#ffffff' : '#111827',
                 confirmButtonColor: '#2563eb',
                 customClass: {
-                    popup: 'rounded-[2rem]',
+                    popup: 'rounded-[1.5rem]',
                 }
-            });
-        @endif
+            };
 
-        // Validation Errors
-        @if($errors->any())
-            Swal.fire({
-                icon: 'warning',
-                title: 'Ada Kesalahan!',
-                text: 'Silakan periksa kembali isian formulir Anda.',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                customClass: {
-                    popup: 'rounded-2xl shadow-2xl border border-orange-100',
-                }
-            });
-        @endif
+            @if(session('success'))
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'success',
+                    iconColor: '#2563eb',
+                    title: '{{ session('success') }}'
+                });
+            @endif
+
+            @if(session('status'))
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'success',
+                    iconColor: '#2563eb',
+                    title: '{{ session('status') === 'profile-updated' ? 'Profil Berhasil Diperbarui!' : session('status') }}'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    ...alertConfig,
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}'
+                });
+            @endif
+
+            @if($errors->any())
+                Swal.fire({
+                    ...toastConfig,
+                    icon: 'warning',
+                    iconColor: '#f97316',
+                    title: 'Ada Kesalahan!',
+                    text: 'Silakan periksa kembali isian formulir Anda.',
+                    timer: 5000
+                });
+            @endif
+        });
     </script>
 </body>
 </html>

@@ -12,42 +12,42 @@
     <div class="max-w-xl w-full relative z-10">
         <div class="glass-panel rounded-[3rem] overflow-hidden transform transition-all duration-700 hover:scale-[1.01]">
             
-            <div class="bg-white/20 backdrop-blur-3xl pt-12 pb-8 text-center border-b border-white/40 relative overflow-hidden">
+            <div class="bg-white/20 dark:bg-gray-800/40 backdrop-blur-3xl pt-12 pb-8 text-center border-b border-white/40 dark:border-gray-700 relative overflow-hidden">
                 <div class="absolute -top-20 -left-20 w-40 h-40 bg-green-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative inline-block">
                     <div class="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
-                    <div class="relative w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-200 animate-bounce-short">
+                    <div class="relative w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-200 dark:shadow-none animate-bounce-short">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
                 </div>
                 
-                <h1 class="text-3xl font-black text-gray-900 mt-6 tracking-tight animate-fade-in-up uppercase">Checkout Berhasil!</h1>
-                <p class="text-gray-500 font-medium animate-fade-in-up delay-100">Pesananmu sudah masuk ke sistem kami.</p>
+                <h1 class="text-3xl font-black text-gray-900 dark:text-white mt-6 tracking-tight animate-fade-in-up uppercase">Checkout Berhasil!</h1>
+                <p class="text-gray-500 dark:text-gray-400 font-medium animate-fade-in-up delay-100">Pesananmu sudah masuk ke sistem kami.</p>
             </div>
 
             <div class="px-8 py-10">
                 {{-- Ringkasan Singkat --}}
-                <div class="bg-white/30 backdrop-blur-md rounded-[2rem] p-6 border-2 border-dashed border-white/60 relative mb-8">
-                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 backdrop-blur-md rounded-full border-r border-white/40"></div>
-                    <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 backdrop-blur-md rounded-full border-l border-white/40"></div>
+                <div class="bg-white/30 dark:bg-gray-800/60 backdrop-blur-md rounded-[2rem] p-6 border-2 border-dashed border-white/60 dark:border-gray-700 relative mb-8">
+                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-full border-r border-white/40 dark:border-gray-700"></div>
+                    <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-full border-l border-white/40 dark:border-gray-700"></div>
                     
                     <div class="space-y-4 text-sm">
                         <div class="flex justify-between items-center">
-                            <span class="font-bold uppercase tracking-widest text-gray-400">Kode Invoice</span>
+                            <span class="font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Kode Invoice</span>
                             <div class="flex flex-col gap-1 items-end">
                                 @foreach($transactions as $tx)
-                                <span class="font-mono font-bold text-gray-800 bg-white/50 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/60 text-xs">
+                                <span class="font-mono font-bold text-gray-800 dark:text-white bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm px-3 py-1 rounded-lg border border-white/60 dark:border-gray-700 text-xs">
                                     #{{ $tx->invoice_code }}
                                 </span>
                                 @endforeach
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="font-bold uppercase tracking-widest text-gray-400">Total Pembayaran</span>
-                            <span class="text-xl font-black text-blue-600">
+                            <span class="font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Total Pembayaran</span>
+                            <span class="text-xl font-black text-blue-600 dark:text-blue-400">
                                 Rp {{ number_format($transactions->sum('total_amount'), 0, ',', '.') }}
                             </span>
                         </div>
@@ -57,14 +57,14 @@
                 {{-- TOMBOL UTAMA: KE DETAIL PEMBAYARAN --}}
                 <div class="space-y-4">
                     <a href="{{ route('orders.index') }}" 
-                       class="group flex items-center justify-center w-full px-6 py-5 bg-blue-600 text-white rounded-[1.5rem] font-black text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all transform active:scale-95">
+                       class="group flex items-center justify-center w-full px-6 py-5 bg-blue-600 text-white rounded-[1.5rem] font-black text-lg shadow-xl shadow-blue-200 dark:shadow-none hover:bg-blue-700 transition-all transform active:scale-95">
                        <i class="fa-solid fa-list-check mr-3 group-hover:rotate-12 transition-transform"></i> 
                        LIHAT DAFTAR PESANAN
                     </a>
 
                     <div class="grid grid-cols-2 gap-4">
                         <a href="{{ route('product.index') }}" 
-                           class="col-span-2 flex items-center justify-center px-6 py-4 bg-white/30 backdrop-blur-md border border-white/60 text-gray-700 rounded-2xl font-bold hover:bg-white/50 transition-all transform active:scale-95 text-xs uppercase tracking-widest leading-none">
+                           class="col-span-2 flex items-center justify-center px-6 py-4 bg-white/30 dark:bg-gray-800/60 backdrop-blur-md border border-white/60 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-2xl font-bold hover:bg-white/50 dark:hover:bg-gray-700/60 transition-all transform active:scale-95 text-xs uppercase tracking-widest leading-none">
                            <i class="fa-solid fa-cart-shopping mr-2"></i> Belanja Lagi
                         </a>
                     </div>

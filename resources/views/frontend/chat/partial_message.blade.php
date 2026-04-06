@@ -5,7 +5,7 @@
 
 <div class="flex {{ $isMine ? 'justify-end' : 'justify-start' }} group animate-fade-in relative">
     <div class="max-w-[80%] md:max-w-[70%] group">
-        <div class="relative {{ $isMine ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 rounded-l-[1.5rem] rounded-tr-[1.5rem]' : 'bg-white text-gray-800 shadow-md border border-gray-100 rounded-r-[1.5rem] rounded-tl-[1.5rem]' }} p-5 transition-all">
+        <div class="relative {{ $isMine ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 dark:shadow-none rounded-l-[1.5rem] rounded-tr-[1.5rem]' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md border border-gray-100 dark:border-gray-700 rounded-r-[1.5rem] rounded-tl-[1.5rem]' }} p-5 transition-all">
             <p class="text-[15px] font-medium leading-relaxed">{{ $message->message }}</p>
             
             @if($canDelete)
@@ -13,7 +13,7 @@
                 <form action="{{ route('chat.message.destroy', $message->id) }}" method="POST" onsubmit="return confirm('Tarik pesan ini?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="text-gray-300 hover:text-red-500 transition-colors p-2">
+                    <button type="submit" class="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors p-2">
                         <i class="fa-solid fa-circle-xmark text-sm"></i>
                     </button>
                 </form>
@@ -21,9 +21,9 @@
             @endif
         </div>
         <div class="mt-2 flex items-center {{ $isMine ? 'justify-end' : 'justify-start' }} gap-2">
-            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">{{ $message->created_at->format('H:i') }}</span>
+            <span class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{{ $message->created_at->format('H:i') }}</span>
             @if($isMine)
-                <span class="text-[9px] font-black {{ $message->is_read ? 'text-blue-500' : 'text-gray-300' }} uppercase tracking-widest">
+                <span class="text-[9px] font-black {{ $message->is_read ? 'text-blue-500' : 'text-gray-300 dark:text-gray-600' }} uppercase tracking-widest">
                     {{ $message->is_read ? 'Dibaca' : 'Terkirim' }}
                 </span>
             @endif

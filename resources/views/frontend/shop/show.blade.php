@@ -6,40 +6,40 @@
         
         {{-- Back Button --}}
         <div class="mb-6">
-            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('product.index') }}" class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-blue-600 transition-colors px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm hover:shadow-md">
+            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('product.index') }}" class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md">
                 <i class="fa-solid fa-arrow-left"></i>
                 Kembali
             </a>
         </div>
 
         {{-- Store Details Banner --}}
-        <div class="glass-panel rounded-[2rem] p-8 md:p-10 mb-12 bg-white/40 border border-white/60 relative overflow-hidden">
+        <div class="glass-panel dark:bg-gray-800/60 rounded-[2rem] p-8 md:p-10 mb-12 bg-white/40 dark:bg-gray-800/40 border border-white/60 dark:border-gray-700 relative overflow-hidden">
             {{-- Background Accent --}}
-            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 dark:bg-blue-600/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             
             <div class="flex flex-col md:flex-row items-center gap-6 relative z-10">
-                <div class="w-32 h-32 bg-white/50 backdrop-blur-md rounded-[2rem] overflow-hidden flex-shrink-0 border-2 border-white/80 shadow-xl shadow-blue-100/50">
+                <div class="w-32 h-32 bg-white/50 dark:bg-gray-700/50 backdrop-blur-md rounded-[2rem] overflow-hidden flex-shrink-0 border-2 border-white/80 dark:border-gray-600 shadow-xl shadow-blue-100/50 dark:shadow-none">
                     <img src="{{ $shop->profile_photo_url }}" 
                          alt="{{ $shop->name }}" 
                          class="w-full h-full object-cover">
                 </div>
                 
                 <div class="text-center md:text-left flex-1">
-                    <h1 class="text-3xl font-black text-gray-900 uppercase tracking-tighter leading-tight">{{ $shop->name }}</h1>
+                    <h1 class="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-tight">{{ $shop->name }}</h1>
                     
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-3">
-                        <div class="flex items-center gap-2 bg-green-50 text-green-600 px-3 py-1.5 rounded-full border border-green-100">
+                        <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-3 py-1.5 rounded-full border border-green-100 dark:border-green-900/50">
                             <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
                             <span class="text-[10px] font-bold uppercase tracking-widest">Penjual Terverifikasi</span>
                         </div>
-                        <div class="flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full border border-blue-100">
+                        <div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full border border-blue-100 dark:border-blue-900/50">
                             <i class="fa-solid fa-box-open text-[10px]"></i>
                             <span class="text-[10px] font-bold uppercase tracking-widest">{{ $products->count() }} Produk</span>
                         </div>
                     </div>
                     
-                    <p class="text-sm font-bold text-gray-500 mt-4 uppercase tracking-widest italic">
-                        <i class="fa-solid fa-calendar-check mr-2 text-blue-400"></i>Bergabung Sejak {{ $shop->created_at->format('M Y') }}
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 mt-4 uppercase tracking-widest italic">
+                        <i class="fa-solid fa-calendar-check mr-2 text-blue-400 dark:text-blue-500"></i>Bergabung Sejak {{ $shop->created_at->format('M Y') }}
                     </p>
                 </div>
             </div>
@@ -49,14 +49,14 @@
         <div class="mb-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black text-gray-900 tracking-tight">Katalog Produk</h2>
-                    <p class="text-gray-500 mt-1">Menampilkan semua produk dari <span class="text-blue-600 font-bold uppercase">{{ $shop->name }}</span></p>
+                    <h2 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Katalog Produk</h2>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Menampilkan semua produk dari <span class="text-blue-600 dark:text-blue-400 font-bold uppercase">{{ $shop->name }}</span></p>
                 </div>
                 
                 <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
                     {{-- Pencarian --}}
                     <form action="{{ route('shop.show', $shop->id) }}" method="GET" class="flex w-full md:w-auto items-center gap-2">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari di toko ini..." class="glass-panel px-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50 shadow-sm w-full sm:w-64 placeholder-gray-500 font-medium border border-gray-100">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari di toko ini..." class="glass-panel dark:bg-gray-800/40 dark:text-gray-100 px-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50 shadow-sm w-full sm:w-64 placeholder-gray-500 dark:placeholder-gray-400 font-medium border border-gray-100 dark:border-gray-700">
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-colors text-sm font-bold">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -65,19 +65,19 @@
             </div>
 
             @if($products->isEmpty())
-                <div class="text-center py-20 glass-panel rounded-[2rem] border border-gray-100">
-                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-6">
-                        <i class="fa-solid fa-box-open text-3xl text-gray-300"></i>
+                <div class="text-center py-20 glass-panel dark:bg-gray-800/60 rounded-[2rem] border border-gray-100 dark:border-gray-700">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 dark:bg-gray-700 mb-6">
+                        <i class="fa-solid fa-box-open text-3xl text-gray-300 dark:text-gray-500"></i>
                     </div>
-                    <h3 class="text-xl font-black text-gray-900 mb-2">Belum ada produk</h3>
-                    <p class="text-gray-500">Toko ini sepertinya belum menambahkan produk apapun, atau produk yang Anda cari tidak ditemukan.</p>
+                    <h3 class="text-xl font-black text-gray-900 dark:text-white mb-2">Belum ada produk</h3>
+                    <p class="text-gray-500 dark:text-gray-400">Toko ini sepertinya belum menambahkan produk apapun, atau produk yang Anda cari tidak ditemukan.</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                     @foreach($products as $product)
-                        <div class="group glass-panel rounded-[2rem] hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col h-full bg-white border border-gray-50">
+                        <div class="group glass-panel dark:bg-gray-800/60 rounded-[2rem] hover:shadow-2xl hover:shadow-blue-900/10 dark:hover:shadow-black/30 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col h-full bg-white dark:bg-gray-800 border border-gray-50 dark:border-gray-700">
                             
-                            <div class="relative aspect-square overflow-hidden bg-white/40">
+                            <div class="relative aspect-square overflow-hidden bg-white/40 dark:bg-gray-700/40">
                                 <img src="{{ $product->image_url ?: 'https://via.placeholder.com/400' }}" 
                                      alt="{{ $product->name }}" 
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
@@ -101,16 +101,16 @@
                             <div class="p-6 flex flex-col flex-grow">
                                 <div class="mb-auto">
                                     <div class="mb-3">
-                                        <span class="bg-indigo-50 text-indigo-600 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-widest border border-indigo-100">
+                                        <span class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-widest border border-indigo-100 dark:border-indigo-900/50">
                                             {{ $product->category->name }}
                                         </span>
                                     </div>
-                                    <h3 class="font-bold text-gray-900 mb-1 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                         {{ $product->name }}
                                     </h3>
-                                    <div class="flex items-center text-[11px] text-gray-400 font-bold uppercase tracking-tighter mt-3 mb-4">
+                                    <div class="flex items-center text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter mt-3 mb-4">
                                         <i class="fa-solid fa-box-open mr-1"></i>
-                                        Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500' }} ml-1">{{ $product->quantity }} pcs</span>
+                                        Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400' }} ml-1">{{ $product->quantity }} pcs</span>
                                     </div>
                                 </div>
                                 
@@ -125,17 +125,17 @@
 
                                         @if ($product->quantity <= 0)
                                             <button type="button" disabled
-                                                    class="w-full bg-gray-100 text-gray-400 py-3 rounded-xl font-bold flex items-center justify-center cursor-not-allowed border border-gray-200">
+                                                    class="w-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 py-3 rounded-xl font-bold flex items-center justify-center cursor-not-allowed border border-gray-200 dark:border-gray-700">
                                                 <i class="fa-solid fa-circle-xmark mr-2"></i> Habis
                                             </button>
                                         @else
                                             @auth
                                                 <div class="flex items-center gap-2">
-                                                    <div class="flex items-center bg-gray-50 rounded-xl p-1 border border-gray-200 focus-within:border-blue-200 transition-all">
-                                                        <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
+                                                    <div class="flex items-center bg-gray-50 dark:bg-gray-800 rounded-xl p-1 border border-gray-200 dark:border-gray-700 focus-within:border-blue-200 dark:focus-within:border-blue-800 transition-all">
+                                                        <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors" onclick="changeQuantity(this, -1)">−</button>
                                                         <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}"
-                                                               class="w-10 bg-transparent text-center text-sm font-bold text-gray-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                                                        <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
+                                                               class="w-10 bg-transparent text-center text-sm font-bold text-gray-800 dark:text-gray-200 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                                        <button type="button" class="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors" onclick="changeQuantity(this, 1)">+</button>
                                                     </div>
 
                                                     <button type="submit"

@@ -4,14 +4,14 @@
 <div class="container mx-auto px-6 py-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
         <div>
-            <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none uppercase italic">Kelola <span class="text-blue-600">Produk.</span></h1>
-            <p class="text-gray-500 mt-2 font-medium">Atur inventaris produk store Anda dengan tampilan modern.</p>
+            <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase italic">Kelola <span class="text-blue-600">Produk.</span></h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">Atur inventaris produk store Anda dengan tampilan modern.</p>
         </div>
         <div class="flex items-center gap-3">
             <form action="{{ route('admin.products.index') }}" method="GET" class="flex items-center gap-2">
                 <div class="relative">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk..." 
-                        class="glass-panel px-6 py-3 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 pl-12 w-64 placeholder-gray-400 font-bold">
+                        class="glass-panel dark:bg-gray-800/40 dark:text-white px-6 py-3 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 pl-12 w-64 placeholder-gray-400 font-bold border-transparent">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </form>
@@ -26,8 +26,8 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
     @foreach($products as $p)
-        <div class="group relative glass-panel rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-col h-full">
-            <div class="relative aspect-[4/3] overflow-hidden bg-white/40">
+        <div class="group relative glass-panel dark:bg-gray-800/60 rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-black/20 hover:-translate-y-1 transition-all duration-500 flex flex-col h-full">
+            <div class="relative aspect-[4/3] overflow-hidden bg-white/40 dark:bg-gray-700/40">
                 <img src="{{ $p->image_url }}" alt="{{ $p->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                 <div class="absolute top-4 right-4">
                     <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md {{ $p->is_active ? 'bg-green-500/80 text-white' : 'bg-red-500/80 text-white' }}">
@@ -39,14 +39,14 @@
             <div class="p-6 flex flex-col flex-grow">
                 <div class="mb-auto">
                     <div class="mb-3">
-                        <span class="bg-blue-50/50 text-blue-600 font-black text-[10px] px-2.5 py-1 rounded-lg uppercase tracking-widest border border-blue-100">
+                        <span class="bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-black text-[10px] px-2.5 py-1 rounded-lg uppercase tracking-widest border border-blue-100 dark:border-blue-900/50">
                             {{ $p->category->name ?? 'Uncategorized' }}
                         </span>
                     </div>
-                    <h3 class="text-lg font-black text-gray-900 leading-tight mb-2 truncate">{{ $p->name }}</h3>
+                    <h3 class="text-lg font-black text-gray-900 dark:text-white leading-tight mb-2 truncate">{{ $p->name }}</h3>
                     
                     @if(auth()->user()->isSuperAdmin())
-                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 flex items-center">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2 flex items-center">
                         <i class="fa-solid fa-store mr-2 text-blue-500"></i> {{ $p->user ? $p->user->name : 'Official Store' }}
                     </p>
                     @endif
@@ -56,17 +56,17 @@
                     </p>
                 </div>
 
-                <div class="flex items-center gap-2 pt-4 border-t border-white/40 mt-4">
+                <div class="flex items-center gap-2 pt-4 border-t border-white/40 dark:border-gray-700 mt-4">
                     @if(!auth()->user()->isSuperAdmin())
                         <a href="{{ route('admin.products.edit', $p) }}" 
-                           class="flex-1 flex items-center justify-center bg-white/50 hover:bg-blue-600 hover:text-white py-3 rounded-2xl text-xs font-black transition-all border border-white/60">
+                           class="flex-1 flex items-center justify-center bg-white/50 dark:bg-gray-700/50 hover:bg-blue-600 hover:text-white dark:text-gray-300 py-3 rounded-2xl text-xs font-black transition-all border border-white/60 dark:border-gray-600">
                             <i class="fa-solid fa-pen-to-square mr-2"></i> EDIT
                         </a>
                     @endif
                     <form action="{{ route('admin.products.destroy', $p) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')" class="{{ auth()->user()->isSuperAdmin() ? 'w-full' : 'flex-shrink-0' }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="{{ auth()->user()->isSuperAdmin() ? 'w-full' : 'w-12' }} h-12 flex items-center justify-center bg-red-50/50 text-red-600 hover:bg-red-600 hover:text-white rounded-2xl transition-all border border-red-100/40">
+                        <button type="submit" class="{{ auth()->user()->isSuperAdmin() ? 'w-full' : 'w-12' }} h-12 flex items-center justify-center bg-red-50/50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white rounded-2xl transition-all border border-red-100/40 dark:border-red-900/50">
                             <i class="fa-solid fa-trash-can {{ auth()->user()->isSuperAdmin() ? 'mr-2' : '' }}"></i>
                             @if(auth()->user()->isSuperAdmin())
                                 <span class="text-xs font-black uppercase tracking-widest">Hapus Produk</span>

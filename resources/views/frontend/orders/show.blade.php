@@ -4,21 +4,21 @@
         
         {{-- Flash Messages --}}
         @if (session('success'))
-            <div class="mb-6 bg-green-100 border border-green-200 text-green-800 px-6 py-4 rounded-3xl flex items-center shadow-sm animate-fade-in">
+            <div class="mb-6 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-900/50 text-green-800 dark:text-green-400 px-6 py-4 rounded-3xl flex items-center shadow-sm animate-fade-in">
                 <i class="fa-solid fa-circle-check text-xl mr-3"></i>
                 <span class="font-bold">{{ session('success') }}</span>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="mb-6 bg-red-100 border border-red-200 text-red-800 px-6 py-4 rounded-3xl flex items-center shadow-sm animate-fade-in">
+            <div class="mb-6 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-400 px-6 py-4 rounded-3xl flex items-center shadow-sm animate-fade-in">
                 <i class="fa-solid fa-circle-exclamation text-xl mr-3"></i>
                 <span class="font-bold">{{ session('error') }}</span>
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="mb-6 bg-red-100 border border-red-200 text-red-800 px-6 py-4 rounded-3xl shadow-sm animate-fade-in">
+            <div class="mb-6 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-400 px-6 py-4 rounded-3xl shadow-sm animate-fade-in">
                 <div class="flex items-center mb-2">
                     <i class="fa-solid fa-circle-exclamation text-xl mr-3"></i>
                     <span class="font-bold">Terjadi kesalahan:</span>
@@ -32,20 +32,20 @@
         @endif
         {{-- Tombol Kembali --}}
         <div class="mb-6">
-            <a href="{{ route('orders.index') }}" class="group inline-flex items-center text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors">
+            <a href="{{ route('orders.index') }}" class="group inline-flex items-center text-blue-600 dark:text-blue-400 font-bold text-sm hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
                 <i class="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
                 Kembali ke Riwayat Pesanan
             </a>
         </div>
 
         {{-- Header & Status --}}
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 pb-8 border-b border-gray-100/50">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 pb-8 border-b border-gray-100/50 dark:border-gray-800/50">
             <div>
-                <h1 class="text-4xl font-black text-gray-900 tracking-tight leading-none">
-                    Detail Pesanan <span class="text-blue-600">#{{ $transaction->id }}</span>
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                    Detail Pesanan <span class="text-blue-600 dark:text-blue-400">#{{ $transaction->id }}</span>
                 </h1>
-                <p class="text-gray-500 font-medium mt-3 italic flex items-center gap-2 text-sm">
-                    <i class="fa-solid fa-calendar-day text-blue-400"></i>
+                <p class="text-gray-500 dark:text-gray-400 font-medium mt-3 italic flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-calendar-day text-blue-400 dark:text-blue-500"></i>
                     Dipesan pada {{ $transaction->created_at->format('d F Y, H:i') }} WIB
                 </p>
             </div>
@@ -53,14 +53,14 @@
             <div>
                 @php
                     $statusClasses = [
-                        'pending'   => 'bg-amber-100 text-amber-700',
-                        'confirmed' => 'bg-blue-100 text-blue-700',
-                        'shipped'   => 'bg-indigo-100 text-indigo-700',
-                        'completed' => 'bg-green-100 text-green-700',
-                        'cancelled' => 'bg-red-100 text-red-700',
+                        'pending'   => 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
+                        'confirmed' => 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
+                        'shipped'   => 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
+                        'completed' => 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+                        'cancelled' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
                     ];
                 @endphp
-                <span class="px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] {{ $statusClasses[$transaction->status] ?? 'bg-gray-100 text-gray-600' }} shadow-sm">
+                <span class="px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] {{ $statusClasses[$transaction->status] ?? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' }} shadow-sm">
                     Status: {{ $transaction->status }}
                 </span>
             </div>
@@ -69,17 +69,17 @@
         {{-- Progress Status Bar --}}
         <div class="mb-12 glass-panel rounded-[3rem] p-8 md:p-12 relative overflow-hidden">
             {{-- Background patterns --}}
-            <div class="absolute -left-10 -top-10 w-40 h-40 bg-blue-50/50 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-50/50 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-10 -top-10 w-40 h-40 bg-blue-50/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-50/50 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="relative z-10">
                 <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-xs font-black uppercase tracking-[0.25em] text-gray-400">Order Tracking</h2>
+                    <h2 class="text-xs font-black uppercase tracking-[0.25em] text-gray-400 dark:text-gray-500">Order Tracking</h2>
                     @if($transaction->status == 'cancelled')
-                        <div class="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-1.5 rounded-full border border-red-100">
+                        <div class="flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-1.5 rounded-full border border-red-100 dark:border-red-900/50">
                             <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 dark:bg-red-500 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500 dark:bg-red-600"></span>
                             </span>
                             <span class="text-[10px] font-black uppercase tracking-widest">Pesanan Dibatalkan</span>
                         </div>
@@ -100,7 +100,7 @@
 
                 <div class="relative">
                     {{-- Progress Line --}}
-                    <div class="absolute top-1/2 left-0 w-full h-[2px] bg-gray-100 -translate-y-1/2 rounded-full overflow-hidden">
+                    <div class="absolute top-1/2 left-0 w-full h-[2px] bg-gray-100 dark:bg-gray-700 -translate-y-1/2 rounded-full overflow-hidden">
                         <div class="h-full bg-blue-600 transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
                              style="width: {{ $currentPriority <= 1 ? '0' : ($currentPriority == 2 ? '50' : '100') }}%">
                         </div>
@@ -117,9 +117,9 @@
                             
                             <div class="flex flex-col items-center group relative">
                                 <div class="w-16 h-16 md:w-20 md:h-20 rounded-[1.75rem] flex items-center justify-center transition-all duration-500 shadow-xl border-4
-                                    {{ $isCompleted ? 'bg-blue-600 border-white text-white rotate-6' : 'bg-white border-gray-100 text-gray-300' }}
-                                    {{ $isActive ? 'ring-8 ring-blue-50/50 scale-110 !rotate-0' : '' }}
-                                    {{ $isFailed && $index == 0 ? 'bg-red-50 border-red-100 text-red-400 opacity-50' : '' }}">
+                                    {{ $isCompleted ? 'bg-blue-600 border-white dark:border-gray-800 text-white rotate-6' : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-gray-300 dark:text-gray-600' }}
+                                    {{ $isActive ? 'ring-8 ring-blue-50/50 dark:ring-blue-900/30 scale-110 !rotate-0' : '' }}
+                                    {{ $isFailed && $index == 0 ? 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-900/50 text-red-400 opacity-50' : '' }}">
                                     
                                     <i class="fa-solid {{ $stage['icon'] }} text-xl md:text-2xl transition-transform group-hover:scale-110"></i>
                                     
@@ -129,10 +129,10 @@
                                 </div>
                                 
                                 <div class="mt-6 text-center">
-                                    <p class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] {{ $isCompleted ? 'text-gray-900' : 'text-gray-400' }}">
+                                    <p class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] {{ $isCompleted ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500' }}">
                                         {{ $stage['label'] }}
                                     </p>
-                                    <p class="text-[9px] font-medium text-gray-400 mt-1 hidden md:block">
+                                    <p class="text-[9px] font-medium text-gray-400 dark:text-gray-500 mt-1 hidden md:block">
                                         {{ $stage['desc'] }}
                                     </p>
                                 </div>
@@ -157,22 +157,22 @@
                 
                 {{-- Card Produk --}}
                 <div class="glass-panel rounded-[2.5rem] overflow-hidden">
-                    <div class="p-6 border-b border-white/40 bg-white/20 backdrop-blur-md">
-                        <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest">Produk yang Dibeli</h2>
+                    <div class="p-6 border-b border-white/40 dark:border-gray-700 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md">
+                        <h2 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest">Produk yang Dibeli</h2>
                     </div>
                     
-                    <div class="divide-y divide-gray-50">
+                    <div class="divide-y divide-gray-50 dark:divide-gray-700/50">
                         @foreach($transaction->items as $item)
                         <div class="p-6 flex items-center gap-6">
                             {{-- Gambar Produk (Update: Menggunakan image_url) --}}
-                            <div class="w-20 h-20 aspect-square bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/60 flex-shrink-0 shadow-inner">
+                            <div class="w-20 h-20 aspect-square bg-white/50 dark:bg-gray-700/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/60 dark:border-gray-600 flex-shrink-0 shadow-inner">
                                 @if($item->product)
                                     <img src="{{ $item->product->image_url }}" 
                                          alt="{{ $item->product->name }}" 
                                          class="w-full h-full object-cover"
                                          onerror="this.onerror=null; this.src='https://via.placeholder.com/200';">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                    <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
                                         <i class="fa-solid fa-image text-3xl"></i>
                                     </div>
                                 @endif
@@ -180,17 +180,17 @@
                             
                             {{-- Info Produk --}}
                             <div class="flex-1">
-                                <h3 class="font-bold text-gray-900 leading-tight text-lg">
+                                <h3 class="font-bold text-gray-900 dark:text-white leading-tight text-lg">
                                     {{ $item->product->name ?? 'Produk Terhapus' }}
                                 </h3>
-                                <p class="text-sm text-gray-500 font-medium mt-1">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">
                                     {{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}
                                 </p>
                             </div>
 
                             {{-- Subtotal per Item --}}
                             <div class="text-right">
-                                <p class="font-black text-gray-900">
+                                <p class="font-black text-gray-900 dark:text-white">
                                     Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}
                                 </p>
                             </div>
@@ -201,7 +201,7 @@
 
                 {{-- Instruksi Pembayaran --}}
                 @if($transaction->status == 'pending')
-                <div class="bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-blue-100 relative overflow-hidden">
+                <div class="bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-blue-100 dark:shadow-none relative overflow-hidden">
                     {{-- Dekorasi Abstract --}}
                     <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                     
@@ -216,50 +216,50 @@
                             {{-- Pilihan Bank --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                 {{-- BCA --}}
-                                <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 text-gray-900 shadow-xl shadow-blue-900/10 border border-white">
+                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600">Bank BCA</span>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-3" alt="BCA">
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BCA</span>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BCA">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">123 456 7890</p>
-                                    <p class="font-bold text-gray-400 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- Mandiri --}}
-                                <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 text-gray-900 shadow-xl shadow-blue-900/10 border border-white">
+                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600">Bank Mandiri</span>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-3" alt="Mandiri">
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank Mandiri</span>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="Mandiri">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">987 654 3210</p>
-                                    <p class="font-bold text-gray-400 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- BNI --}}
-                                <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 text-gray-900 shadow-xl shadow-blue-900/10 border border-white">
+                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600">Bank BNI</span>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-3" alt="BNI">
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BNI</span>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg/1280px-Bank_Negara_Indonesia_logo_%282004%29.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BNI">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">554 321 0987</p>
-                                    <p class="font-bold text-gray-400 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
 
                                 {{-- BRI --}}
-                                <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 text-gray-900 shadow-xl shadow-blue-900/10 border border-white">
+                                <div class="bg-white/95 dark:bg-white/10 backdrop-blur-md rounded-3xl p-5 text-gray-900 dark:text-white shadow-xl shadow-blue-900/10 border border-white dark:border-white/20">
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600">Bank BRI</span>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-3" alt="BRI">
+                                        <span class="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-200">Bank BRI</span>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/1200px-BRI_2020.svg.png" class="h-3 filter dark:brightness-0 dark:invert" alt="BRI">
                                     </div>
                                     <p class="text-xl font-black tracking-tighter mb-0.5">001 2345 6789</p>
-                                    <p class="font-bold text-gray-400 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
+                                    <p class="font-bold text-gray-400 dark:text-gray-300 uppercase text-[10px] tracking-wider">a.n. PT Invoify Indonesia</p>
                                 </div>
                             </div>
 
                             {{-- Tombol Konfirmasi Bayar --}}
                             <div class="mt-6">
                                 <button type="button" onclick="showPaymentModal()" 
-                                        class="w-full bg-white text-blue-600 py-4 rounded-2xl font-black text-sm text-center flex items-center justify-center hover:bg-blue-50 transition-all active:scale-95 shadow-xl shadow-blue-900/20">
+                                        class="w-full bg-white text-blue-600 py-4 rounded-2xl font-black text-sm text-center flex items-center justify-center hover:bg-blue-50 transition-all active:scale-95 shadow-xl shadow-blue-900/20 dark:shadow-none">
                                     <i class="fa-solid fa-credit-card mr-2"></i> Konfirmasi Pembayaran
                                 </button>
                                 <p class="text-center text-[10px] text-blue-200 mt-3 font-bold uppercase tracking-widest">Klik jika Anda sudah melakukan transfer</p>
@@ -276,25 +276,25 @@
                 <div class="glass-panel rounded-[2.5rem] p-8 space-y-8 animate-fade-in-up">
                     {{-- Detail Toko --}}
                     <div class="relative group">
-                        <div class="absolute -right-2 -top-2 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <div class="absolute -right-2 -top-2 w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <i class="fa-solid fa-store text-xs"></i>
                         </div>
-                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-5 flex items-center gap-2">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 mb-5 flex items-center gap-2">
                              <i class="fa-solid fa-shop"></i> Informasi Penjual
                         </h3>
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 flex-shrink-0 aspect-square bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 border-2 border-white ring-4 ring-blue-50 transition-transform group-hover:rotate-3">
+                            <div class="w-14 h-14 flex-shrink-0 aspect-square bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 dark:shadow-none border-2 border-white dark:border-gray-700 ring-4 ring-blue-50 dark:ring-blue-900/20 transition-transform group-hover:rotate-3">
                                 <img src="{{ $transaction->seller->profile_photo_url }}" 
                                      alt="{{ $transaction->seller->name }}" 
                                      class="w-full h-full object-cover">
                             </div>
                             <div class="min-w-0">
-                                <p class="font-black text-gray-900 leading-tight mb-1 truncate text-lg uppercase tracking-tighter italic">
+                                <p class="font-black text-gray-900 dark:text-white leading-tight mb-1 truncate text-lg uppercase tracking-tighter italic">
                                     {{ $transaction->seller->name }}
                                 </p>
                                 <div class="flex items-center gap-2">
                                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest truncate">Verified Seller</p>
+                                    <p class="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest truncate">Verified Seller</p>
                                 </div>
                             </div>
                         </div>
@@ -302,60 +302,60 @@
 
                     <div class="relative py-2">
                         <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                            <div class="w-full border-t border-dashed border-gray-100"></div>
+                            <div class="w-full border-t border-dashed border-gray-100 dark:border-gray-700"></div>
                         </div>
                         <div class="relative flex justify-center">
-                            <span class="bg-white/40 backdrop-blur-sm px-3 text-gray-300 uppercase text-[8px] font-black tracking-[0.4em]">Connection</span>
+                            <span class="bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm px-3 text-gray-300 dark:text-gray-500 uppercase text-[8px] font-black tracking-[0.4em]">Connection</span>
                         </div>
                     </div>
 
                     {{-- Detail Pembeli --}}
                     <div class="group">
-                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-5 flex items-center gap-2">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-5 flex items-center gap-2">
                             <i class="fa-solid fa-user-check"></i> Detail Penerima
                         </h3>
                         <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 flex-shrink-0 aspect-square bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-md border border-gray-100 group-hover:-rotate-3 transition-transform">
+                            <div class="w-12 h-12 flex-shrink-0 aspect-square bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center overflow-hidden shadow-md border border-gray-100 dark:border-gray-600 group-hover:-rotate-3 transition-transform">
                                 <img src="{{ $transaction->user->profile_photo_url }}" 
                                      alt="{{ $transaction->user->name }}" 
                                      class="w-full h-full object-cover">
                             </div>
                             <div class="min-w-0">
-                                <p class="font-black text-gray-900 leading-tight mb-0.5 truncate text-sm uppercase tracking-tight">
+                                <p class="font-black text-gray-900 dark:text-white leading-tight mb-0.5 truncate text-sm uppercase tracking-tight">
                                     {{ $transaction->user->name }}
                                 </p>
-                                <p class="text-[10px] text-gray-400 font-bold tracking-wider truncate mb-1">{{ $transaction->user->email }}</p>
+                                <p class="text-[10px] text-gray-400 dark:text-gray-500 font-bold tracking-wider truncate mb-1">{{ $transaction->user->email }}</p>
                             </div>
                         </div>
                         
                         {{-- Badge Role --}}
-                        <div class="inline-flex items-center px-4 py-1.5 bg-gray-50 text-[9px] font-black text-gray-500 rounded-full border border-gray-100 uppercase tracking-widest">
+                        <div class="inline-flex items-center px-4 py-1.5 bg-gray-50 dark:bg-gray-700/50 text-[9px] font-black text-gray-500 dark:text-gray-400 rounded-full border border-gray-100 dark:border-gray-600 uppercase tracking-widest">
                             Customer Profile
                         </div>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-[2.5rem] p-8 sticky top-28 animate-fade-in-up delay-100">
-                    <h2 class="font-black text-gray-900 uppercase text-xs tracking-widest mb-6 border-b border-white/40 pb-4">Ringkasan Biaya</h2>
+                    <h2 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest mb-6 border-b border-white/40 dark:border-gray-700 pb-4">Ringkasan Biaya</h2>
                     
                     <div class="space-y-4">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 font-medium">Kurir</span>
-                            <span class="font-bold text-gray-900 text-right">{{ $transaction->shippingMethod->name ?? 'N/A' }}</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Kurir</span>
+                            <span class="font-bold text-gray-900 dark:text-white text-right">{{ $transaction->shippingMethod->name ?? 'N/A' }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 font-medium">Layanan</span>
-                            <span class="font-bold text-gray-900">{{ $transaction->shippingMethod->service ?? '-' }}</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Layanan</span>
+                            <span class="font-bold text-gray-900 dark:text-white">{{ $transaction->shippingMethod->service ?? '-' }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 font-medium">Metode Bayar</span>
-                            <span class="font-bold text-gray-900 uppercase tracking-tighter">{{ $transaction->payment_method }}</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Metode Bayar</span>
+                            <span class="font-bold text-gray-900 dark:text-white uppercase tracking-tighter">{{ $transaction->payment_method }}</span>
                         </div>
                         
-                        <div class="py-4 border-t border-dashed border-gray-200 mt-4">
+                        <div class="py-4 border-t border-dashed border-gray-200 dark:border-gray-700 mt-4">
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-900 font-black italic uppercase text-xs">Total Bayar</span>
-                                <span class="text-2xl font-black text-blue-600 tracking-tighter">
+                                <span class="text-gray-900 dark:text-white font-black italic uppercase text-xs">Total Bayar</span>
+                                <span class="text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tighter">
                                     Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}
                                 </span>
                             </div>
@@ -365,7 +365,7 @@
                     {{-- Tombol Aksi --}}
                     <div class="mt-6 space-y-3">
                         <a href="{{ route('transactions.print-invoice', $transaction->id) }}" target="_blank" 
-                           class="w-full bg-gray-900 text-white py-4 rounded-2xl font-black text-sm text-center block hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-gray-200">
+                           class="w-full bg-gray-900 dark:bg-gray-700 text-white py-4 rounded-2xl font-black text-sm text-center block hover:bg-blue-600 dark:hover:bg-blue-500 transition-all active:scale-95 shadow-lg shadow-gray-200 dark:shadow-none">
                             <i class="fa-solid fa-print mr-2"></i> Cetak Invoice
                         </a>
                     </div>
@@ -381,35 +381,35 @@
         <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-all duration-500" onclick="closePaymentModal()"></div>
         
         <div class="relative flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-[3rem] w-full max-w-md overflow-hidden shadow-2xl shadow-black/20 animate-scale-up border border-white">
+            <div class="bg-white dark:bg-gray-800 rounded-[3rem] w-full max-w-md overflow-hidden shadow-2xl shadow-black/20 animate-scale-up border border-white dark:border-gray-700">
                 <div class="p-8 text-center">
                     {{-- Icon Animasi --}}
-                    <div class="w-20 h-20 bg-blue-100 rounded-3xl flex items-center justify-center mx-auto mb-6 text-blue-600 relative">
+                    <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/40 rounded-3xl flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400 relative">
                         <i class="fa-solid fa-lock text-3xl"></i>
-                        <div class="absolute inset-0 bg-blue-400 rounded-3xl animate-ping opacity-20"></div>
+                        <div class="absolute inset-0 bg-blue-400 dark:bg-blue-500 rounded-3xl animate-ping opacity-20"></div>
                     </div>
 
-                    <h2 class="text-2xl font-black text-gray-900 mb-2 tracking-tight uppercase">Verifikasi Keamanan</h2>
-                    <p class="text-gray-500 font-medium text-sm mb-8">Masukkan password akun Anda untuk melanjutkan proses konfirmasi pembayaran.</p>
+                    <h2 class="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight uppercase">Verifikasi Keamanan</h2>
+                    <p class="text-gray-500 dark:text-gray-400 font-medium text-sm mb-8">Masukkan password akun Anda untuk melanjutkan proses konfirmasi pembayaran.</p>
 
                     <form action="{{ route('orders.pay', $transaction->id) }}" method="POST" id="payForm">
                         @csrf
                         <div class="relative text-left mb-6">
-                            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2 block ml-1">Password Anda</label>
+                            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-2 block ml-1">Password Anda</label>
                             <div class="relative">
-                                <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
                                 <input type="password" name="password" required placeholder="••••••••"
-                                       class="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 transition-all font-bold">
+                                       class="w-full pl-14 pr-6 py-4 bg-gray-50 dark:bg-gray-700 dark:text-white border-none dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-blue-600 transition-all font-bold">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <button type="button" onclick="closePaymentModal()"
-                                    class="py-4 rounded-2xl font-black text-sm text-gray-500 hover:bg-gray-100 transition-all uppercase tracking-widest">
+                                    class="py-4 rounded-2xl font-black text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all uppercase tracking-widest">
                                 Batal
                             </button>
                             <button type="submit" 
-                                    class="py-4 bg-gray-900 text-white rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl shadow-gray-200 uppercase tracking-widest active:scale-95">
+                                    class="py-4 bg-gray-900 dark:bg-blue-600 text-white rounded-2xl font-black text-sm hover:bg-blue-600 dark:hover:bg-blue-700 transition-all shadow-xl shadow-gray-200 dark:shadow-none uppercase tracking-widest active:scale-95">
                                 Konfirmasi
                             </button>
                         </div>

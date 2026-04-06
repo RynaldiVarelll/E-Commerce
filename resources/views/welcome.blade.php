@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="relative overflow-hidden bg-[#0a58ca]">
+<div class="relative overflow-hidden bg-[#0a58ca] dark:bg-gray-900 transition-colors duration-300">
     {{-- Decorative Background Elements --}}
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[60%] bg-blue-400 rounded-full blur-[120px] opacity-20"></div>
@@ -31,7 +31,7 @@
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
                     <a href="{{ auth()->check() && auth()->user()->isAdmin() ? route('admin.dashboard') : route('product.index') }}" 
-                       class="group px-10 py-5 bg-white text-blue-700 rounded-2xl font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex items-center justify-center gap-3">
+                       class="group px-10 py-5 bg-white dark:bg-blue-600 text-blue-700 dark:text-white rounded-2xl font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.2)] dark:shadow-none flex items-center justify-center gap-3">
                         {{ auth()->check() && auth()->user()->isAdmin() ? 'KELOLA TOKO' : 'MULAI BELANJA' }}
                         <i class="fa-solid {{ auth()->check() && auth()->user()->isAdmin() ? 'fa-gauge-high' : 'fa-bolt-lightning' }} group-hover:rotate-12 transition-transform"></i>
                     </a>
@@ -61,13 +61,13 @@
                              class="w-full h-auto rounded-[2rem] shadow-2xl object-cover transform group-hover:scale-105 transition-transform duration-700">
                         
                         {{-- Small Floating Tag on Image --}}
-                        <div class="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
-                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                        <div class="absolute bottom-8 right-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
+                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg dark:shadow-none">
                                 <i class="fa-solid fa-star"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Best Seller</p>
-                                <p class="text-sm font-black text-gray-900 tracking-tight leading-none mt-1">Premium Quality</p>
+                                <p class="text-[10px] font-black text-gray-400 dark:text-gray-400 uppercase tracking-widest leading-none">Best Seller</p>
+                                <p class="text-sm font-black text-gray-900 dark:text-white tracking-tight leading-none mt-1">Premium Quality</p>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<div class="bg-white py-24">
+<div class="bg-white dark:bg-gray-900 transition-colors duration-300 py-24">
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
             @php
@@ -89,24 +89,24 @@
             @endphp
 
             @foreach($features as $f)
-            <div class="group p-8 rounded-3xl border border-gray-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all duration-300">
-                <div class="w-14 h-14 bg-{{ $f['color'] }}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid {{ $f['icon'] }} text-2xl text-{{ $f['color'] }}-600"></i>
+            <div class="group p-8 rounded-3xl border border-gray-100 dark:border-gray-800 hover:border-blue-100 dark:hover:border-blue-900 hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-all duration-300">
+                <div class="w-14 h-14 bg-{{ $f['color'] }}-100 dark:bg-{{ $f['color'] }}-900/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid {{ $f['icon'] }} text-2xl text-{{ $f['color'] }}-600 dark:text-{{ $f['color'] }}-400"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $f['title'] }}</h3>
-                <p class="text-gray-500 leading-relaxed">{{ $f['desc'] }}</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ $f['title'] }}</h3>
+                <p class="text-gray-500 dark:text-gray-400 leading-relaxed">{{ $f['desc'] }}</p>
             </div>
             @endforeach
         </div>
     </div>
 </div>
 
-<div class="bg-gray-50 py-20">
+<div class="bg-gray-50 dark:bg-gray-800 transition-colors duration-300 py-20">
     <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Kategori Unggulan</h2>
-                <p class="text-gray-500 mt-2">Pilih kategori yang sesuai dengan kebutuhan Anda hari ini.</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Kategori Unggulan</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-2">Pilih kategori yang sesuai dengan kebutuhan Anda hari ini.</p>
             </div>
         </div>
         
@@ -115,12 +115,12 @@
                 $fallbackCats = ['Personal Computer', 'Laptop', 'Server'];
             @endphp
             @forelse($categories ?? [] as $category)
-                <a href="#" class="px-8 py-3 bg-white rounded-full text-sm font-semibold text-gray-600 hover:bg-blue-600 hover:text-white border border-gray-200 hover:border-blue-600 transition-all duration-300 shadow-sm">
+                <a href="#" class="px-8 py-3 bg-white dark:bg-gray-700 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white border border-gray-200 dark:border-gray-600 hover:border-blue-600 transition-all duration-300 shadow-sm">
                     {{ $category->name }}
                 </a>
             @empty
                 @foreach($fallbackCats as $cat)
-                    <a href="#" class="px-8 py-3 bg-white rounded-full text-sm font-semibold text-gray-600 hover:bg-blue-600 hover:text-white border border-gray-200 hover:border-blue-600 transition-all duration-300 shadow-sm">
+                    <a href="#" class="px-8 py-3 bg-white dark:bg-gray-700 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white border border-gray-200 dark:border-gray-600 hover:border-blue-600 transition-all duration-300 shadow-sm">
                         {{ $cat }}
                     </a>
                 @endforeach
@@ -130,22 +130,22 @@
 </div>
 
 <div class="container mx-auto px-6 -mt-10 relative z-20">
-    <div class="bg-white rounded-[2rem] shadow-2xl shadow-blue-900/10 p-10 border border-gray-50">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-gray-100">
+    <div class="bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl shadow-blue-900/10 dark:shadow-none p-10 border border-gray-50 dark:border-gray-700">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-gray-100 dark:divide-gray-700">
             <div class="text-center px-4">
-                <div class="text-3xl font-black text-gray-900">10k+</div>
+                <div class="text-3xl font-black text-gray-900 dark:text-white">10k+</div>
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mt-1">Produk</div>
             </div>
             <div class="text-center px-4">
-                <div class="text-3xl font-black text-gray-900">50k+</div>
+                <div class="text-3xl font-black text-gray-900 dark:text-white">50k+</div>
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mt-1">Pembeli</div>
             </div>
             <div class="text-center px-4">
-                <div class="text-3xl font-black text-gray-900">24/7</div>
+                <div class="text-3xl font-black text-gray-900 dark:text-white">24/7</div>
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mt-1">Support</div>
             </div>
             <div class="text-center px-4">
-                <div class="text-3xl font-black text-gray-900">4.9</div>
+                <div class="text-3xl font-black text-gray-900 dark:text-white">4.9</div>
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mt-1">Rating</div>
             </div>
         </div>
@@ -153,13 +153,13 @@
 </div>
 
 <div class="container mx-auto px-6 py-24">
-    <div class="relative bg-blue-600 rounded-[3rem] p-12 lg:p-20 overflow-hidden text-center text-white">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-50"></div>
+    <div class="relative bg-blue-600 dark:bg-blue-800 rounded-[3rem] p-12 lg:p-20 overflow-hidden text-center text-white shadow-xl dark:shadow-none">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500 dark:bg-blue-600 rounded-full blur-3xl opacity-50"></div>
         <div class="relative z-10">
-            <h2 class="text-4xl font-bold mb-6">Siap untuk Pengalaman Baru?</h2>
-            <p class="text-blue-100 mb-10 text-lg max-w-2xl mx-auto">Bergabunglah dengan ribuan pelanggan lainnya dan dapatkan akses eksklusif ke promo mingguan kami.</p>
+            <h2 class="text-4xl font-bold mb-6 text-white dark:text-gray-100">Siap untuk Pengalaman Baru?</h2>
+            <p class="text-blue-100 dark:text-blue-200 mb-10 text-lg max-w-2xl mx-auto">Bergabunglah dengan ribuan pelanggan lainnya dan dapatkan akses eksklusif ke promo mingguan kami.</p>
             <a href="{{ route('register') }}" 
-               class="inline-block px-12 py-5 bg-white text-blue-600 rounded-2xl font-black text-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+               class="inline-block px-12 py-5 bg-white text-blue-600 dark:bg-gray-100 dark:text-blue-700 rounded-2xl font-black text-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
                 Daftar Sekarang — Gratis
             </a>
         </div>
