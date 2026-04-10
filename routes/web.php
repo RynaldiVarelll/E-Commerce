@@ -76,6 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Fitur Ulasan (Sinkronisasi Produk & Toko)
     Route::post('/my-orders/{transaction}/product-review', [\App\Http\Controllers\Frontend\ReviewController::class, 'storeProductReview'])->name('reviews.store-product');
     Route::post('/my-orders/{transaction}/store-review', [\App\Http\Controllers\Frontend\ReviewController::class, 'storeStoreReview'])->name('reviews.store-store');
+    
+    // Hapus Ulasan
+    Route::delete('/reviews/product/{id}', [\App\Http\Controllers\Frontend\ReviewController::class, 'destroyProductReview'])->name('reviews.destroy-product');
+    Route::delete('/reviews/store/{id}', [\App\Http\Controllers\Frontend\ReviewController::class, 'destroyStoreReview'])->name('reviews.destroy-store');
 
     // Fitur Chat Realtime
     Route::get('/chat', [\App\Http\Controllers\Frontend\ChatController::class, 'index'])->name('chat.index');

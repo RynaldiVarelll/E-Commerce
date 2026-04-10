@@ -1,2 +1,12 @@
 *
 !.gitignore
+
+# Izinkan folder aset gambar masuk ke Git agar tersimpan bersama repo
+!products/
+!products/**
+!profile/
+!profile/**
+!profile-photos/
+!profile-photos/**
+!images/
+!images/**

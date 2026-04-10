@@ -18,6 +18,7 @@ class ShopController extends Controller
         }
 
         $shop = User::findOrFail($id);
+        $shop->loadMissing(['storeReviews.user']);
         
         $query = Product::query()->with(['category', 'user', 'reviews'])->where('user_id', $shop->id)->where('is_active', true);
 

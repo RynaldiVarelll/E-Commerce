@@ -171,6 +171,63 @@
                 </div>
             @endif
         </div>
+
+        {{-- Store Reviews Section --}}
+        <div class="mt-20">
+            <div class="flex items-center justify-between mb-10 pb-6 border-b border-gray-100 dark:border-gray-800">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter italic">Ulasan Pelayanan Toko</h2>
+                    <p class="text-gray-400 dark:text-gray-500 font-bold text-xs uppercase tracking-widest mt-1 italic">Apa pengalaman mereka bertransaksi di toko ini?</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse($shop->storeReviews as $review)
+                    <div class="glass-panel dark:bg-gray-800/60 rounded-[2.5rem] p-8 hover:translate-y-[-5px] transition-all duration-500 group border border-transparent hover:border-blue-100 dark:hover:border-blue-900/50">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-2xl overflow-hidden border-2 border-white dark:border-gray-700 shadow-md flex-shrink-0">
+                                <img src="{{ $review->user->profile_photo_url }}" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-black text-gray-900 dark:text-white text-xs uppercase tracking-widest">{{ $review->user->name }}</h4>
+                                <div class="flex items-center gap-1 text-amber-500 mt-1">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fa-{{ $i <= $review->rating ? 'solid' : 'regular' }} fa-star text-[10px]"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed italic mb-4">
+                            "{{ $review->comment ?: 'Tidak ada komentar.' }}"
+                        </p>
+                        <div class="text-[9px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 flex items-center justify-between">
+                            <span>Diterbitkan {{ $review->created_at->diffForHumans() }}</span>
+                            <div class="flex items-center gap-2">
+                                @if(Auth::check() && Auth::id() === $review->user_id)
+                                    <form action="{{ route('reviews.destroy-store', $review->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus ulasan toko ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-lg transition-colors cursor-pointer" title="Hapus Ulasan Toko">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                                <span class="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-lg">Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full py-20 text-center glass-panel dark:bg-gray-800/60 rounded-[3rem] border-2 border-dashed border-gray-200 dark:border-gray-700">
+                        <div class="w-20 h-20 bg-gray-100 dark:bg-gray-900/40 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300 dark:text-gray-600">
+                            <i class="fa-solid fa-store-slash text-3xl"></i>
+                        </div>
+                        <p class="font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest italic">Belum ada ulasan pelayanan toko.</p>
+                        <p class="text-[10px] text-gray-300 dark:text-gray-600 font-bold mt-2 uppercase tracking-[0.2em]">Selesaikan transaksi dan jadilah yang pertama!</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
     </div>
 </div>
 

@@ -87,6 +87,47 @@ class ReviewController extends Controller
     }
 
     /**
+     * Menghapus ulasan produk milik sendiri
+     */
+    public function destroyProductReview($id)
+    {
+        $review = ProductReview::findOrFail($id);
+        
+        // Cek Hak Akses
+        if ($review->user_id !== Auth::id()) {
+            return back()->with('error', 'Anda tidak memiliki hak untuk menghapus ulasan ini.');
+        }
+
+        $productId = $review->product_id;
+        $review->delete();
+
+        // Singkronkan Rating Setelah Dihapus
+        $this->syncProductRating($productId);
+
+        return back()->with('success', 'Komentar ulasan produk Anda berhasil dihapus.');
+    }
+
+    /**
+     * Menghapus ulasan pelayanan toko milik sendiri
+     */
+    public function destroyStoreReview($id)
+    {
+        $review = StoreReview::findOrFail($id);
+
+        if ($review->user_id !== Auth::id()) {
+            return back()->with('error', 'Anda tidak memiliki hak untuk menghapus ulasan ini.');
+        }
+
+        $sellerId = $review->seller_id;
+        $review->delete();
+
+        // Singkronkan Ulang Toko Setelah Dihapus
+        $this->syncStoreRating($sellerId);
+
+        return back()->with('success', 'Komentar ulasan toko Anda berhasil dihapus.');
+    }
+
+    /**
      * Re-calculate physical rating into products table for consistent performance.
      */
     private function syncProductRating($productId)

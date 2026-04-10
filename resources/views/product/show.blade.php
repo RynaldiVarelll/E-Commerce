@@ -236,7 +236,18 @@
                         </p>
                         <div class="text-[9px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 flex items-center justify-between">
                             <span>Diterbitkan {{ $review->created_at->diffForHumans() }}</span>
-                            <span class="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-lg">Verified Purchase</span>
+                            <div class="flex items-center gap-2">
+                                @if(Auth::check() && Auth::id() === $review->user_id)
+                                    <form action="{{ route('reviews.destroy-product', $review->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-lg transition-colors cursor-pointer" title="Hapus Ulasan">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                                <span class="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-lg">Verified Purchase</span>
+                            </div>
                         </div>
                     </div>
                 @empty
