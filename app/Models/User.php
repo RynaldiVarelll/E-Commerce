@@ -48,6 +48,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    /**
+     * Atribut tambahan
+     */
+    protected $appends = ['profile_photo_url'];
+
     public function isAdmin()
     {
         return $this->role === 'admin' || $this->role === 'super_admin';
@@ -58,9 +63,28 @@ class User extends Authenticatable
         return $this->role === 'super_admin';
     }
 
+    /**
+     * Relasi: Produk yang dijual oleh penjual ini.
+     */
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    /**
+     * Relasi: Mengambil semua ulasan produk untuk produk-produk toko ini.
+     */
+    public function receivedProductReviews()
+    {
+        return $this->hasManyThrough(ProductReview::class, Product::class);
+    }
+
+    /**
+     * Relasi: Mengambil ulasan langsung ke toko Anda.
+     */
+    public function storeReviews()
+    {
+        return $this->hasMany(StoreReview::class, 'seller_id');
     }
 
     public function getProfilePhotoUrlAttribute()
@@ -68,7 +92,6 @@ class User extends Authenticatable
         if ($this->profile_photo_path) {
             return asset('storage/' . $this->profile_photo_path);
         }
-
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 }

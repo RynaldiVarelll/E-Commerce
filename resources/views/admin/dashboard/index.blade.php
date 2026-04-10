@@ -154,18 +154,26 @@
                             </td>
                             <td class="px-8 py-6 text-center">
                                 <div class="flex items-center justify-center space-x-3">
-                                    @if(!auth()->user()->isSuperAdmin())
-                                        <form method="POST" id="form-{{ $tx->id }}">
-                                            @csrf
-                                            <select onchange="updateStatus({{ $tx->id }}, this.value)" 
-                                                    class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
-                                                <option disabled selected>Update</option>
-                                                @foreach(['shipped', 'completed', 'cancelled'] as $status)
-                                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
-                                                @endforeach
-                                            </select>
-                                        </form>
-                                    @endif
+                                    <form method="POST" id="form-{{ $tx->id }}">
+                                        @csrf
+                                        <select onchange="updateStatus({{ $tx->id }}, this.value)" 
+                                                class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all cursor-pointer">
+                                            <option disabled selected>Update</option>
+                                            @foreach(['confirmed', 'shipped', 'completed', 'cancelled'] as $status)
+                                                <option value="{{ $status }}">
+                                                    @php
+                                                        $statusLabel = [
+                                                            'confirmed' => 'Konfirmasi',
+                                                            'shipped' => 'Kirim Barang',
+                                                            'completed' => 'Selesai',
+                                                            'cancelled' => 'Batalkan'
+                                                        ][$status] ?? ucfirst($status);
+                                                    @endphp
+                                                    {{ $statusLabel }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
 
                                     <form action="{{ route('admin.transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" class="inline">
                                         @csrf
@@ -367,13 +375,15 @@ function updateStatus(transactionId, status) {
         cancelButtonColor: '#6b7280',
         confirmButtonText: 'Ya, Update!',
         customClass: {
-            container: darkMode ? 'dark-swal' : '',
+            container: document.documentElement.classList.contains('dark') ? 'dark-swal' : '',
             popup: 'rounded-[2rem] dark:bg-gray-800 dark:text-white dark:border-gray-700'
         }
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.getElementById(`form-${transactionId}`);
-            // 🔥 FIX: Menambahkan /admin di depan URL agar sesuai dengan prefix rute admin
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            // 🔥 URL Action fix
             form.action = `/admin/transactions/${transactionId}/${status}`;
             form.submit();
         }

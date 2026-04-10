@@ -25,6 +25,8 @@ class Product extends Model
         'quantity',
         'user_id',
     ];
+    
+    protected $appends = ['image_url'];
 
     /**
      * Accessor untuk mendapatkan URL lengkap gambar produk.
@@ -62,5 +64,13 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi ke ulasan produk.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }

@@ -16,7 +16,7 @@ class ProductController extends Controller
                 ->with('error', 'Akses ditolak. Admin hanya diperbolehkan mengelola produk, bukan berbelanja.');
         }
 
-        $query = Product::query()->with(['category', 'user']);
+        $query = Product::query()->with(['category', 'user', 'reviews']);
         $shops = collect(); // Default empty collection
 
         // Jika pencarian text
@@ -43,16 +43,14 @@ class ProductController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan detail satu produk tertentu.
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        // 🚨 KEAMANAN: Admin tidak boleh melihat detail produk di frontend
-        if (auth()->check() && auth()->user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
+        // 🔥 OPTIMASI: Eager loading relasi untuk performa & rating yang reaktif
+        // Menambahkan user.storeReviews agar rating toko bisa dibandingkan di halaman produk
+        $product->load(['category', 'user.storeReviews', 'reviews.user', 'images']);
 
-        $product = Product::with('user')->findOrFail($id);
         return view('product.show', compact('product'));
     }
 

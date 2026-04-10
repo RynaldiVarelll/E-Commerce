@@ -296,6 +296,32 @@
                     timer: 5000
                 });
             @endif
+
+            // REAL-TIME RATING UPDATE VIA WEB-SOCKETS
+            setTimeout(() => {
+                if (window.Echo) {
+                    window.Echo.channel('reviews')
+                        .listen('.review.added', (e) => {
+                            if (e.productId) {
+                                document.querySelectorAll('.react-product-rating[data-product-id="'+e.productId+'"]').forEach(el => {
+                                    el.innerText = parseFloat(e.newProductRating).toFixed(1);
+                                });
+                                document.querySelectorAll('.react-product-count[data-product-id="'+e.productId+'"]').forEach(el => {
+                                    el.innerText = e.newProductReviewCount;
+                                });
+                            }
+                            
+                            if (e.sellerId) {
+                                document.querySelectorAll('.react-store-rating[data-store-id="'+e.sellerId+'"]').forEach(el => {
+                                    el.innerText = parseFloat(e.newStoreRating).toFixed(1);
+                                });
+                                document.querySelectorAll('.react-store-count[data-store-id="'+e.sellerId+'"]').forEach(el => {
+                                    el.innerText = e.newStoreReviewCount;
+                                });
+                            }
+                        });
+                }
+            }, 1000); // Allow Vite/Echo to load
         });
     </script>
 </body>

@@ -73,6 +73,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions/{transaction}/print-invoice', [TransactionController::class, 'printInvoice'])
         ->name('transactions.print-invoice');
 
+    // Fitur Ulasan (Sinkronisasi Produk & Toko)
+    Route::post('/my-orders/{transaction}/product-review', [\App\Http\Controllers\Frontend\ReviewController::class, 'storeProductReview'])->name('reviews.store-product');
+    Route::post('/my-orders/{transaction}/store-review', [\App\Http\Controllers\Frontend\ReviewController::class, 'storeStoreReview'])->name('reviews.store-store');
+
     // Fitur Chat Realtime
     Route::get('/chat', [\App\Http\Controllers\Frontend\ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/{receiverId}', [\App\Http\Controllers\Frontend\ChatController::class, 'show'])->name('chat.show');

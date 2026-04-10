@@ -189,15 +189,82 @@
                             </div>
 
                             {{-- Subtotal per Item --}}
-                            <div class="text-right">
+                            <div class="text-right flex flex-col items-end gap-3">
                                 <p class="font-black text-gray-900 dark:text-white">
                                     Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}
                                 </p>
+                                
+                                {{-- Tombol Beri Ulasan (Hanya Jika Selesai) --}}
+                                @if($transaction->status == 'completed')
+                                    @php
+                                        $existingReview = \App\Models\ProductReview::where('user_id', auth()->id())
+                                            ->where('product_id', $item->product_id)
+                                            ->where('transaction_id', $transaction->id)
+                                            ->first();
+                                    @endphp
+
+                                    @if(!$existingReview)
+                                        <button type="button" onclick="openReviewModal('product', {{ $item->product->id }}, '{{ $item->product->name }}')" 
+                                                class="px-6 py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all hover:bg-blue-700 active:scale-95 shadow-xl shadow-blue-500/20">
+                                            Beri Ulasan Produk
+                                        </button>
+                                    @else
+                                        <div class="flex items-center gap-1 text-amber-500">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <i class="fa-{{ $i <= $existingReview->rating ? 'solid' : 'regular' }} fa-star text-[10px]"></i>
+                                            @endfor
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
+
+                {{-- Ulasan Toko (Sinkronisasi Otomatis) --}}
+                @if($transaction->status == 'completed')
+                    @php
+                        $storeReview = \App\Models\StoreReview::where('user_id', auth()->id())
+                            ->where('transaction_id', $transaction->id)
+                            ->first();
+                    @endphp
+
+                    @if(!$storeReview)
+                    <div class="glass-panel rounded-[2.5rem] p-8 border-2 border-dashed border-blue-100 dark:border-blue-900/50 bg-blue-50/10 hover:bg-blue-50/20 transition-all cursor-pointer group"
+                         onclick="openReviewModal('store', '{{ $transaction->seller ? $transaction->seller->id : '' }}', '{{ $transaction->seller ? $transaction->seller->name : 'Toko' }}')">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="flex items-center gap-5">
+                                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-medal text-3xl"></i>
+                                </div>
+                                <div class="text-center md:text-left">
+                                    <h3 class="font-black text-gray-900 dark:text-white uppercase text-xs tracking-widest">Bagaimana Pengalaman Belanja Anda?</h3>
+                                    <p class="text-gray-500 dark:text-gray-400 text-xs font-medium mt-1">Berikan rating untuk layanan toko <strong>{{ $transaction->seller ? $transaction->seller->name : 'Penjual' }}</strong></p>
+                                </div>
+                            </div>
+                            <button class="px-8 py-4 bg-gray-900 dark:bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-600 dark:hover:bg-blue-700 transition-all shadow-xl shadow-gray-200 dark:shadow-none active:scale-95 whitespace-nowrap">
+                                Nilai Toko Sekarang
+                            </button>
+                        </div>
+                    </div>
+                    @else
+                    <div class="glass-panel rounded-[2.5rem] p-8 bg-green-50/10 dark:bg-green-900/10 border border-green-100 dark:border-green-900/50">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
+                            <div>
+                                <h3 class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-widest">Ulasan Toko Dikirim</h3>
+                                <div class="flex items-center gap-1 text-amber-500 mt-1">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fa-{{ $i <= $storeReview->rating ? 'solid' : 'regular' }} fa-star text-[10px]"></i>
+                                    @endfor
+                                    <span class="ml-2 text-gray-400 font-medium text-[10px]">{{ $storeReview->comment }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endif
 
                 {{-- Instruksi Pembayaran --}}
                 @if($transaction->status == 'pending')
@@ -372,6 +439,54 @@
                 </div>
             </div>
 
+    {{-- MODAL ULASAN (Sinkronisasi Produk & Toko) --}}
+    <div id="reviewModal" class="fixed inset-0 z-[160] hidden">
+        <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-md" onclick="closeReviewModal()"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-[3.5rem] w-full max-w-lg overflow-hidden shadow-2xl animate-scale-up border border-white dark:border-gray-700">
+                <div class="p-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <h2 id="modalTitle" class="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Beri Ulasan</h2>
+                            <p id="modalSubtitle" class="text-gray-500 dark:text-gray-400 font-medium text-xs mt-1 uppercase tracking-widest">Memuat...</p>
+                        </div>
+                        <button onclick="closeReviewModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fa-solid fa-circle-xmark text-2xl"></i>
+                        </button>
+                    </div>
+
+                    <form id="reviewForm" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" id="reviewProductId">
+                        
+                        {{-- Star Rating --}}
+                        <div class="mb-8 text-center">
+                            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-4 block">Rating Anda</label>
+                            <div class="flex justify-center gap-3">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <button type="button" onclick="setRating({{ $i }})" class="star-btn group" data-rating="{{ $i }}">
+                                        <i class="fa-solid fa-star text-3xl transition-all duration-300 transform group-hover:scale-125 text-gray-200 dark:text-gray-700"></i>
+                                    </button>
+                                @endfor
+                            </div>
+                            <input type="hidden" name="rating" id="reviewRatingValue" value="5" required>
+                        </div>
+
+                        {{-- Comment --}}
+                        <div class="mb-8">
+                            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-2 block ml-1">Komentar (Opsional)</label>
+                            <textarea name="comment" rows="4" 
+                                      placeholder="Bagikan pengalaman belanja Anda..."
+                                      class="w-full px-6 py-4 bg-gray-50 dark:bg-gray-700 dark:text-white border-none rounded-[2rem] focus:ring-2 focus:ring-blue-600 transition-all font-medium text-sm shadow-inner"></textarea>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full py-5 bg-blue-600 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/20 active:scale-95">
+                            Kirim Ulasan Sekarang
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -438,6 +553,12 @@
         to { opacity: 1; transform: scale(1); }
     }
     .animate-scale-up { animation: scale-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+    .star-btn i.active {
+        color: #f59e0b;
+        filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+        transform: scale(1.1);
+    }
     </style>
 
     <script>
@@ -451,6 +572,55 @@
         const modal = document.getElementById('paymentModal');
         modal.classList.add('hidden');
         document.body.style.overflow = 'auto';
+    }
+
+    function openReviewModal(type, id, name) {
+        const modal = document.getElementById('reviewModal');
+        const form = document.getElementById('reviewForm');
+        const title = document.getElementById('modalTitle');
+        const subtitle = document.getElementById('modalSubtitle');
+        const productIdInput = document.getElementById('reviewProductId');
+
+        if (type === 'product') {
+            title.innerText = 'Ulasan Produk';
+            subtitle.innerText = name;
+            productIdInput.value = id;
+            form.action = "{{ route('reviews.store-product', $transaction->id) }}";
+        } else {
+            title.innerText = 'Ulasan Toko';
+            subtitle.innerText = name;
+            productIdInput.value = '';
+            form.action = "{{ route('reviews.store-store', $transaction->id) }}";
+        }
+
+        modal.classList.remove('hidden');
+        setRating(5); // Default rating
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeReviewModal() {
+        document.getElementById('reviewModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function setRating(rating) {
+        const btns = document.querySelectorAll('.star-btn i');
+        const ratingInput = document.getElementById('reviewRatingValue');
+        ratingInput.value = rating;
+
+        btns.forEach((btn, index) => {
+            if (index < rating) {
+                btn.classList.add('active');
+                btn.classList.add('fa-solid');
+                btn.classList.remove('fa-regular');
+                btn.classList.remove('text-gray-200', 'dark:text-gray-700');
+            } else {
+                btn.classList.remove('active');
+                btn.classList.remove('fa-solid');
+                btn.classList.add('fa-regular');
+                btn.classList.add('text-gray-200', 'dark:text-gray-700');
+            }
+        });
     }
     </script>
 @endsection

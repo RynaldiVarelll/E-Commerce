@@ -123,9 +123,16 @@
                                     <i class="fa-solid fa-store mr-1 text-blue-500"></i>
                                     {{ $product->user ? $product->user->name : 'Official Store' }}
                                 </div>
-                                <div class="flex items-center text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter mb-4">
-                                    <i class="fa-solid fa-box-open mr-1"></i>
-                                    Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400' }} ml-1">{{ $product->quantity }} pcs</span>
+                                <div class="flex items-center justify-between mt-3 mb-4">
+                                    <div class="flex items-center text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">
+                                        <i class="fa-solid fa-box-open mr-1"></i>
+                                        Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400' }} ml-1">{{ $product->quantity }} pcs</span>
+                                    </div>
+                                    <div class="flex items-center gap-1 text-amber-500">
+                                        <i class="fa-solid fa-star text-[10px]"></i>
+                                        <span class="react-product-rating text-[10px] font-black text-gray-900 dark:text-white" data-product-id="{{ $product->id }}">{{ number_format($product->rating, 1) }}</span>
+                                        <span class="text-[9px] font-bold text-gray-400">(<span class="react-product-count" data-product-id="{{ $product->id }}">{{ $product->review_count }}</span>)</span>
+                                    </div>
                                 </div>
                             </div>
                             

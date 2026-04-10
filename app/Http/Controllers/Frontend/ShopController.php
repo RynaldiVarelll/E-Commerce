@@ -19,7 +19,7 @@ class ShopController extends Controller
 
         $shop = User::findOrFail($id);
         
-        $query = Product::query()->with(['category', 'user'])->where('user_id', $shop->id)->where('is_active', true);
+        $query = Product::query()->with(['category', 'user', 'reviews'])->where('user_id', $shop->id)->where('is_active', true);
 
         // Jika pencarian text
         if ($request->has('search') && $request->search != '') {

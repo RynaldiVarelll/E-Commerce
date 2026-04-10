@@ -62,14 +62,14 @@
             <button type="submit" class="btn-primary">
                 {{ __('Masuk Sekarang') }}
             </button>
-            <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 whitespace-nowrap opacity-40 group hover:opacity-100 transition-opacity">
+            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 whitespace-nowrap opacity-40 group hover:opacity-100 transition-opacity">
                 <i class="fa-solid fa-shield-halved text-[10px] text-blue-600"></i>
                 <span class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400">AES-256 Encrypted Connection</span>
             </div>
         </div>
 
         {{-- Register Link --}}
-        <div class="text-center mt-20 pt-8 border-t border-white/40">
+        <div class="text-center mt-32 pt-8 border-t border-white/40">
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] leading-loose">
                 Belum Jadi Member? <br>
                 <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-800 text-xs mt-3 inline-block hover:scale-105 transition-transform font-black">BUAT AKUN BARU <i class="fa-solid fa-arrow-right ml-1"></i></a>

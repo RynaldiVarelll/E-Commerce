@@ -36,6 +36,10 @@
                             <i class="fa-solid fa-box-open text-[10px]"></i>
                             <span class="text-[10px] font-bold uppercase tracking-widest">{{ $products->count() }} Produk</span>
                         </div>
+                        <div class="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 px-3 py-1.5 rounded-full border border-amber-100 dark:border-amber-900/50">
+                            <i class="fa-solid fa-star text-[10px]"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">{{ number_format($shop->store_rating, 1) }} ({{ $shop->store_review_count }} Ulasan)</span>
+                        </div>
                     </div>
                     
                     <p class="text-sm font-bold text-gray-500 dark:text-gray-400 mt-4 uppercase tracking-widest italic">
@@ -108,9 +112,16 @@
                                     <h3 class="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                         {{ $product->name }}
                                     </h3>
-                                    <div class="flex items-center text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter mt-3 mb-4">
-                                        <i class="fa-solid fa-box-open mr-1"></i>
-                                        Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400' }} ml-1">{{ $product->quantity }} pcs</span>
+                                    <div class="flex items-center justify-between mt-3 mb-4">
+                                        <div class="flex items-center text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">
+                                            <i class="fa-solid fa-box-open mr-1"></i>
+                                            Stok: <span class="{{ $product->quantity < 5 ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400' }} ml-1">{{ $product->quantity }} pcs</span>
+                                        </div>
+                                        <div class="flex items-center gap-1 text-amber-500">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span class="react-product-rating text-[10px] font-black text-gray-900 dark:text-white" data-product-id="{{ $product->id }}">{{ number_format($product->rating, 1) }}</span>
+                                            <span class="text-[9px] font-bold text-gray-400">(<span class="react-product-count" data-product-id="{{ $product->id }}">{{ $product->review_count }}</span>)</span>
+                                        </div>
                                     </div>
                                 </div>
                                 

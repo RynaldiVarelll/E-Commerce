@@ -156,28 +156,39 @@ class DashboardController extends Controller
 
     public function updateStatus(\App\Models\Transaction $transaction, $status)
     {
-        // 🚨 KEAMANAN: Super Admin tidak mengelola status transaksi, itu tugas Seller
-        if (auth()->user()->isSuperAdmin()) {
-            abort(403, 'Aksi ini hanya diperbolehkan untuk Seller (Admin).');
-        }
+        $user = auth()->user();
 
-        // Cek apakah seller ini pemilik produk di transaksi tersebut
-        if ($transaction->seller_id !== auth()->id()) {
-            abort(403, 'Anda tidak memiliki hak untuk mengelola transaksi ini.');
+        // 🚨 KEAMANAN & FLEKSIBILITAS:
+        // 1. Super Admin boleh mengelola status transaksi apa pun untuk troubleshooting
+        // 2. Seller hanya boleh mengelola transaksi yang ditujukan kepadanya (seller_id)
+        
+        if (!$user->isSuperAdmin()) {
+            // Jika dia seller tapi seller_id di transaksi bernilai null (data lama),
+            // kita bantu hubungkan jika seller pembuat produk sama dengan user ini
+            if ($transaction->seller_id === null) {
+                $firstItem = $transaction->items()->first();
+                if ($firstItem && $firstItem->product && $firstItem->product->user_id === $user->id) {
+                    $transaction->update(['seller_id' => $user->id]);
+                } else {
+                    abort(403, 'Aksi ditolak. Hubungi Super Admin untuk memperbaiki data transaksi ini.');
+                }
+            } elseif ($transaction->seller_id !== $user->id) {
+                abort(403, 'Anda tidak memiliki hak untuk mengelola transaksi dari toko lain.');
+            }
         }
 
         // Validasi status yang diperbolehkan
         $allowedStatuses = ['pending', 'confirmed', 'shipped', 'completed', 'cancelled'];
     
-    if (in_array($status, $allowedStatuses)) {
-        $transaction->update(['status' => $status]);
-        
-        return redirect()->route('admin.dashboard')
-            ->with('success', "Status transaksi #{$transaction->id} berhasil diupdate menjadi {$status}!");
-    }
+        if (in_array($status, $allowedStatuses)) {
+            $transaction->update(['status' => $status]);
+            
+            return redirect()->route('admin.dashboard')
+                ->with('success', "Status transaksi #{$transaction->id} berhasil diupdate menjadi " . ucfirst($status) . "!");
+        }
 
-    return redirect()->route('admin.dashboard')
-        ->with('error', 'Status tidak valid!');
-}
+        return redirect()->route('admin.dashboard')
+            ->with('error', 'Status tidak valid!');
+    }
 }
 
